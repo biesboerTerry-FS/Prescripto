@@ -9,4 +9,3 @@ dist-check/
 !.env.example
 .DS_Store
 *.log
-.github/workflows/ci.yml
