@@ -1,0 +1,902 @@
+[
+  {
+    "name": "Dr. Richard James",
+    "email": "richard.james@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "3 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-1.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/15641080/"
+  },
+  {
+    "name": "Dr. Emily Larson",
+    "email": "emily.larson@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "10 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-1.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/15752232/"
+  },
+  {
+    "name": "Dr. Jennifer Garcia",
+    "email": "jennifer.garcia@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "5 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-1.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/15960478/"
+  },
+  {
+    "name": "Dr. Alexa Dwyer",
+    "email": "alexa.dwyer@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "12 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-1.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/15962798/"
+  },
+  {
+    "name": "Dr. Ava Hudson",
+    "email": "ava.hudson@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "7 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-1.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/16131195/"
+  },
+  {
+    "name": "Dr. Daniel Brown",
+    "email": "daniel.brown@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "14 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-1.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/16552437/"
+  },
+  {
+    "name": "Dr. Daniel Okafor",
+    "email": "daniel.okafor@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "9 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-2.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/17221169/"
+  },
+  {
+    "name": "Dr. Amara Nwosu",
+    "email": "amara.nwosu@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "4 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-2.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/17221170/"
+  },
+  {
+    "name": "Dr. Ethan Brooks",
+    "email": "ethan.brooks@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "11 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-2.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/18788957/"
+  },
+  {
+    "name": "Dr. Kenji Mori",
+    "email": "kenji.mori@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "6 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-2.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/18828741/"
+  },
+  {
+    "name": "Dr. Henry Lawson",
+    "email": "henry.lawson@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "13 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-2.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19131212/"
+  },
+  {
+    "name": "Dr. Timothy White",
+    "email": "timothy.white@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "8 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-2.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19131218/"
+  },
+  {
+    "name": "Dr. Sarah Mitchell",
+    "email": "sarah.mitchell@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "3 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-3.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19131219/"
+  },
+  {
+    "name": "Dr. Sofia Delgado",
+    "email": "sofia.delgado@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "10 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-3.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19438560/"
+  },
+  {
+    "name": "Dr. Aiko Tanaka",
+    "email": "aiko.tanaka@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "5 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-3.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19438561/"
+  },
+  {
+    "name": "Dr. Rachel Green",
+    "email": "rachel.green@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "12 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-3.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19438563/"
+  },
+  {
+    "name": "Dr. Priyanka Sen",
+    "email": "priyanka.sen@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "7 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-3.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19438564/"
+  },
+  {
+    "name": "Dr. Patrick Harris",
+    "email": "patrick.harris@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "14 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-3.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19438566/"
+  },
+  {
+    "name": "Dr. Michael Chen",
+    "email": "michael.chen@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "9 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-4.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19957222/"
+  },
+  {
+    "name": "Dr. Hannah Kim",
+    "email": "hannah.kim@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "4 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-4.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963124/"
+  },
+  {
+    "name": "Dr. Marcus Reed",
+    "email": "marcus.reed@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "11 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-4.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963165/"
+  },
+  {
+    "name": "Dr. Samuel Osei",
+    "email": "samuel.osei@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "6 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-4.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963166/"
+  },
+  {
+    "name": "Dr. Victor Adeyemi",
+    "email": "victor.adeyemi@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "13 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-4.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963167/"
+  },
+  {
+    "name": "Dr. Yuki Sato",
+    "email": "yuki.sato@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "8 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-4.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963168/"
+  },
+  {
+    "name": "Dr. Priya Raman",
+    "email": "priya.raman@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "3 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-5.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/19963169/"
+  },
+  {
+    "name": "Dr. Leila Haddad",
+    "email": "leila.haddad@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "10 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-5.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/27298084/"
+  },
+  {
+    "name": "Dr. Chloe Evans",
+    "email": "chloe.evans@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "5 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-5.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/27298085/"
+  },
+  {
+    "name": "Dr. Mei Lin",
+    "email": "mei.lin@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "12 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-5.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/28516280/"
+  },
+  {
+    "name": "Dr. Lauren Kim",
+    "email": "lauren.kim@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "7 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-5.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/28755708/"
+  },
+  {
+    "name": "Dr. Megan Foster",
+    "email": "megan.foster@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "14 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-5.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/29995617/"
+  },
+  {
+    "name": "Dr. Lucas Moreau",
+    "email": "lucas.moreau@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "9 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-6.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/30722678/"
+  },
+  {
+    "name": "Dr. Clara Dubois",
+    "email": "clara.dubois@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "4 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-6.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/30815320/"
+  },
+  {
+    "name": "Dr. Ravi Shankar",
+    "email": "ravi.shankar@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "11 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-6.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32115900/"
+  },
+  {
+    "name": "Dr. Benjamin Hale",
+    "email": "benjamin.hale@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "6 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-6.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32115905/"
+  },
+  {
+    "name": "Dr. Adrian Costa",
+    "email": "adrian.costa@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "13 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-6.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32115911/"
+  },
+  {
+    "name": "Dr. Hassan Farouk",
+    "email": "hassan.farouk@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "8 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-6.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32115957/"
+  },
+  {
+    "name": "Dr. Hannah Weiss",
+    "email": "hannah.weiss@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "3 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-7.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32115962/"
+  },
+  {
+    "name": "Dr. Nadia Rahman",
+    "email": "nadia.rahman@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "10 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-7.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32160037/"
+  },
+  {
+    "name": "Dr. Elena Petrova",
+    "email": "elena.petrova@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "5 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-7.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32160039/"
+  },
+  {
+    "name": "Dr. Fatima Noor",
+    "email": "fatima.noor@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "12 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-7.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32205055/"
+  },
+  {
+    "name": "Dr. Miriam Cohen",
+    "email": "miriam.cohen@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "7 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-7.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254523/"
+  },
+  {
+    "name": "Dr. Irene Novak",
+    "email": "irene.novak@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "14 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-7.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254525/"
+  },
+  {
+    "name": "Dr. Omar Haddad",
+    "email": "omar.haddad@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "9 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-8.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254655/"
+  },
+  {
+    "name": "Dr. Isabella Rossi",
+    "email": "isabella.rossi@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "4 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-8.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254658/"
+  },
+  {
+    "name": "Dr. Noah Bennett",
+    "email": "noah.bennett@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "11 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-8.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254660/"
+  },
+  {
+    "name": "Dr. Lucy Walsh",
+    "email": "lucy.walsh@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "6 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-8.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32254667/"
+  },
+  {
+    "name": "Dr. Felix Wagner",
+    "email": "felix.wagner@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "13 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-8.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/32428850/"
+  },
+  {
+    "name": "Dr. Gabriel Santos",
+    "email": "gabriel.santos@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "8 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-8.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/33067699/"
+  },
+  {
+    "name": "Dr. Grace Adeyemi",
+    "email": "grace.adeyemi@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "3 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-9.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/37454249/"
+  },
+  {
+    "name": "Dr. Maya Patel",
+    "email": "maya.patel@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "10 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-9.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/38618419/"
+  },
+  {
+    "name": "Dr. Zara Ali",
+    "email": "zara.ali@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "5 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-9.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/38618421/"
+  },
+  {
+    "name": "Dr. Carlos Vega",
+    "email": "carlos.vega@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "12 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-9.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/38774686/"
+  },
+  {
+    "name": "Dr. Nora Lindqvist",
+    "email": "nora.lindqvist@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "7 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-9.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192330/"
+  },
+  {
+    "name": "Dr. Sophie Laurent",
+    "email": "sophie.laurent@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "14 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-9.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192333/"
+  },
+  {
+    "name": "Dr. Thomas Brennan",
+    "email": "thomas.brennan@prescripto.com",
+    "specialty": "General Physician",
+    "degree": "MBBS",
+    "experience": "9 Years",
+    "fees": 50,
+    "about": "General physician focused on preventive care, routine check-ups, and managing long-term conditions such as blood pressure and diabetes.",
+    "image": "general-physician-10.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192335/"
+  },
+  {
+    "name": "Dr. Olivia Carter",
+    "email": "olivia.carter@prescripto.com",
+    "specialty": "Gynecologist",
+    "degree": "MD",
+    "experience": "4 Years",
+    "fees": 75,
+    "about": "Gynecologist providing women's health care, routine screenings, family planning, and pregnancy care in a calm, supportive setting.",
+    "image": "gynecologist-10.jpg",
+    "address": {
+      "line1": "17th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192340/"
+  },
+  {
+    "name": "Dr. Julian Hart",
+    "email": "julian.hart@prescripto.com",
+    "specialty": "Dermatologist",
+    "degree": "MD",
+    "experience": "11 Years",
+    "fees": 75,
+    "about": "Dermatologist treating skin, hair, and nail conditions, from acne and eczema to annual skin checks and cosmetic consultations.",
+    "image": "dermatologist-10.jpg",
+    "address": {
+      "line1": "27th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192345/"
+  },
+  {
+    "name": "Dr. Ruth Abebe",
+    "email": "ruth.abebe@prescripto.com",
+    "specialty": "Pediatrician",
+    "degree": "MD",
+    "experience": "6 Years",
+    "fees": 55,
+    "about": "Pediatrician providing friendly, evidence-based care for infants, children, and teenagers, including vaccinations and growth checks.",
+    "image": "pediatrician-10.jpg",
+    "address": {
+      "line1": "37th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192347/"
+  },
+  {
+    "name": "Dr. Daniel Moss",
+    "email": "daniel.moss@prescripto.com",
+    "specialty": "Neurologist",
+    "degree": "MD",
+    "experience": "13 Years",
+    "fees": 95,
+    "about": "Neurologist diagnosing and managing migraines, seizures, memory concerns, and movement disorders.",
+    "image": "neurologist-10.jpg",
+    "address": {
+      "line1": "47th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192358/"
+  },
+  {
+    "name": "Dr. Peter Whitfield",
+    "email": "peter.whitfield@prescripto.com",
+    "specialty": "Gastroenterologist",
+    "degree": "MD",
+    "experience": "8 Years",
+    "fees": 85,
+    "about": "Gastroenterologist specializing in digestive health, endoscopy, reflux, and long-term gut care.",
+    "image": "gastroenterologist-10.jpg",
+    "address": {
+      "line1": "57th Cross, Richmond",
+      "line2": "Circle, Ring Road, London"
+    },
+    "source": "https://www.pexels.com/photo/39192382/"
+  }
+]

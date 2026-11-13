@@ -1,0 +1,20 @@
+{
+  "name": "prescripto",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Prescripto — doctor appointment app (portfolio). Selenium E2E + seed helpers run from here.",
+  "scripts": {
+    "seed": "npm --prefix backend run seed",
+    "e2e": "node e2e/prescripto.spec.js",
+    "e2e:safari": "SAFARI=1 node e2e/prescripto.spec.js",
+    "audit": "node e2e/audit.js"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "selenium-webdriver": "^4.35.0"
+  },
+  "allowScripts": {
+    "chromedriver@140.0.4": true
+  }
+}

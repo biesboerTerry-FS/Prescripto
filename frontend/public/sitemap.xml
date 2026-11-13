@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Update the base URL to your deployed patient site domain before publishing. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://your-domain.example/</loc></url>
+  <url><loc>https://your-domain.example/doctors</loc></url>
+  <url><loc>https://your-domain.example/about</loc></url>
+  <url><loc>https://your-domain.example/contact</loc></url>
+  <url><loc>https://your-domain.example/faqs</loc></url>
+  <url><loc>https://your-domain.example/privacy</loc></url>
+  <url><loc>https://your-domain.example/terms</loc></url>
+  <url><loc>https://your-domain.example/sitemap</loc></url>
+  <url><loc>https://your-domain.example/login</loc></url>
+  <url><loc>https://your-domain.example/doctors/General%20Physician</loc></url>
+  <url><loc>https://your-domain.example/doctors/Gynecologist</loc></url>
+  <url><loc>https://your-domain.example/doctors/Dermatologist</loc></url>
+  <url><loc>https://your-domain.example/doctors/Pediatrician</loc></url>
+  <url><loc>https://your-domain.example/doctors/Neurologist</loc></url>
+  <url><loc>https://your-domain.example/doctors/Gastroenterologist</loc></url>
+</urlset>

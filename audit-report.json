@@ -1,0 +1,47 @@
+[
+  {
+    "page": "admin /all-appointments [375px, light]",
+    "kind": "axe",
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 5,
+    "sample": ".border-t.border-slate-100.hover\\:bg-slate-50:nth-child(1) > td:nth-child(5) > .bg-red-50.px-2.text-red-600"
+  },
+  {
+    "page": "admin /admin-dashboard [768px, light]",
+    "kind": "axe",
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 4,
+    "sample": ".last\\:border-b-0.grid-cols-\\[minmax\\(0\\,2fr\\)_minmax\\(0\\,1fr\\)_minmax\\(0\\,1fr\\)\\].py-3:nth-child(1) > div:nth-child(3) > .text-red-600.bg-red-50.px-2"
+  },
+  {
+    "page": "admin /all-appointments [768px, light]",
+    "kind": "axe",
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 5,
+    "sample": ".border-t.border-slate-100.hover\\:bg-slate-50:nth-child(1) > td:nth-child(5) > .bg-red-50.px-2.text-red-600"
+  },
+  {
+    "page": "admin /admin-dashboard [1280px, light]",
+    "kind": "axe",
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 4,
+    "sample": ".last\\:border-b-0.grid-cols-\\[minmax\\(0\\,2fr\\)_minmax\\(0\\,1fr\\)_minmax\\(0\\,1fr\\)\\].py-3:nth-child(1) > div:nth-child(3) > .text-red-600.bg-red-50.px-2"
+  },
+  {
+    "page": "admin /all-appointments [1280px, light]",
+    "kind": "axe",
+    "id": "color-contrast",
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "nodes": 5,
+    "sample": ".border-t.border-slate-100.hover\\:bg-slate-50:nth-child(1) > td:nth-child(5) > .bg-red-50.px-2.text-red-600"
+  }
+]

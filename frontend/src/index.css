@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: "Inter", ui-sans-system, system-ui, sans-serif;
+	background-color: #f8fafc;
+	color: #1e293b;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+.active hr {
+	@apply block;
+}
+
+::-webkit-scrollbar {
+	@apply hidden;
+}
+
+
+@media (max-width: 740px) {
+	.active p {
+		@apply text-white bg-primary;
+	}
+}
+
+
+/* No elastic bounce past the end of the page, so the footer is the last thing visible. */
+html,
+body {
+	overscroll-behavior-y: none;
+}
+
+/* Toast notifications, themed to match the site. Selectors are scoped to
+   .Toastify__toast-container so they beat react-toastify's own stylesheet. */
+.Toastify__toast-container .Toastify__toast {
+	border-radius: 12px;
+	font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+	font-size: 14px;
+	color: #fff;
+	box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.25);
+}
+.Toastify__toast-container .Toastify__toast--success {
+	background: #0f766e;
+}
+.Toastify__toast-container .Toastify__toast--info {
+	background: #115e59;
+}
+.Toastify__toast-container .Toastify__toast--warning {
+	background: #b45309;
+}
+.Toastify__toast-container .Toastify__toast--error {
+	background: #b91c1c;
+}
+.Toastify__toast-container .Toastify__progress-bar {
+	background: #5eead4;
+}
+.Toastify__toast-container .Toastify__toast--error .Toastify__progress-bar,
+.Toastify__toast-container .Toastify__toast--warning .Toastify__progress-bar {
+	background: rgb(255 255 255 / 0.7);
+}
+
+/* ---- Dark mode ----
+   Remaps the light utility classes used across the site. Toggled by the
+   "dark" class on <html> (see src/lib/theme.js). The primary teal is kept. */
+html.dark {
+	color-scheme: dark;
+}
+html.dark body {
+	background-color: #0b1220;
+	color: #e2e8f0;
+}
+html.dark * {
+	border-color: #26334a;
+}
+html.dark .bg-white,
+html.dark .bg-stone-100,
+html.dark .bg-slate-50,
+html.dark .bg-gray-50,
+html.dark .bg-zinc-50,
+html.dark .bg-\[\#f8fafc\],
+html.dark .bg-\[\#f8f9fd\],
+html.dark .bg-\[\#f8fafc\]\/95 {
+	background-color: #111a2e;
+}
+html.dark .bg-gray-100,
+html.dark .bg-slate-100 {
+	background-color: #1a2439;
+}
+html.dark .bg-teal-50,
+html.dark .bg-teal-50\/60 {
+	background-color: #0f2b2a;
+}
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-zinc-800,
+html.dark .text-neutral-800,
+html.dark .text-stone-700,
+html.dark .text-black {
+	color: #f1f5f9;
+}
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-zinc-600,
+html.dark .text-zinc-500,
+html.dark .text-zinc-700,
+html.dark .text-stone-500,
+html.dark .text-\[\#515151\],
+html.dark .text-\[\#5e5e5e\] {
+	color: #a3b1c6;
+}
+html.dark .text-gray-400,
+html.dark .text-slate-400 {
+	color: #7b8aa3;
+}
+html.dark .text-teal-800 {
+	color: #5eead4;
+}
+html.dark .border-teal-100,
+html.dark .border-teal-200 {
+	border-color: #164e4a;
+}
+html.dark input,
+html.dark select,
+html.dark textarea {
+	background-color: #0f1a2e;
+	color: #e2e8f0;
+	border-color: #2b3a52;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+	color: #64748b;
+}
+
+/* Hero banner gradient (light theme). Dark theme overrides it below. */
+.hero-bg {
+	background-image: linear-gradient(to bottom right, #115e59, #0f766e, #059669);
+}
+.hero-img-dark {
+	display: none;
+}
+
+/* ---- Dark mode accents ----
+   #1e3a8a  dark blue: hover states, selected tints
+   #334155  slate: hero banner, footer
+   #475569  slate: primary buttons, active states, focus borders, success toasts */
+html.dark .bg-primary,
+html.dark .bg-teal-600,
+html.dark .bg-teal-500 {
+	background-color: #475569;
+}
+html.dark .hover\:bg-primary-dark:hover,
+html.dark .bg-primary-dark,
+html.dark .hover\:bg-teal-500:hover,
+html.dark .bg-teal-100,
+html.dark .bg-teal-950 {
+	background-color: #0b1220;
+}
+html.dark .text-primary,
+html.dark .text-teal-600,
+html.dark .text-teal-700,
+html.dark .hover\:text-teal-700:hover,
+html.dark .text-teal-800,
+html.dark .text-teal-900 {
+	color: #e2e8f0;
+}
+html.dark .border-primary,
+html.dark .hover\:border-teal-500:hover,
+html.dark .border-teal-500,
+html.dark .border-teal-600,
+html.dark .focus\:border-teal-500:focus,
+html.dark .focus\:border-teal-300:focus {
+	border-color: #475569;
+}
+html.dark .hero-bg {
+	background-image: linear-gradient(to bottom right, #334155, #334155);
+}
+html.dark .brand-logo {
+	filter: hue-rotate(50deg) saturate(1.1);
+}
+html.dark .Toastify__toast-container .Toastify__toast--success {
+	background: #475569;
+}
+html.dark .Toastify__toast-container .Toastify__toast--info {
+	background: #1e3a8a;
+}
+html.dark .hero-img-light {
+	display: none;
+}
+html.dark .hero-img-dark {
+	display: block;
+}
+
+/* ---- Dark mode: badge and status colors ---- */
+html.dark .bg-red-50 {
+	background-color: #3b1414;
+}
+html.dark .text-red-700,
+html.dark .text-red-600,
+html.dark .text-red-500 {
+	color: #fca5a5;
+}
+html.dark .bg-amber-50 {
+	background-color: #3a2a0b;
+}
+html.dark .text-amber-700 {
+	color: #fcd34d;
+}
+html.dark .text-green-700 {
+	color: #86efac;
+}
+html.dark .bg-teal-700 {
+	background-color: #475569;
+}
+html.dark .hover\:bg-teal-800:hover {
+	background-color: #1e3a8a;
+}
