@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /my-appointments
+Disallow: /my-profile
+Disallow: /appointment/
+Sitemap: https://prescripto.vercel.app/sitemap.xml

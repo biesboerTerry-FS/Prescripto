@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api, { getApiErrorMessage } from "../lib/api";
 
 // Renders the Login view.
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const { setAdminToken, backendURL } = useContext(AdminContext);
+	const { setAdminToken } = useContext(AdminContext);
 
 	// Helper that on submit handler.
 	const onSubmitHandler = async (e) => {
@@ -17,9 +17,10 @@ const Login = () => {
 
 		try {
 			if (state === "Admin") {
-				const { data } = await axios.post(
-					`${backendURL}/api/admin/login`,
-					{ email, password }
+				const { data } = await api.post(
+					"/admin/login",
+					{ email, password },
+					{ skipAuthRedirect: true }
 				);
 				if (data.success) {
 					localStorage.setItem("adminToken", data.token);
@@ -32,7 +33,7 @@ const Login = () => {
 				toast.error("Doctor login is not available yet.");
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Admin login failed."));
 		}
 	};
 

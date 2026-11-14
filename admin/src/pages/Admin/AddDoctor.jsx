@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { assets } from "../../assets/assets";
-import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api, { getApiErrorMessage } from "../../lib/api";
 
 // Renders the Add Doctor view.
 const AddDoctor = () => {
@@ -16,8 +15,6 @@ const AddDoctor = () => {
 	const [degree, setDegree] = useState("");
 	const [address1, setAddress1] = useState("");
 	const [address2, setAddress2] = useState("");
-
-	const { backendURL, adminToken } = useContext(AdminContext);
 
 	// Helper that on submit handler.
 	const onSubmitHandler = async (event) => {
@@ -48,11 +45,7 @@ const AddDoctor = () => {
 				console.log(`${key} : ${value}`);
 			});
 
-			const { data } = await axios.post(
-				`${backendURL}/api/admin/add-doctor`,
-				formData,
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.post("/admin/add-doctor", formData);
 
 			if (data.success) {
 				toast.success(data.message || "Doctor added successfully.");
@@ -70,23 +63,8 @@ const AddDoctor = () => {
 				toast.error(data.message || "An unexpected error occurred.");
 			}
 		} catch (error) {
-			// if (error.response) {
-			// 	// ^ Server responded with a status code outside 2xx range
-			// 	toast.error(
-			// 		error.response.data?.message || "API error occurred."
-			// 	);
-			// 	console.log("API Error:", error.response.data);
-			// } else if (error.request) {
-			// 	// ^ No response received from server
-			// 	toast.error("No response from server. Check your network.");
-			// 	console.log("No Response:", error.request);
-			// } else {
-			// 	// ^ Something else caused the error
-			// 	toast.error(error.message || "Unknown error occurred.");
-			// 	console.log("Error Details:", error.message);
-			// }
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not add doctor."));
 		}
 	};
 

@@ -1,22 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import api, { getApiErrorMessage } from "../lib/api";
 
 // Renders the Login view.
 const Login = () => {
-	const { backendURL, token, setToken } = useContext(AppContext);
+	const { token, setToken } = useContext(AppContext);
 	const navigate = useNavigate();
 	const googleEnabled = Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 	// Helper that handle google success.
 	const handleGoogleSuccess = async (credentialResponse) => {
 		try {
-			const { data } = await axios.post(
-				`${backendURL}/api/user/oauth-google`,
-				{ idToken: credentialResponse.credential }
+			const { data } = await api.post(
+				"/user/oauth-google",
+				{ idToken: credentialResponse.credential },
+				{ skipAuthRedirect: true }
 			);
 			if (data.success) {
 				localStorage.setItem("token", data.token);
@@ -25,16 +26,16 @@ const Login = () => {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error("Google sign-in failed");
+			toast.error(getApiErrorMessage(error, "Google sign-in failed."));
 		}
 	};
 
 	// Signs in with a shared demo Google account when real OAuth isn't configured.
 	const handleDemoGoogle = async () => {
 		try {
-			const { data } = await axios.post(
-				`${backendURL}/api/user/oauth-google-demo`
-			);
+			const { data } = await api.post("/user/oauth-google-demo", null, {
+				skipAuthRedirect: true,
+			});
 			if (data.success) {
 				localStorage.setItem("token", data.token);
 				setToken(data.token);
@@ -60,9 +61,10 @@ const Login = () => {
 		try {
 			//  ^ if state is Register
 			if (state === "Sign Up") {
-				const { data } = await axios.post(
-					`${backendURL}/api/user/register`,
-					{ name, password, email }
+				const { data } = await api.post(
+					"/user/register",
+					{ name, password, email },
+					{ skipAuthRedirect: true }
 				);
 				if (data.success) {
 					localStorage.setItem("token", data.token);
@@ -72,9 +74,10 @@ const Login = () => {
 				}
 			} else {
 				//  ^ if state is login
-				const { data } = await axios.post(
-					`${backendURL}/api/user/login`,
-					{ password, email }
+				const { data } = await api.post(
+					"/user/login",
+					{ password, email },
+					{ skipAuthRedirect: true }
 				);
 				if (data.success) {
 					localStorage.setItem("token", data.token);
@@ -84,7 +87,7 @@ const Login = () => {
 				}
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Sign in failed. Please try again."));
 		}
 	};
 

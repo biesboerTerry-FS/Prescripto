@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api, { getApiErrorMessage } from "../lib/api";
 
 export const AdminContext = createContext();
 
@@ -20,29 +20,23 @@ const AdminContextProvider = (props) => {
 	// Helper that get all doctors.
 	const getAllDoctors = async () => {
 		try {
-			const { data } = await axios.post(
-				backendURL + "/api/admin/all-doctors",
-				{},
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.post("/admin/all-doctors", {});
 			if (data.success) {
 				setDoctors(data.doctors);
 			} else {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load doctors."));
 		}
 	};
 
 	// Helper that change availability.
 	const changeAvailability = async (doctorId) => {
 		try {
-			const { data } = await axios.post(
-				backendURL + "/api/admin/change-availability",
-				{ doctorId },
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.post("/admin/change-availability", {
+				doctorId,
+			});
 			if (data.success) {
 				toast.success(data.message);
 				getAllDoctors();
@@ -50,69 +44,58 @@ const AdminContextProvider = (props) => {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not update availability."));
 		}
 	};
 
 	// Helper that get dashboard.
 	const getDashboard = async () => {
 		try {
-			const { data } = await axios.get(
-				backendURL + "/api/admin/dashboard",
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.get("/admin/dashboard");
 			if (data.success) {
 				setDashboard(data.dashboard);
 			} else {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load dashboard."));
 		}
 	};
 
 	// Helper that get all appointments.
 	const getAllAppointments = async () => {
 		try {
-			const { data } = await axios.get(
-				backendURL + "/api/admin/appointments",
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.get("/admin/appointments");
 			if (data.success) {
 				setAppointments(data.appointments);
 			} else {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load appointments."));
 		}
 	};
 
 	// Helper that get patients.
 	const getPatients = async () => {
 		try {
-			const { data } = await axios.get(
-				backendURL + "/api/admin/patients",
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.get("/admin/patients");
 			if (data.success) {
 				setPatients(data.patients);
 			} else {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load patients."));
 		}
 	};
 
 	// Helper that cancel appointment.
 	const cancelAppointment = async (appointmentId) => {
 		try {
-			const { data } = await axios.put(
-				backendURL + "/api/admin/cancel-appointment",
-				{ appointmentId },
-				{ headers: { adminToken } }
-			);
+			const { data } = await api.put("/admin/cancel-appointment", {
+				appointmentId,
+			});
 			if (data.success) {
 				toast.success(data.message);
 				getAllAppointments();
@@ -120,7 +103,7 @@ const AdminContextProvider = (props) => {
 				toast.error(data.message);
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not cancel appointment."));
 		}
 	};
 

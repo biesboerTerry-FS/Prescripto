@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api, { getApiErrorMessage } from "../lib/api";
 
 // Builds an .ics calendar event for a booking (30-minute visit, local time)
 const pad = (n) => String(n).padStart(2, "0");
@@ -58,16 +58,13 @@ const addToCalendar = (item) => {
 
 // Renders the My Appointments view.
 const MyAppointments = () => {
-	const { backendURL, token, getDoctorsData } = useContext(AppContext);
+	const { token, getDoctorsData } = useContext(AppContext);
 	const [appointments, setAppointments] = useState([]);
 
 	// Helper that get user appointments.
 	const getUserAppointments = async () => {
 		try {
-			const { data } = await axios.get(
-				`${backendURL}/api/user/appointments`,
-				{ headers: { token } }
-			);
+			const { data } = await api.get("/user/appointments");
 
 			if (data.success) {
 				setAppointments(data.appointments.reverse());
@@ -75,18 +72,16 @@ const MyAppointments = () => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load appointments."));
 		}
 	};
 
 	// Helper that pay online.
 	const payOnline = async (appointmentId) => {
 		try {
-			const { data } = await axios.post(
-				`${backendURL}/api/user/create-payment`,
-				{ appointmentId },
-				{ headers: { token } }
-			);
+			const { data } = await api.post("/user/create-payment", {
+				appointmentId,
+			});
 			if (data.success) {
 				// Placeholder: with a live Stripe key this would open
 				// Stripe Checkout using data.clientSecret.
@@ -106,11 +101,9 @@ const MyAppointments = () => {
 	const cancelAppointment = async (appointmentId) => {
 		try {
 			// console.log( appointmentId );
-			const { data } = await axios.put(
-				`${backendURL}/api/user/cancel-appointment`,
-				{ appointmentId },
-				{ headers: { token } }
-			);
+			const { data } = await api.put("/user/cancel-appointment", {
+				appointmentId,
+			});
 			if (data.success) {
 				toast.success(data.message);
 				getUserAppointments();
@@ -120,7 +113,7 @@ const MyAppointments = () => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not cancel appointment."));
 		}
 	};
 

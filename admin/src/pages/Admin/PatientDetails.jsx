@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminContext } from "../../context/AdminContext";
+import api, { getApiErrorMessage } from "../../lib/api";
 
 // Helper that formats a money value for display.
 const money = (value) =>
@@ -45,17 +45,14 @@ const Field = ({ label, value }) => (
 // Renders the Patient Details view.
 const PatientDetails = () => {
 	const { patientId } = useParams();
-	const { backendURL, adminToken, cancelAppointment } = useContext(AdminContext);
+	const { adminToken, cancelAppointment } = useContext(AdminContext);
 	const [data, setData] = useState(null);
 	const [notFound, setNotFound] = useState(false);
 
 	// Helper that load.
 	const load = async () => {
 		try {
-			const { data: res } = await axios.get(
-				`${backendURL}/api/admin/patients/${patientId}`,
-				{ headers: { adminToken } }
-			);
+			const { data: res } = await api.get(`/admin/patients/${patientId}`);
 			if (res.success) {
 				setData(res);
 			} else {
@@ -64,7 +61,7 @@ const PatientDetails = () => {
 			}
 		} catch (error) {
 			setNotFound(true);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load patient details."));
 		}
 	};
 

@@ -5,12 +5,12 @@ import { assets } from "../assets/assets";
 import RelatedDoctors from "../components/RelatedDoctors";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api, { getApiErrorMessage } from "../lib/api";
 
 // Renders the Appointment view.
 const Appointment = () => {
 	const { doctorId } = useParams();
-	const { doctors, currencySymbol, backendURL, token, getDoctorsData } =
+	const { doctors, currencySymbol, token, getDoctorsData } =
 		useContext(AppContext);
 	const navigate = useNavigate();
 	const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -102,11 +102,11 @@ const Appointment = () => {
 
 			const slotDate = month + "/" + day + "/" + year;
 			console.log(slotDate);
-			const { data } = await axios.post(
-				`${backendURL}/api/user/book-appointment`,
-				{ doctorId, slotDate, slotTime },
-				{ headers: { token } }
-			);
+			const { data } = await api.post("/user/book-appointment", {
+				doctorId,
+				slotDate,
+				slotTime,
+			});
 			if (data.success) {
 				toast.success(data.message);
 				getDoctorsData();
@@ -116,7 +116,7 @@ const Appointment = () => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not book appointment."));
 		}
 	};
 

@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api, { getApiErrorMessage } from "../lib/api";
 
 // Renders the My Profile view.
 const MyProfile = () => {
-	const { userData, setUserData, token, backendURL, loadUserProfileData } =
+	const { userData, setUserData, token, loadUserProfileData } =
 		useContext(AppContext);
 
 	const [isEdit, setIsEdit] = useState(false);
@@ -25,11 +25,7 @@ const MyProfile = () => {
 
 			image && formData.append("image", image);
 
-			const { data } = await axios.put(
-				`${backendURL}/api/user/update-profile`,
-				formData,
-				{ headers: { token } }
-			);
+			const { data } = await api.put("/user/update-profile", formData);
 			if (data.success) {
 				toast.success(data.message);
 				await loadUserProfileData();
@@ -40,7 +36,7 @@ const MyProfile = () => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not update profile."));
 		}
 	};
 

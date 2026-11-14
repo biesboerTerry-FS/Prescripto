@@ -97,13 +97,30 @@ The seed is safe to re-run: it updates existing records rather than duplicating 
 
 ## 5. Google sign-in (optional)
 
+### Patient site (web)
+
 1. Google Cloud Console → **APIs & Services → Credentials → Create OAuth client ID** → type **Web application**.
 2. **Authorized JavaScript origins:** add both Vercel URLs and `http://localhost:5173`.
 3. Set the client ID in two places:
    - Vercel patient project: `VITE_GOOGLE_CLIENT_ID`
-   - Render: `GOOGLE_CLIENT_ID`. This accepts a comma-separated list, so you can also add iOS and Android client IDs for the mobile app.
+   - Render: `GOOGLE_CLIENT_ID`
 
-Without `VITE_GOOGLE_CLIENT_ID` the Google button is hidden and email sign-in still works.
+### Mobile app
+
+The mobile app uses `expo-auth-session`, which needs a **Web application** OAuth client even for native devices.
+
+1. In the same Google Cloud project, create another **Web application** client ID (or reuse the web one).
+2. Run the app in Expo Go and press the Google sign-in button. The Metro logs print the exact redirect URI, usually:
+   - Expo Go: `https://auth.expo.io/@your-username/prescripto/auth`
+   - Development build / standalone: `prescripto://auth`
+3. Add that URI under **Authorized redirect URIs** for the Web application client.
+4. Set the client ID in `mobile/.env`:
+   - `EXPO_PUBLIC_GOOGLE_CLIENT_ID` = the Web application client ID
+5. Add the same ID to Render's `GOOGLE_CLIENT_ID` (comma-separated if you have several).
+
+For production standalone builds you can instead create **iOS** and **Android** OAuth clients and set `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID`; add those IDs to Render's `GOOGLE_CLIENT_ID` list as well.
+
+Without a Google client ID the app shows a demo Google button that signs into a shared preview account.
 
 ## 6. Stripe payments (optional)
 

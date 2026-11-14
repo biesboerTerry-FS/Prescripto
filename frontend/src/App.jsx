@@ -16,6 +16,8 @@ import NotFound from "./pages/NotFound";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
+import CookieConsent from "./components/CookieConsent";
+import NetworkStatus from "./components/NetworkStatus";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -34,9 +36,16 @@ const App = () => {
 		// The page is at least the window's height and the footer sits at its
 		// bottom, so there's never a blank band below the footer on short pages.
 		<div className="flex min-h-screen flex-col">
+			<a
+				href="#main-content"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-slate-800"
+			>
+				Skip to content
+			</a>
 			<NavBar />
-			<main className="mx-4 flex-1 sm:mx-[10%]">
+			<main id="main-content" className="mx-4 flex-1 sm:mx-[10%]">
 				<ToastContainer />
+				<NetworkStatus />
 				<ScrollToTop />
 				<ErrorBoundary>
 					<Routes>
@@ -61,6 +70,7 @@ const App = () => {
 				</ErrorBoundary>
 			</main>
 			<Footer />
+			<CookieConsent />
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api, { getApiErrorMessage } from "../lib/api";
 
 export const AppContext = createContext();
 
@@ -19,7 +19,7 @@ const AppContextProvider = (props) => {
 	// Helper that get doctors data.
 	const getDoctorsData = async () => {
 		try {
-			const { data } = await axios.get(`${backendURL}/api/doctor/list`);
+			const { data } = await api.get("/doctor/list");
 			if (data.success) {
 				setDoctors(data.doctors);
 			} else {
@@ -27,17 +27,16 @@ const AppContextProvider = (props) => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load doctors."));
 		}
 	};
 
 	// Helper that load user profile data.
 	const loadUserProfileData = async () => {
 		try {
-			const { data } = await axios.get(
-				`${backendURL}/api/user/get-profile`,
-				{ headers: { token } }
-			);
+			const { data } = await api.get("/user/get-profile", {
+				skipAuthRedirect: true,
+			});
 			if (data.success) {
 				setUserData(data.userData);
 			} else {
@@ -45,7 +44,7 @@ const AppContextProvider = (props) => {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message);
+			toast.error(getApiErrorMessage(error, "Could not load your profile."));
 		}
 	};
 
