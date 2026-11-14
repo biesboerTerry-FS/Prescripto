@@ -85,7 +85,7 @@ const Footer = () => {
 								</button>
 							</div>
 							{showSpecialties && (
-								<div className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded-xl bg-teal-900 p-3 shadow-2xl ring-1 ring-white/10">
+								<div className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded-xl bg-teal-900 p-3 shadow-2xl ring-1 ring-white/10 dark:bg-slate-800 dark:ring-slate-700">
 									<div className="mb-2 flex items-center justify-between">
 										<p className="text-xs font-semibold uppercase tracking-wider text-white">
 											Specialties
@@ -94,16 +94,16 @@ const Footer = () => {
 											type="button"
 											onClick={() => setShowSpecialties(false)}
 											aria-label="Close specialties"
-											className="flex h-6 w-6 items-center justify-center rounded-full text-teal-200 transition-colors hover:bg-white/10 hover:text-white"
+											className="flex h-6 w-6 items-center justify-center rounded-full text-teal-200 transition-colors hover:bg-white/10 hover:text-white dark:text-slate-300 dark:hover:bg-slate-700"
 										>
 											✕
 										</button>
 									</div>
-									<ul className="flex flex-col gap-1 text-sm text-teal-100/80">
+									<ul className="flex flex-col gap-1 text-sm text-teal-100/80 dark:text-slate-300">
 										{specialtyData.map((item) => (
 											<li key={item.specialty}>
 												<Link
-													className="block rounded-md px-2 py-1.5 hover:bg-white/10 hover:text-white"
+													className="block rounded-md px-2 py-1.5 hover:bg-white/10 hover:text-white dark:hover:bg-slate-700 dark:hover:text-white"
 													onClick={() => {
 														setShowSpecialties(false);
 														window.scrollTo(0, 0);

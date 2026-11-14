@@ -33,14 +33,14 @@ const NavBar = () => {
 
 				<div className="flex items-center gap-4">
 					{token && userData ? (
-						<div className="relative flex items-center gap-2 cursor-pointer group">
+						<div className="relative flex items-center gap-2 cursor-pointer group rounded-full p-1 pr-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
 							<img
 								className="w-10 rounded-full"
 								src={userData.image}
 								alt=""
 							/>
 							<img
-								className="w-2.5"
+								className="w-2.5 opacity-70 transition-opacity group-hover:opacity-100"
 								src={assets.dropdown_icon}
 								alt=""
 							/>
