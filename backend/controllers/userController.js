@@ -403,15 +403,19 @@ const demoOAuthLogin = async (request, response) => {
 
 		const email = "google.demo@prescripto.test";
 		let user = await userModel.findOne({ email });
+		const demoImage =
+			"https://ui-avatars.com/api/?name=Google+Demo&background=1e3a8a&color=fff";
 		if (!user) {
 			user = await userModel.create({
 				name: "Google Demo User",
 				email,
-				image:
-					"https://ui-avatars.com/api/?name=Google+Demo&background=0f766e&color=fff",
+				image: demoImage,
 				googleId: "demo-google-user",
 				provider: "google-demo",
 			});
+		} else if (user.image?.includes("ui-avatars.com") && user.image?.includes("background=0f766e")) {
+			user.image = demoImage;
+			await user.save();
 		}
 
 		response.json({ success: true, demo: true, token: createToken(user._id) });
