@@ -35,7 +35,7 @@ const NavBar = () => {
 					{token && userData ? (
 						<div className="relative flex items-center gap-2 cursor-pointer group rounded-full p-1 pr-2 border border-transparent transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-600">
 							<img
-								className="w-10 h-10 rounded-full object-cover border-2 border-slate-200 bg-slate-100 dark:border-teal-400/70 dark:bg-slate-700"
+								className="w-10 h-10 rounded-full object-cover border-2 border-slate-200 bg-slate-100 dark:border-blue-700 dark:bg-slate-700"
 								src={userData.image}
 								alt=""
 							/>
@@ -48,19 +48,19 @@ const NavBar = () => {
 								<div className="flex flex-col gap-2 p-3 rounded min-w-48 bg-stone-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-lg">
 									<p
 										onClick={() => navigate("/my-profile")}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 active:bg-teal-100 active:text-teal-900 focus:bg-teal-50 focus:text-teal-800 focus:outline-none dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:focus:bg-slate-700"
 									>
 										My Profile
 									</p>
 									<p
 										onClick={() => navigate("/my-appointments")}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 active:bg-teal-100 active:text-teal-900 focus:bg-teal-50 focus:text-teal-800 focus:outline-none dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:focus:bg-slate-700"
 									>
 										My Appointments
 									</p>
 									<p
 										onClick={logout}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 active:bg-teal-100 active:text-teal-900 focus:bg-teal-50 focus:text-teal-800 focus:outline-none dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:focus:bg-slate-700"
 									>
 										Logout
 									</p>
