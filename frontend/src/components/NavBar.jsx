@@ -44,23 +44,23 @@ const NavBar = () => {
 								src={assets.dropdown_icon}
 								alt=""
 							/>
-							<div className="absolute top-0 right-0 z-20 hidden text-base font-medium text-gray-600 pt-14 group-hover:block">
-								<div className="flex flex-col gap-2 p-3 rounded min-w-48 bg-stone-100">
+							<div className="absolute top-0 right-0 z-20 hidden text-base font-medium pt-14 group-hover:block">
+								<div className="flex flex-col gap-2 p-3 rounded min-w-48 bg-stone-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-lg">
 									<p
 										onClick={() => navigate("/my-profile")}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
 									>
 										My Profile
 									</p>
 									<p
 										onClick={() => navigate("/my-appointments")}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
 									>
 										My Appointments
 									</p>
 									<p
 										onClick={logout}
-										className="cursor-pointer rounded px-2 py-2 -mx-1 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-slate-700 dark:hover:text-white"
+										className="cursor-pointer rounded px-2 py-2 -mx-1 text-slate-700 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
 									>
 										Logout
 									</p>
