@@ -48,19 +48,19 @@ const NavBar = () => {
 								<div className="flex flex-col gap-4 p-4 rounded min-w-48 bg-stone-100">
 									<p
 										onClick={() => navigate("/my-profile")}
-										className="cursor-pointer hover:text-black dark:hover:text-white"
+										className="cursor-pointer hover:text-teal-700 dark:hover:text-white"
 									>
 										My Profile
 									</p>
 									<p
 										onClick={() => navigate("/my-appointments")}
-										className="cursor-pointer hover:text-black dark:hover:text-white"
+										className="cursor-pointer hover:text-teal-700 dark:hover:text-white"
 									>
 										My Appointments
 									</p>
 									<p
 										onClick={logout}
-										className="cursor-pointer hover:text-black dark:hover:text-white"
+										className="cursor-pointer hover:text-teal-700 dark:hover:text-white"
 									>
 										Logout
 									</p>
