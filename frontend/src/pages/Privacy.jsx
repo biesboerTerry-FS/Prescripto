@@ -45,11 +45,14 @@ const Privacy = () => {
 						Cookies and local storage
 					</h2>
 					<p className="mt-2">
-						We keep your sign-in token and dark-mode preference in
-						your browser’s local storage so you stay signed in and
-						your settings persist. You can accept or decline
-						non-essential cookies through the banner shown on your
-						first visit. No advertising trackers run on this site.
+						We keep your sign-in token in your browser’s local
+						storage so you stay signed in (essential). With your
+						permission, we also save preferences like your dark-mode
+						choice on this device. You can accept, reject, or manage
+						non-essential storage through the cookie banner or the
+						“Cookie settings” link in the footer. If you’re signed in,
+						your consent choice may also be recorded on your account.
+						No advertising trackers run on this site.
 					</p>
 				</section>
 

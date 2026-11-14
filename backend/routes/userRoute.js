@@ -12,6 +12,7 @@ import {
 	bookAppointment,
 	listAppointments,
 	cancelAppointment,
+	saveCookieConsent,
 } from "../controllers/userController.js";
 import {
 	createPayment,
@@ -38,6 +39,7 @@ userRouter.put(
 userRouter.post("/book-appointment", authUser, bookAppointment);
 userRouter.get("/appointments", authUser, listAppointments);
 userRouter.put("/cancel-appointment", authUser, cancelAppointment);
+userRouter.post("/cookie-consent", authUser, saveCookieConsent);
 userRouter.post("/create-payment", authUser, createPayment);
 userRouter.post("/confirm-payment", authUser, confirmPayment);
 // Stripe webhooks need the raw body — parsed in server.js BEFORE

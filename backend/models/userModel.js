@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: "0000000000",
 	},
+	cookieConsent: {
+		type: Object,
+		default: null,
+	},
 });
 
 const userModel = mongoose.models.user || mongoose.model("User", userSchema);

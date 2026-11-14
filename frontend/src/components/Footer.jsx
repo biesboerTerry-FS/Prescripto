@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { assets, specialtyData } from "../assets/assets";
 import { toast } from "react-toastify";
+import { openConsentSettings } from "../lib/consent";
 
 // Renders the Footer UI.
 const Footer = () => {
@@ -186,6 +187,15 @@ const Footer = () => {
 							<Link className="hover:text-white" to="/sitemap">
 								Sitemap
 							</Link>
+						</li>
+						<li>
+							<button
+								type="button"
+								onClick={openConsentSettings}
+								className="hover:text-white"
+							>
+								Cookie settings
+							</button>
 						</li>
 					</ul>
 				</div>

@@ -424,6 +424,35 @@ const demoOAuthLogin = async (request, response) => {
 	}
 };
 
+/**
+ * Records the authenticated user's cookie/storage consent preferences.
+ */
+const saveCookieConsent = async (request, response) => {
+	try {
+		const { userId } = request.body;
+		const { preferences, decision, timestamp, version } = request.body;
+
+		await userModel.findByIdAndUpdate(userId, {
+			cookieConsent: {
+				essential: true,
+				preferences: Boolean(preferences),
+				decision: decision || (preferences ? "accepted" : "declined"),
+				timestamp: timestamp || new Date().toISOString(),
+				version: version || 2,
+				recordedAt: new Date().toISOString(),
+			},
+		});
+
+		response.json({ success: true });
+	} catch (error) {
+		console.log(error);
+		response.json({
+			success: false,
+			message: "Could not save cookie consent.",
+		});
+	}
+};
+
 export {
 	registerUser,
 	loginUser,
@@ -435,4 +464,5 @@ export {
 	bookAppointment,
 	listAppointments,
 	cancelAppointment,
+	saveCookieConsent,
 };
