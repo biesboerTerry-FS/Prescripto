@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { SignIn } from "@clerk/react";
 import api, { getApiErrorMessage } from "../lib/api";
 
 // Renders the Login view.
@@ -10,6 +11,7 @@ const Login = () => {
 	const { token, setToken } = useContext(AppContext);
 	const navigate = useNavigate();
 	const googleEnabled = Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+	const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 
 	// Helper that handle google success.
 	const handleGoogleSuccess = async (credentialResponse) => {
@@ -97,9 +99,19 @@ const Login = () => {
 
 	return (
 		<>
+			{clerkEnabled ? (
+				<div className="min-h-[80vh] flex items-center justify-center py-10">
+					<div className="w-full max-w-md">
+						<SignIn routing="hash" signUpUrl="#" fallbackRedirectUrl="/" />
+						<p className="mt-4 text-center text-xs text-slate-500">
+							Patient sign-in is powered by Clerk. Admin and doctor access remain separate.
+						</p>
+					</div>
+				</div>
+			) : (
 			<form
 				onSubmit={onSubmitHandler}
-				className="min-h{80vh] flex items-center"
+				className="min-h-[80vh] flex items-center"
 			>
 				<div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
 					<p className="text-2xl font-semibold">
@@ -215,6 +227,7 @@ const Login = () => {
 					)}
 				</div>
 			</form>
+			)}
 		</>
 	);
 };

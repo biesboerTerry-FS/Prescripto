@@ -13,6 +13,7 @@ import {
 	listAppointments,
 	cancelAppointment,
 	saveCookieConsent,
+	clerkSync,
 } from "../controllers/userController.js";
 import {
 	createPayment,
@@ -28,6 +29,7 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.post("/oauth-google", loginOAuth);
 userRouter.post("/oauth-google-demo", demoOAuthLogin);
+userRouter.post("/clerk-sync", clerkSync);
 userRouter.post("/refresh", authUser, refreshToken);
 userRouter.get("/get-profile", authUser, getProfile);
 userRouter.put(

@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Link } from "expo-router";
+import { useSignIn } from "@clerk/expo";
 import { Button, Card } from "@/components/ui";
 import { ApiError, login, signInWithGoogle, signInWithGoogleDemo } from "@/lib/api";
 import { useSession } from "@/lib/session";
 import { colors } from "@/lib/theme";
 import { useGoogleSignIn } from "@/lib/useGoogleSignIn";
 
+const clerkEnabled = Boolean(process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
 // Renders the Sign In UI.
 export default function SignIn() {
 	const { signIn } = useSession();
+	const clerkSignIn = clerkEnabled ? useSignIn() : null;
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [busy, setBusy] = useState(false);
@@ -53,9 +57,27 @@ export default function SignIn() {
 		}
 		setBusy(true);
 		try {
-			await signIn(await login(email.trim(), password));
-		} catch (error) {
-			showError(error);
+			if (clerkEnabled && clerkSignIn?.signIn && clerkSignIn?.setActive) {
+				const attempt = await clerkSignIn.signIn.create({
+					identifier: email.trim(),
+					password,
+				});
+				if (attempt.status === "complete" && attempt.createdSessionId) {
+					await clerkSignIn.setActive({ session: attempt.createdSessionId });
+					// ClerkSessionBridge will exchange the Clerk session for a backend JWT.
+				} else {
+					Alert.alert("Sign in", "Additional verification is required in Clerk for this account.");
+				}
+			} else {
+				await signIn(await login(email.trim(), password));
+			}
+		} catch (error: any) {
+			const clerkMessage = error?.errors?.[0]?.longMessage || error?.errors?.[0]?.message;
+			if (clerkEnabled && clerkMessage) {
+				Alert.alert("Sign in failed", clerkMessage);
+			} else {
+				showError(error);
+			}
 		} finally {
 			setBusy(false);
 		}
@@ -96,6 +118,11 @@ export default function SignIn() {
 					/>
 
 					<Button label="Sign in" onPress={onSubmit} loading={busy} style={styles.submit} />
+					{clerkEnabled ? (
+						<Text style={styles.demoNote}>
+							Clerk patient sign-in is enabled. After sign-in, your session is linked to Prescripto automatically.
+						</Text>
+					) : null}
 
 					<View style={styles.divider}>
 						<View style={styles.rule} />

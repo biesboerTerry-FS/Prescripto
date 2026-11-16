@@ -1,6 +1,12 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+let clerkTokenGetter = null;
+
+export function setClerkTokenGetter(getter) {
+	clerkTokenGetter = getter;
+}
+
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 const api = axios.create({

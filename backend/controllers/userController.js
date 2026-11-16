@@ -1,6 +1,7 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
+import { createClerkClient, verifyToken } from "@clerk/backend";
 import userModel from "../models/userModel.js";
 import { createToken } from "../configs/token.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -457,6 +458,80 @@ const saveCookieConsent = async (request, response) => {
 	}
 };
 
+/**
+ * Links/verifies a Clerk-authenticated patient and returns an existing backend JWT
+ * so current patient APIs keep working without changing admin/doctor auth.
+ */
+const clerkSync = async (request, response) => {
+	try {
+		if (!process.env.CLERK_SECRET_KEY) {
+			return response.json({
+				success: false,
+				message: "Clerk is not configured on the server.",
+			});
+		}
+
+		const authHeader = request.headers.authorization || "";
+		const clerkToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+		if (!clerkToken) {
+			return response.json({ success: false, message: "Missing Clerk session token." });
+		}
+
+		const verified = await verifyToken(clerkToken, {
+			secretKey: process.env.CLERK_SECRET_KEY,
+		});
+		const clerkId = verified.sub;
+		if (!clerkId) {
+			return response.json({ success: false, message: "Invalid Clerk session." });
+		}
+
+		const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+		const clerkUser = await clerk.users.getUser(clerkId);
+		const email =
+			clerkUser.primaryEmailAddress?.emailAddress ||
+			clerkUser.emailAddresses?.[0]?.emailAddress ||
+			"";
+		if (!email) {
+			return response.json({
+				success: false,
+				message: "A verified email is required for this account.",
+			});
+		}
+		const name =
+			[clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ").trim() ||
+			clerkUser.username ||
+			email.split("@")[0] ||
+			"Patient";
+		const image = clerkUser.imageUrl || "Not Selected";
+
+		let user = await userModel.findOne({ clerkId });
+		if (!user) {
+			user = await userModel.findOne({ email });
+			if (user) {
+				user.clerkId = clerkId;
+				if (!user.image || user.image === "Not Selected") user.image = image;
+				if (user.provider === "local") user.provider = "clerk";
+				await user.save();
+			} else {
+				user = await userModel.create({
+					name,
+					email,
+					password: "",
+					clerkId,
+					provider: "clerk",
+					image,
+				});
+			}
+		}
+
+		const token = createToken(user._id);
+		response.json({ success: true, token });
+	} catch (error) {
+		console.log(error);
+		response.json({ success: false, message: error.message || "Clerk sign-in failed." });
+	}
+};
+
 export {
 	registerUser,
 	loginUser,
@@ -469,4 +544,5 @@ export {
 	listAppointments,
 	cancelAppointment,
 	saveCookieConsent,
+	clerkSync,
 };

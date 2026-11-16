@@ -18,6 +18,7 @@ import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import CookieConsent from "./components/CookieConsent";
 import NetworkStatus from "./components/NetworkStatus";
+import ClerkSessionBridge from "./components/ClerkSessionBridge";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -32,10 +33,12 @@ const ScrollToTop = () => {
 
 // Renders the App UI.
 const App = () => {
+	const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 	return (
 		// The page is at least the window's height and the footer sits at its
 		// bottom, so there's never a blank band below the footer on short pages.
 		<div className="flex min-h-screen flex-col">
+			{clerkEnabled ? <ClerkSessionBridge /> : null}
 			<a
 				href="#main-content"
 				className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-slate-800"

@@ -117,3 +117,24 @@ export async function bookAppointment(
 		body: { doctorId, slotDate, slotTime },
 	});
 }
+
+
+export async function syncClerkSession(clerkToken: string): Promise<string> {
+  let response: Response;
+  try {
+    response = await fetch(`${BASE_URL}/user/clerk-sync`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${clerkToken}`,
+      },
+    });
+  } catch {
+    throw new ApiError(`Can't reach the server at ${BASE_URL}. Check EXPO_PUBLIC_API_URL.`);
+  }
+  const data = (await response.json()) as { success: boolean; token?: string; message?: string };
+  if (!data.success || !data.token) {
+    throw new ApiError(data.message ?? "Could not sign in with Clerk.");
+  }
+  return data.token;
+}

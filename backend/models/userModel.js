@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: null,
 	},
+	clerkId: {
+		type: String,
+		default: null,
+	},
 	provider: {
 		type: String,
 		default: "local",
