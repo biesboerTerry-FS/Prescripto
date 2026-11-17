@@ -4,12 +4,12 @@ A full-stack doctor appointment platform built as a portfolio project. It demons
 
 ## Live demo
 
-- **Patient site:** *(deploy to Vercel — see `DEPLOY.md`)*
-- **Admin panel:** *(deploy to Vercel — see `DEPLOY.md`)*
+- **Patient site:** https://frontend-seven-puce-50.vercel.app
+- **Admin panel:** https://admin-eight-rosy.vercel.app
 - **API:** *(deploy to Render — see `DEPLOY.md`)*
 - **Source:** [github.com/biesboerTerry-FS/Prescripto](https://github.com/biesboerTerry-FS/Prescripto)
 
-Try the patient experience instantly with the demo account:
+Try the patient experience instantly with the demo account (works once the API is deployed):
 
 - **Email:** `demo@prescripto.com`
 - **Password:** `Demo123456`
