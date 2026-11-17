@@ -13,6 +13,7 @@ import Terms from "./pages/Terms";
 import Faqs from "./pages/Faqs";
 import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
+import Demo from "./pages/Demo";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -21,6 +22,8 @@ import NetworkStatus from "./components/NetworkStatus";
 import ClerkSessionBridge from "./components/ClerkSessionBridge";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Renders the Scroll To Top UI.
 const ScrollToTop = () => {
@@ -67,13 +70,16 @@ const App = () => {
 						<Route path="/privacy" element={<Privacy />} />
 						<Route path="/terms" element={<Terms />} />
 						<Route path="/faqs" element={<Faqs />} />
-					<Route path="/sitemap" element={<Sitemap />} />
+						<Route path="/demo" element={<Demo />} />
+						<Route path="/sitemap" element={<Sitemap />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</ErrorBoundary>
 			</main>
 			<Footer />
 			<CookieConsent />
+			<Analytics />
+			<SpeedInsights />
 		</div>
 	);
 };

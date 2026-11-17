@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 
 // Renders the Contact view.
@@ -36,8 +37,11 @@ const Contact = () => {
 					<p className="text-gray-500">
 						Learn more about our teams and job openings.
 					</p>
-					<button className="px-8 py-4 text-sm font-medium text-white transition-colors duration-500 rounded-full bg-primary hover:bg-primary-dark">
-						Explore Jobs
+					<button
+						onClick={() => toast.info("Reach out at thatdevterry@gmail.com — this is a portfolio project.")}
+						className="px-8 py-4 text-sm font-medium text-white transition-colors duration-500 rounded-full bg-primary hover:bg-primary-dark"
+					>
+						Get in touch
 					</button>
 				</div>
 			</div>

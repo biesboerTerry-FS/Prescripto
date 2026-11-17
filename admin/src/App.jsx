@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AdminContext } from "./context/AdminContext";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
@@ -41,11 +43,15 @@ const App = () => {
 					</Routes>
 				</ErrorBoundary>
 			</div>
+			<Analytics />
+			<SpeedInsights />
 		</div>
 	) : (
 		<>
 			<Login />
 			<ToastContainer />
+			<Analytics />
+			<SpeedInsights />
 		</>
 	);
 };

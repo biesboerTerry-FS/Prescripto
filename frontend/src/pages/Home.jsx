@@ -5,6 +5,7 @@ import TopDoctors from "../components/TopDoctors";
 import Banner from "../components/Banner";
 import Testimonials from "../components/Testimonials";
 import HowItWorks from "../components/HowItWorks";
+import TechStack from "../components/TechStack";
 
 const perks = [
 	{
@@ -54,6 +55,7 @@ const Home = () => {
 			<HowItWorks />
 			<Testimonials />
 			<Banner />
+			<TechStack />
 		</div>
 	);
 };

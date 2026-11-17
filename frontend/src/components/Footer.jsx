@@ -35,6 +35,15 @@ const Footer = () => {
 						phone queues.
 					</p>
 					<div className="mt-4 flex gap-3">
+						<a
+							href="https://github.com/biesboerTerry-FS/Prescripto"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="View source on GitHub"
+							className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white transition-colors hover:bg-teal-600"
+						>
+							GH
+						</a>
 						{["X", "Instagram", "LinkedIn"].map((name) => (
 							<a
 								key={name}
@@ -131,6 +140,11 @@ const Footer = () => {
 						<li>
 							<Link className="hover:text-white" to="/faqs">
 								FAQs
+							</Link>
+						</li>
+						<li>
+							<Link className="hover:text-white" to="/demo">
+								Demo
 							</Link>
 						</li>
 					</ul>

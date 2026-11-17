@@ -1,36 +1,68 @@
 # Prescripto
 
-Prescripto is a doctor appointment platform built as a full-stack portfolio project. It includes a patient-facing site, an admin panel, and an Express/MongoDB API, plus a React Native (Expo) patient app that talks to the same backend.
+A full-stack doctor appointment platform built as a portfolio project. It demonstrates patient-facing booking, admin management, JWT + Clerk-ready authentication, payments, and mobile apps.
 
-## What’s in the project
+## Live demo
 
-- **Patient web app (`frontend/`)** — browse doctors by specialty, search, view profiles, book and manage appointments, edit profile details, and export appointments to calendar files. Includes light/dark mode and responsive layouts.
-- **Admin panel (`admin/`)** — dashboard and management views for doctors, patients, and appointments, with tools like availability toggles, CSV export, and patient detail pages.
-- **API (`backend/`)** — Express server with JWT-based auth (including refresh flow and optional Google sign-in), role-aware admin access, appointment/booking logic, Stripe payment endpoints with a graceful demo mode when Stripe isn’t configured, seeded demo data, and static hosting for seeded doctor photos.
-- **Mobile app (`mobile/`)** — Expo/React Native patient experience with email and Google sign-in, doctor browsing/search, booking, appointment management, and profile flows.
-- **Quality & tooling** — Selenium-based end-to-end checks, accessibility/responsiveness audit script, Vercel/Render deployment configs, and CI workflow.
+- **Patient site:** *(deploy to Vercel — see `DEPLOY.md`)*
+- **Admin panel:** *(deploy to Vercel — see `DEPLOY.md`)*
+- **API:** *(deploy to Render — see `DEPLOY.md`)*
+- **Source:** [github.com/biesboerTerry-FS/Prescripto](https://github.com/biesboerTerry-FS/Prescripto)
+
+Try the patient experience instantly with the demo account:
+
+- **Email:** `demo@prescripto.com`
+- **Password:** `Demo123456`
+
+## What's included
+
+| Piece | Folder | Notes |
+| --- | --- | --- |
+| Patient web app | `frontend/` | Vite + React, responsive, light/dark mode, doctor search/booking, profile, appointments |
+| Admin panel | `admin/` | Vite + React, dashboard, doctor/patient/appointment management, CSV export |
+| API | `backend/` | Express + MongoDB, JWT auth, optional Clerk bridge, Google OAuth, Stripe/demo payments, seed data |
+| Patient mobile app | `mobile/` | Expo + React Native, doctor browsing, booking, appointments, profile |
+| Staff mobile app | `mobile-staff/` | Expo + React Native admin app (doctor workflows ready to extend) |
 
 ## Tech stack
 
 - **Frontend/Admin:** React, Vite, React Router, Tailwind CSS, Axios, React Toastify
-- **Backend:** Node.js, Express, MongoDB/Mongoose, JWT, bcrypt, Cloudinary, Stripe, Google OAuth verification, Helmet, rate limiting
-- **Mobile:** React Native, Expo (Expo Router), TypeScript, Secure Store
-- **Testing/Automation:** Selenium WebDriver, axe-core audit tooling
+- **Backend:** Node.js, Express, MongoDB/Mongoose, JWT, bcrypt, Cloudinary, Stripe, Google OAuth, Helmet, rate limiting
+- **Mobile:** React Native, Expo Router, TypeScript, Secure Store
+- **Auth:** Custom JWT for patients/admins, Clerk bridge for patient frontend/mobile (optional, requires keys)
+- **Quality:** Selenium e2e checks, axe-core audit tooling, GitHub Actions CI, Render + Vercel configs
 
-## Project structure
+## Quick start (local)
 
-| Path | Purpose |
-| --- | --- |
-| `backend/` | API server, data models, controllers, routes, seed scripts/assets |
-| `frontend/` | Patient web application |
-| `admin/` | Admin web application |
-| `mobile/` | React Native (Expo) patient app |
-| `e2e/` | End-to-end and audit scripts |
-| `.github/workflows/` | CI configuration |
-| `render.yaml`, `*/vercel.json` | Deployment configuration |
+```bash
+# 1. API
+cd backend
+cp .env.example .env       # fill MONGO_URI, JWT_SECRET, etc.
+npm install
+npm run server             # http://localhost:3100
 
-## Notes
+# 2. Patient site
+cd ../frontend
+cp .env.example .env       # VITE_BACKEND_URL=http://localhost:3100
+npm install
+npm run dev                # http://localhost:5173 (or 5190)
 
-- Doctor photos for seeded data are served by the API from `/static/doctors`; their URLs depend on the API base URL used at seed time.
-- Some integrations (Google sign-in, Stripe payments) are optional and the app includes fallback/demo behavior when they aren’t configured.
-- This repository is set up for a typical split deployment: API + database hosted separately from the static frontend/admin builds.
+# 3. Admin panel
+cd ../admin
+cp .env.example .env       # VITE_BACKEND_URL=http://localhost:3100
+npm install
+npm run dev                # http://localhost:5173 (or 5191)
+```
+
+See `DEPLOY.md` for production deployment steps (Render, Vercel, seeding, Clerk, Google OAuth, Stripe).
+
+## Project highlights
+
+- **Portfolio-ready:** demo login, GitHub source link, tech-stack showcase, analytics/speed-insights instrumentation.
+- **Clerk-ready patient auth:** the patient frontend and mobile can use Clerk while admin/doctor auth remain unchanged.
+- **Mobile apps:** separate patient (`mobile/`) and staff (`mobile-staff/`) Expo apps.
+- **No real payments required:** Stripe is optional; the app falls back to free demo booking when Stripe keys are absent.
+
+## License
+
+MIT

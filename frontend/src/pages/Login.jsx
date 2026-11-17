@@ -32,6 +32,25 @@ const Login = () => {
 		}
 	};
 
+	// Signs in with the demo patient account for portfolio visitors.
+	const handleDemoLogin = async () => {
+		try {
+			const { data } = await api.post(
+				"/user/login",
+				{ email: "demo@prescripto.com", password: "Demo123456" },
+				{ skipAuthRedirect: true }
+			);
+			if (data.success) {
+				localStorage.setItem("token", data.token);
+				setToken(data.token);
+			} else {
+				toast.error(data.message || "Demo sign-in failed.");
+			}
+		} catch (error) {
+			toast.error(getApiErrorMessage(error, "Demo sign-in failed."));
+		}
+	};
+
 	// Signs in with a shared demo Google account when real OAuth isn't configured.
 	const handleDemoGoogle = async () => {
 		try {
@@ -164,6 +183,15 @@ const Login = () => {
 					>
 						{state === "Sign Up" ? "Create an Account" : "Login"}
 					</button>
+					{state === "Login" && (
+						<button
+							type="button"
+							onClick={handleDemoLogin}
+							className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5"
+						>
+							Sign in as demo patient
+						</button>
+					)}
 					{googleEnabled ? (
 						<>
 							<div className="flex items-center w-full gap-3 text-xs text-slate-500">
