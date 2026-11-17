@@ -32,13 +32,9 @@ services:
         sync: false
       - key: CLOUDINARY_SECRET_KEY
         sync: false
-      - key: PUBLIC_API_URL
-        sync: false
       - key: CORS_ORIGIN
         sync: false
       - key: GOOGLE_CLIENT_ID
-        sync: false
-      - key: CLERK_SECRET_KEY
         sync: false
       - key: STRIPE_SECRET_KEY
         sync: false
