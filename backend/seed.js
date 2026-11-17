@@ -67,6 +67,17 @@ const seedAdmin = async () => {
 		{ upsert: true }
 	);
 	console.log(`admin ready: ${email}`);
+
+	// Demo admin for portfolio visitors (limited to dev/local unless explicitly enabled)
+	const demoAdminEmail = "demo-admin@prescripto.com";
+	const demoAdminPassword = "DemoAdmin123!";
+	const demoHashed = await bcrypt.hash(demoAdminPassword, await bcrypt.genSalt(10));
+	await adminModel.updateOne(
+		{ email: demoAdminEmail },
+		{ $set: { email: demoAdminEmail, password: demoHashed, name: "Demo Admin" } },
+		{ upsert: true }
+	);
+	console.log(`demo admin ready: ${demoAdminEmail} / ${demoAdminPassword}`);
 };
 
 // Loads doctor records and photos metadata, then inserts/updates them with public photo URLs.

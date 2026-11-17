@@ -11,6 +11,26 @@ const Login = () => {
 
 	const { setAdminToken } = useContext(AdminContext);
 
+	// Demo admin login for portfolio visitors (dev/demo account).
+	const handleDemoAdminLogin = async () => {
+		try {
+			const { data } = await api.post(
+				"/admin/login",
+				{ email: "demo-admin@prescripto.com", password: "DemoAdmin123!" },
+				{ skipAuthRedirect: true }
+			);
+			if (data.success) {
+				localStorage.setItem("adminToken", data.token);
+				setAdminToken(data.token);
+				toast.success("Demo admin login successful!");
+			} else {
+				toast.error(data.message || "Demo admin login failed.");
+			}
+		} catch (error) {
+			toast.error(getApiErrorMessage(error, "Demo admin login failed."));
+		}
+	};
+
 	// Helper that on submit handler.
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
@@ -70,6 +90,15 @@ const Login = () => {
 				<button className="w-full py-2 text-base text-white rounded-md bg-primary">
 					Login
 				</button>
+				{state === "Admin" && (
+					<button
+						type="button"
+						onClick={handleDemoAdminLogin}
+						className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5"
+					>
+						Sign in as demo admin
+					</button>
+				)}
 				{state === "Admin" ? (
 					<p>
 						Doctor login?

@@ -27,6 +27,18 @@ export default function StaffSignIn() {
 		}
 	};
 
+	const onDemoAdmin = async () => {
+		setBusy(true);
+		try {
+			const token = await adminLogin("demo-admin@prescripto.com", "DemoAdmin123!");
+			await signIn(token);
+		} catch (error) {
+			Alert.alert("Demo sign in failed", error instanceof ApiError ? error.message : "Please try again.");
+		} finally {
+			setBusy(false);
+		}
+	};
+
 	return (
 		<KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === "ios" ? "padding" : undefined}>
 			<ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
@@ -49,6 +61,7 @@ export default function StaffSignIn() {
 					<TextInput accessibilityLabel="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" placeholder="Password" style={styles.input} />
 
 					<Button label="Sign in as admin" onPress={onSubmit} loading={busy} style={styles.submit} />
+					<Button label="Sign in as demo admin" variant="outline" disabled={busy} onPress={onDemoAdmin} />
 				</Card>
 			</ScrollView>
 		</KeyboardAvoidingView>

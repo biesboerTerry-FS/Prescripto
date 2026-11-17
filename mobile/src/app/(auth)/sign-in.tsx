@@ -35,6 +35,18 @@ export default function SignIn() {
 		}
 	};
 
+	// Signs in with the demo patient account for portfolio visitors.
+	const onDemoPatient = async () => {
+		setBusy(true);
+		try {
+			await signIn(await login("demo@prescripto.com", "Demo123456"));
+		} catch (error) {
+			showError(error);
+		} finally {
+			setBusy(false);
+		}
+	};
+
 	// Signs in with the shared demo Google account for previewing the flow.
 	const onDemoGoogle = async () => {
 		setBusy(true);
@@ -118,6 +130,7 @@ export default function SignIn() {
 					/>
 
 					<Button label="Sign in" onPress={onSubmit} loading={busy} style={styles.submit} />
+					<Button label="Sign in as demo patient" variant="outline" disabled={busy} onPress={onDemoPatient} />
 					{clerkEnabled ? (
 						<Text style={styles.demoNote}>
 							Clerk patient sign-in is enabled. After sign-in, your session is linked to Prescripto automatically.
