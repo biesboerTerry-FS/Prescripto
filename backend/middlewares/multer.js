@@ -1,16 +1,14 @@
 import multer from "multer";
 
-// Stores uploaded files on disk using their original names so controllers (e.g. add doctor)
-// can pass the temp path to Cloudinary before it gets cleaned up.
-const storage = multer.diskStorage({
-	filename: function (request, file, callback) {
-		callback(null, file.originalname);
-	},
-});
+// Memory storage so uploads work in serverless environments (e.g. Vercel)
+// where the filesystem is read-only or ephemeral. Controllers pass the buffer
+// to Cloudinary via upload_stream.
+const storage = multer.memoryStorage();
 
 // Multer instance used as route middleware for single/multi file uploads.
 const upload = multer({
 	storage,
+	limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
 });
 
 export default upload;

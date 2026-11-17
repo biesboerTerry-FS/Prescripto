@@ -12,4 +12,18 @@ const connectCloudinary = async () => {
 	});
 };
 
+/**
+ * Uploads a file buffer to Cloudinary and returns the result.
+ * Used in serverless environments where disk storage isn't available.
+ */
+export const uploadBuffer = (buffer, options = {}) => {
+	return new Promise((resolve, reject) => {
+		const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+			if (error) return reject(error);
+			resolve(result);
+		});
+		stream.end(buffer);
+	});
+};
+
 export default connectCloudinary;

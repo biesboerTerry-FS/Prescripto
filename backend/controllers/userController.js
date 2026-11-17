@@ -5,6 +5,7 @@ import { createClerkClient, verifyToken } from "@clerk/backend";
 import userModel from "../models/userModel.js";
 import { createToken } from "../configs/token.js";
 import { v2 as cloudinary } from "cloudinary";
+import { uploadBuffer } from "../configs/cloudinary.js";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 
@@ -145,13 +146,10 @@ const updateProfile = async (request, response) => {
 		});
 
 		if (imageFile) {
-			// ^ upload image to cloudinary
-			const imageUpload = await cloudinary.uploader.upload(
-				imageFile.path,
-				{
-					resource_type: "image",
-				}
-			);
+			// ^ upload image buffer to cloudinary
+			const imageUpload = await uploadBuffer(imageFile.buffer, {
+				resource_type: "image",
+			});
 			const imageURL = imageUpload.secure_url;
 			await userModel.findByIdAndUpdate(userId, {
 				image: imageURL,

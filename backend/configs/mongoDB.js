@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+// Cache the connection promise in serverless environments (Vercel) so the
+// same container can reuse the MongoDB connection across invocations.
+const cached = globalThis;
+if (!cached.mongooseConnectionPromise) {
+	cached.mongooseConnectionPromise = null;
+}
+
 /**
  * Connects to MongoDB using MONGO_URI and appends the `prescripto` database name.
  * Returns true/false instead of throwing so the server can stay up and report DB state.
@@ -34,7 +41,12 @@ const connectDB = async () => {
 		: `${cleanedUri}/prescripto`;
 
 	try {
-		await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+		if (!cached.mongooseConnectionPromise) {
+			cached.mongooseConnectionPromise = mongoose.connect(uri, {
+				serverSelectionTimeoutMS: 10000,
+			});
+		}
+		await cached.mongooseConnectionPromise;
 		return true;
 	} catch (error) {
 		console.error(
@@ -42,6 +54,7 @@ const connectDB = async () => {
 				"Tips: verify MONGO_URI in backend/.env, that the Atlas cluster is\n" +
 				"not paused/deleted, and that your IP is allowlisted (Atlas > Network Access)."
 		);
+		cached.mongooseConnectionPromise = null;
 		return false;
 	}
 };

@@ -2,6 +2,7 @@ import validator from "validator";
 import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
+import { uploadBuffer } from "../configs/cloudinary.js";
 import doctorModel from "../models/doctorModel.js";
 import userModel from "../models/userModel.js";
 import appointmentModel from "../models/appointmentModel.js";
@@ -55,8 +56,8 @@ const addDoctor = async (request, response) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(randomUUID(), salt);
 
-		//^ upload image to cloudinary
-		const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+		//^ upload image buffer to cloudinary
+		const imageUpload = await uploadBuffer(imageFile.buffer, {
 			resource_type: "image",
 		});
 		const imageURL = imageUpload.secure_url;
