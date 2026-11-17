@@ -37,6 +37,7 @@ Deploy in this order: database → API → seed → frontends. The frontends nee
 | `CLOUDINARY_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_SECRET_KEY` | from your Cloudinary dashboard |
 | `CORS_ORIGIN` | leave empty for now, fill in step 3 |
 | `GOOGLE_CLIENT_ID` | optional, see step 5 |
+| `CLERK_SECRET_KEY` | optional, see step 7 (Clerk patient auth) |
 | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | optional, see step 6 |
 
 `NODE_ENV=production` is already set in `render.yaml`. In production the API refuses to start if `MONGO_URI` or `JWT_SECRET` is missing.
@@ -57,10 +58,11 @@ Import the same GitHub repo **twice**, as two Vercel projects:
 - Environment variables:
   - `VITE_BACKEND_URL` = `https://prescripto-api.onrender.com` (no trailing slash)
   - `VITE_GOOGLE_CLIENT_ID` = optional, see step 5
+  - `VITE_CLERK_PUBLISHABLE_KEY` = optional, see step 7
 
 **Project B: admin panel**
 - Root directory: `admin`
-- Same settings as Project A, with `VITE_BACKEND_URL` set to the same API URL.
+- Same settings as Project A, with `VITE_BACKEND_URL` set to the same API URL. No Clerk key is needed for admin.
 
 Each folder has a `vercel.json` that routes page refreshes to `index.html` and adds security headers. The admin folder also adds `X-Robots-Tag: noindex`.
 
@@ -131,12 +133,40 @@ Without a Stripe key the app books appointments for free, which is fine for a po
 
 Use test keys only (`sk_test_...`) unless you're taking real payments.
 
-## 7. Verify
+## 7. Clerk patient auth (optional)
+
+Clerk is used for the patient frontend and patient mobile only. Admin/doctor auth still uses the existing backend JWT/admin token system.
+
+1. Confirm or claim your Clerk application (`app_3M3vllwlXHEu27jOGskDmS1bC7s`). If the CLI reports 404, run `npx -y clerk@latest auth login` from your host terminal, confirm access, and link/pull keys.
+2. Add keys/env variables:
+   - **Render:** `CLERK_SECRET_KEY`
+   - **Vercel patient project:** `VITE_CLERK_PUBLISHABLE_KEY`
+   - **Mobile builds/Expo:** `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` in `mobile/.env`
+3. In the Clerk Dashboard, enable desired sign-in strategies (email, social) and set authorized origins/redirects:
+   - Web: patient Vercel URL and `http://localhost:5173` (or `http://localhost:5190` if running local on that port)
+   - Expo/mobile: use the Clerk default OAuth redirect handling for Expo Go/standalone builds
+4. Redeploy the API and patient frontend. When Clerk is enabled, the frontend/mobile sign-in flows will use Clerk and the backend will issue existing patient JWTs via `POST /api/user/clerk-sync`.
+
+If `VITE_CLERK_PUBLISHABLE_KEY`/`EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` are empty, the existing email/password + Google/demo sign-in flows remain active.
+
+## 8. Staff mobile app (`mobile-staff/`)
+
+The staff app is a separate Expo app for admin (and future doctor) mobile access. It is not deployed to Vercel; it runs locally in Expo Go or can be built with EAS.
+
+1. `cd mobile-staff && npm install`
+2. Set `EXPO_PUBLIC_API_URL` in `mobile-staff/.env` to the Render/production API URL (or local `http://localhost:3100`).
+3. `npm start` → scan QR in Expo Go.
+4. Sign in with admin credentials (`ADMIN_EMAIL` / `ADMIN_PASSWORD`). Dashboard/doctors/appointments/patients screens use existing `/api/admin/*` APIs.
+5. Doctor-specific login/workflows are not available yet because backend doctor auth/routes are not implemented. Admin features work now and can be extended when doctor endpoints exist.
+
+## 9. Verify
 
 - [ ] `https://prescripto-api.onrender.com/health` returns `"db":"connected"`
 - [ ] Patient site loads doctors with photos
 - [ ] Log in as `demo@prescripto.com` / `Demo123456`, book a slot, see it in My Appointments
+- [ ] Clerk enabled: sign up/in with Clerk on patient frontend/mobile, profile/appointments load
 - [ ] Admin panel: log in with `ADMIN_EMAIL` / `ADMIN_PASSWORD`, see the dashboard and patient list
+- [ ] Staff mobile app: admin login shows dashboard/doctors/appointments/patients
 - [ ] Browser console shows no CORS errors
 - [ ] Page refresh on `/doctors/Neurologist` works (not a 404)
 
