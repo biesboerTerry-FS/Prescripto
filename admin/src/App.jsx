@@ -23,7 +23,7 @@ const App = () => {
 
 	return adminToken ? (
 		<div className="bg-[#f8f9fd]">
-			<ToastContainer />
+			<ToastContainer position="top-right" autoClose={3500} newestOnTop closeOnClick pauseOnHover />
 			<NavBar />
 			<div className="flex items-start">
 				<Sidebar />
@@ -49,7 +49,7 @@ const App = () => {
 	) : (
 		<>
 			<Login />
-			<ToastContainer />
+			<ToastContainer position="top-right" autoClose={3500} newestOnTop closeOnClick pauseOnHover />
 			<Analytics />
 			<SpeedInsights />
 		</>

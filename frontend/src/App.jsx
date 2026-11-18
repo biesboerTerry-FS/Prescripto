@@ -20,7 +20,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import CookieConsent from "./components/CookieConsent";
 import NetworkStatus from "./components/NetworkStatus";
 import ClerkSessionBridge from "./components/ClerkSessionBridge";
-import { ToastContainer } from "react-toastify";
+import ThemedToastContainer from "./components/ThemedToastContainer";
 import "react-toastify/dist/ReactToastify.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -50,7 +50,7 @@ const App = () => {
 			</a>
 			<NavBar />
 			<main id="main-content" className="mx-4 flex-1 sm:mx-[10%]">
-				<ToastContainer />
+				<ThemedToastContainer />
 				<NetworkStatus />
 				<ScrollToTop />
 				<ErrorBoundary>

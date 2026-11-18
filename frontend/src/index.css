@@ -187,10 +187,23 @@ html.dark .brand-logo {
 	filter: hue-rotate(50deg) saturate(1.1);
 }
 html.dark .Toastify__toast-container .Toastify__toast--success {
-	background: #475569;
+	background: #0f766e;
 }
 html.dark .Toastify__toast-container .Toastify__toast--info {
-	background: #1e3a8a;
+	background: #334155;
+}
+html.dark .Toastify__toast-container .Toastify__toast--warning {
+	background: #92400e;
+}
+html.dark .Toastify__toast-container .Toastify__toast--error {
+	background: #991b1b;
+}
+html.dark .Toastify__toast-container .Toastify__close-button {
+	color: #fff;
+	opacity: 0.8;
+}
+html.dark .Toastify__toast-container .Toastify__close-button:hover {
+	opacity: 1;
 }
 html.dark .hero-img-light {
 	display: none;
