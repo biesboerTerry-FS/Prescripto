@@ -36,9 +36,12 @@ const connectDB = async () => {
 	// copy-pasted values like MONGO_URI = "mongodb+srv://...") and
 	// trailing slashes, then append the database name once.
 	const cleanedUri = rawUri.replace(/^["']|["']$/g, "").replace(/\/+$/, "");
-	const uri = cleanedUri.endsWith("/prescripto")
-		? cleanedUri
-		: `${cleanedUri}/prescripto`;
+	const [rawBaseUri, queryString] = cleanedUri.split("?");
+	const baseUri = rawBaseUri.replace(/\/+$/, "");
+	const withDatabase = baseUri.endsWith("/prescripto")
+		? baseUri
+		: `${baseUri}/prescripto`;
+	const uri = queryString ? `${withDatabase}?${queryString}` : withDatabase;
 
 	try {
 		if (!cached.mongooseConnectionPromise) {
