@@ -7,7 +7,7 @@ import {
 	useState,
 	type PropsWithChildren,
 } from "react";
-import * as SecureStore from "expo-secure-store";
+import { getStoredValue, setStoredValue, deleteStoredValue } from "@/lib/tokenStorage";
 
 const TOKEN_KEY = "prescripto.token";
 
@@ -26,18 +26,18 @@ export function SessionProvider({ children }: PropsWithChildren) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		SecureStore.getItemAsync(TOKEN_KEY)
+		getStoredValue(TOKEN_KEY)
 			.then(setToken)
 			.finally(() => setIsLoading(false));
 	}, []);
 
 	const signIn = useCallback(async (newToken: string) => {
-		await SecureStore.setItemAsync(TOKEN_KEY, newToken);
+		await setStoredValue(TOKEN_KEY, newToken);
 		setToken(newToken);
 	}, []);
 
 	const signOut = useCallback(async () => {
-		await SecureStore.deleteItemAsync(TOKEN_KEY);
+		await deleteStoredValue(TOKEN_KEY);
 		setToken(null);
 	}, []);
 

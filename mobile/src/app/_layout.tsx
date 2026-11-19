@@ -1,5 +1,5 @@
 import { Stack, SplashScreen } from "expo-router";
-import * as SecureStore from "expo-secure-store";
+import { getStoredValue, setStoredValue, deleteStoredValue } from "@/lib/tokenStorage";
 import { ClerkLoaded, ClerkProvider } from "@clerk/expo";
 import { SessionProvider, useSession } from "@/lib/session";
 import { colors } from "@/lib/theme";
@@ -11,14 +11,14 @@ const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const tokenCache = {
 	async getToken(key: string) {
 		try {
-			return await SecureStore.getItemAsync(key);
+			return await getStoredValue(key);
 		} catch {
 			return null;
 		}
 	},
 	async saveToken(key: string, value: string) {
 		try {
-			await SecureStore.setItemAsync(key, value);
+			await setStoredValue(key, value);
 		} catch {}
 	},
 };

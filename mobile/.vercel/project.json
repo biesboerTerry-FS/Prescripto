@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_c4mzrMcxskFGtlrFJjEfLSM5CKpd",
+  "orgId": "team_JXyoxqeWxzYYOL578oA2cK1E",
+  "projectName": "prescripto-mobile",
+  "settings": {
+    "createdAt": 1794975383260,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": "npx expo export --platform web",
+    "outputDirectory": "dist",
+    "rootDirectory": "mobile",
+    "directoryListing": false,
+    "nodeVersion": "26.x"
+  }
+}
