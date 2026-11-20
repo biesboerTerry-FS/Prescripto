@@ -3,6 +3,9 @@ node_modules/
 dist/
 dist-check/
 .expo/
+# local Vercel CLI project metadata (recreated by `vercel link`/deploys)
+.vercel/
+
 # secrets and local files
 .env
 .env.*
