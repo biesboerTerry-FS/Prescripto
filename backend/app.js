@@ -40,12 +40,33 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 // before express.json() so the JSON middleware can't consume the payload.
 app.use("/api/user/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
-// Dev (no CORS_ORIGIN): accept all origins. Prod: pass your Vercel URLs,
-// comma-separated, e.g. CORS_ORIGIN=https://app.vercel.app,https://admin.vercel.app
-const corsOrigins = process.env.CORS_ORIGIN
-	? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
-	: true;
-app.use(cors({ origin: corsOrigins }));
+// Dev (no CORS_ORIGIN): accept all origins. Prod: the configured Vercel URLs,
+// plus every other *.vercel.app origin so Git branches, preview deploys, and
+// legacy aliases (e.g. the -git-main and -akovorl10 URLs) keep working instead
+// of failing with "Could not load doctors" due to a blocked XHR.
+const configuredOrigins = process.env.CORS_ORIGIN
+	? process.env.CORS_ORIGIN.split(",").map((o) => o.trim()).filter(Boolean)
+	: [];
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			// Non-browser requests (curl, health checks) have no Origin header.
+			if (!origin) return callback(null, true);
+			if (!process.env.CORS_ORIGIN || configuredOrigins.includes(origin)) {
+				return callback(null, true);
+			}
+			try {
+				const { hostname } = new URL(origin);
+				if (hostname === "localhost" || hostname.endsWith(".vercel.app")) {
+					return callback(null, true);
+				}
+			} catch {
+				// malformed Origin — rejected below
+			}
+			return callback(new Error("Not allowed by CORS"));
+		},
+	})
+);
 
 // static assets (seeded doctor photos live in public/static/doctors)
 // Vercel serves public/ directly; this middleware is a fallback for local dev.
@@ -67,6 +88,7 @@ app.use(
 		"/api/user/oauth-google",
 		"/api/user/oauth-google-demo",
 		"/api/admin/login",
+		"/api/doctor/login",
 	],
 	authLimiter
 );

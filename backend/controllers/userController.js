@@ -385,14 +385,13 @@ const refreshToken = async (request, response) => {
 
 /**
  * Signs in to a shared demo Google account for portfolio previews.
- * This avoids requiring real Google OAuth credentials. It's available in development
- * or when ALLOW_DEMO_OAUTH=true, but blocked in production by default.
+ * Real Google OAuth credentials are optional: this endpoint is enabled by default
+ * (including production) so visitors can preview the flow. Set ALLOW_DEMO_OAUTH=false
+ * to opt out for a real deployment.
  */
 const demoOAuthLogin = async (request, response) => {
 	try {
-		const demoAllowed =
-			process.env.NODE_ENV !== "production" ||
-			process.env.ALLOW_DEMO_OAUTH === "true";
+		const demoAllowed = process.env.ALLOW_DEMO_OAUTH !== "false";
 		if (!demoAllowed) {
 			return response.status(403).json({
 				success: false,
@@ -412,7 +411,7 @@ const demoOAuthLogin = async (request, response) => {
 				googleId: "demo-google-user",
 				provider: "google-demo",
 			});
-		} else if (user.image?.includes("ui-avatars.com") && user.image?.includes("background=0f766e")) {
+		} else if (user.image?.includes("ui-avatars.com") && user.image !== demoImage) {
 			user.image = demoImage;
 			await user.save();
 		}

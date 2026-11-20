@@ -10,7 +10,8 @@ import adminModel from "../models/adminModel.js";
 import { createAdminToken } from "../configs/token.js";
 
 /**
- * Creates a new doctor record with a Cloudinary-hosted photo. Doctors don't log in yet, so a placeholder password hash is stored.
+ * Creates a new doctor record with a Cloudinary-hosted photo. The supplied
+ * password enables doctor login; a random hash is used when none is provided.
  */
 const addDoctor = async (request, response) => {
 	try {
@@ -52,9 +53,10 @@ const addDoctor = async (request, response) => {
 			});
 		}
 
-		//^ doctors have no login yet, so store an unguessable placeholder hash
+		//^ doctors can log in with the password set here. If none was provided
+		//^ (older admin forms), fall back to an unguessable placeholder hash.
 		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(randomUUID(), salt);
+		const hashedPassword = await bcrypt.hash(password || randomUUID(), salt);
 
 		//^ upload image buffer to cloudinary
 		const imageUpload = await uploadBuffer(imageFile.buffer, {

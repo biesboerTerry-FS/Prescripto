@@ -18,6 +18,12 @@ export const createAdminToken = (email) =>
 		expiresIn: getExpiry(),
 	});
 
+/** Doctor tokens carry a role claim so patient/admin routes stay separate. */
+export const createDoctorToken = (doctorId) =>
+	jwt.sign({ role: "doctor", id: doctorId }, process.env.JWT_SECRET, {
+		expiresIn: getExpiry(),
+	});
+
 /** Verifies and decodes a JWT using the shared secret (throws if invalid/expired). */
 export const verifyToken = (token) =>
 	jwt.verify(token, process.env.JWT_SECRET);
