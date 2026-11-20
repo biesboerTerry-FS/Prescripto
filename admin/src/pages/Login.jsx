@@ -1,15 +1,23 @@
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
+import { DoctorContext } from "../context/DoctorContext";
 import { toast } from "react-toastify";
 import api, { getApiErrorMessage } from "../lib/api";
 
-// Renders the Login view.
+const DEMO_DOCTOR = {
+	email: "richard.james@prescripto.com",
+	password: "Demo123456",
+};
+
+// Renders the Login view for both admins and doctors.
 const Login = () => {
 	const [state, setState] = useState("Admin");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [submitting, setSubmitting] = useState(false);
 
 	const { setAdminToken } = useContext(AdminContext);
+	const { loginDoctor } = useContext(DoctorContext);
 
 	// Demo admin login for portfolio visitors (dev/demo account).
 	const handleDemoAdminLogin = async () => {
@@ -21,6 +29,7 @@ const Login = () => {
 			);
 			if (data.success) {
 				localStorage.setItem("adminToken", data.token);
+				localStorage.removeItem("doctorToken");
 				setAdminToken(data.token);
 				toast.success("Demo admin login successful!");
 			} else {
@@ -31,9 +40,22 @@ const Login = () => {
 		}
 	};
 
+	// Signs into a seeded demo doctor account so the doctor portal is easy to try.
+	const handleDemoDoctorLogin = async () => {
+		setSubmitting(true);
+		const result = await loginDoctor(DEMO_DOCTOR.email, DEMO_DOCTOR.password);
+		setSubmitting(false);
+		if (result.success) {
+			toast.success("Demo doctor login successful!");
+		} else {
+			toast.error(result.message);
+		}
+	};
+
 	// Helper that on submit handler.
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
+		setSubmitting(true);
 
 		try {
 			if (state === "Admin") {
@@ -44,17 +66,32 @@ const Login = () => {
 				);
 				if (data.success) {
 					localStorage.setItem("adminToken", data.token);
+					localStorage.removeItem("doctorToken");
 					setAdminToken(data.token);
 					toast.success("Login successful!");
 				} else {
 					toast.error(data.message);
 				}
 			} else {
-				toast.error("Doctor login is not available yet.");
+				const result = await loginDoctor(email, password);
+				if (result.success) {
+					toast.success("Doctor login successful!");
+				} else {
+					toast.error(result.message);
+				}
 			}
 		} catch (error) {
-			toast.error(getApiErrorMessage(error, "Admin login failed."));
+			toast.error(getApiErrorMessage(error, "Login failed."));
+		} finally {
+			setSubmitting(false);
 		}
+	};
+
+	// Switching roles clears the fields so credentials don't bleed across.
+	const switchRole = (role) => {
+		setState(role);
+		setEmail("");
+		setPassword("");
 	};
 
 	return (
@@ -68,29 +105,34 @@ const Login = () => {
 					Login
 				</p>
 				<div className="w-full">
-					<label htmlFor="admin-email" className="block">Email</label>
-					<input id="admin-email"
+					<label htmlFor="staff-email" className="block">Email</label>
+					<input id="staff-email"
 						onChange={(e) => setEmail(e.target.value)}
 						value={email}
 						className="border border-[#dadada] rounded w-full p-2 mt-1"
 						type="email"
+						placeholder={state === "Doctor" ? DEMO_DOCTOR.email : undefined}
 						required
 					/>
 				</div>
 				<div className="w-full">
-					<label htmlFor="admin-password" className="block">Password</label>
-					<input id="admin-password"
+					<label htmlFor="staff-password" className="block">Password</label>
+					<input id="staff-password"
 						onChange={(e) => setPassword(e.target.value)}
 						value={password}
 						className="border border-[#dadada] rounded w-full p-2 mt-1"
 						type="password"
+						placeholder={state === "Doctor" ? DEMO_DOCTOR.password : undefined}
 						required
 					/>
 				</div>
-				<button className="w-full py-2 text-base text-white rounded-md bg-primary">
-					Login
+				<button
+					disabled={submitting}
+					className="w-full py-2 text-base text-white rounded-md bg-primary disabled:opacity-60"
+				>
+					{submitting ? "Signing in…" : "Login"}
 				</button>
-				{state === "Admin" && (
+				{state === "Admin" ? (
 					<button
 						type="button"
 						onClick={handleDemoAdminLogin}
@@ -98,13 +140,22 @@ const Login = () => {
 					>
 						Sign in as demo admin
 					</button>
+				) : (
+					<button
+						type="button"
+						onClick={handleDemoDoctorLogin}
+						disabled={submitting}
+						className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5 disabled:opacity-60"
+					>
+						Sign in as demo doctor
+					</button>
 				)}
 				{state === "Admin" ? (
 					<p>
 						Doctor login?
 						<span
 							className="underline cursor-pointer text-primary"
-							onClick={() => setState("Doctor")}
+							onClick={() => switchRole("Doctor")}
 						>
 							Click here
 						</span>
@@ -114,7 +165,7 @@ const Login = () => {
 						Admin login?
 						<span
 							className="underline cursor-pointer text-primary"
-							onClick={() => setState("Admin")}
+							onClick={() => switchRole("Admin")}
 						>
 							Click here
 						</span>

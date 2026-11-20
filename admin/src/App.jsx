@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AdminContext } from "./context/AdminContext";
+import { DoctorContext } from "./context/DoctorContext";
+import DoctorPortal from "./pages/Doctor/DoctorPortal";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -20,6 +22,19 @@ import NotFound from "./pages/NotFound";
 // Renders the App UI.
 const App = () => {
 	const { adminToken } = useContext(AdminContext);
+	const { doctorToken } = useContext(DoctorContext);
+
+	// A doctor session takes over the shared login screen with a scoped portal.
+	if (doctorToken) {
+		return (
+			<>
+				<DoctorPortal />
+				<ToastContainer position="top-right" autoClose={3500} newestOnTop closeOnClick pauseOnHover />
+				<Analytics />
+				<SpeedInsights />
+			</>
+		);
+	}
 
 	return adminToken ? (
 		<div className="bg-[#f8f9fd]">

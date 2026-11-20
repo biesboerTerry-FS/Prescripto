@@ -9,7 +9,10 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
 	const adminToken = localStorage.getItem("adminToken");
-	if (adminToken) {
+	const doctorToken = localStorage.getItem("doctorToken");
+	if (doctorToken && config.url?.startsWith("/doctor/")) {
+		config.headers.doctortoken = doctorToken;
+	} else if (adminToken) {
 		config.headers.adminToken = adminToken;
 	}
 	return config;
@@ -18,7 +21,13 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error.response?.status === 401 && !error.config?.skipAuthRedirect) {
+		// Doctor sessions are handled by the doctor portal, not the admin redirect.
+		const isDoctorRoute = error.config?.url?.startsWith("/doctor/");
+		if (
+			error.response?.status === 401 &&
+			!error.config?.skipAuthRedirect &&
+			!isDoctorRoute
+		) {
 			toast.error("Your session has expired. Please sign in again.");
 			localStorage.removeItem("adminToken");
 			window.location.href = "/";

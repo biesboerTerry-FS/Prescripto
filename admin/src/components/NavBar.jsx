@@ -12,6 +12,7 @@ const NavBar = () => {
 	// Helper that logout.
 	const logout = () => {
 		navigate("/");
+		localStorage.removeItem("doctorToken");
 		adminToken && setAdminToken("");
 		adminToken && localStorage.removeItem("adminToken");
 	};
