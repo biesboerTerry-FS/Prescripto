@@ -141,6 +141,116 @@ const setDoctorAvailability = async (request, response) => {
 	}
 };
 
+/**
+ * Lets a doctor update only their own basic contact details from the staff
+ * self-service portal. Role, specialization, fees, availability and every other
+ * staff record are deliberately off-limits here.
+ */
+const updateDoctorProfile = async (request, response) => {
+	try {
+		const { name, email, phone, address } = request.body || {};
+		const updates = {};
+
+		if (name !== undefined) {
+			if (typeof name !== "string" || !name.trim()) {
+				return response.status(400).json({
+					success: false,
+					message: "Name must be a non-empty string",
+				});
+			}
+			updates.name = name.trim().slice(0, 120);
+		}
+
+		if (email !== undefined) {
+			if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+				return response.status(400).json({
+					success: false,
+					message: "Enter a valid email address",
+				});
+			}
+			const normalized = email.trim().toLowerCase();
+			const taken = await doctorModel.findOne({
+				email: normalized,
+				_id: { $ne: request.doctorId },
+			});
+			if (taken) {
+				return response.status(409).json({
+					success: false,
+					message: "That email is already in use",
+				});
+			}
+			updates.email = normalized;
+		}
+
+		if (phone !== undefined) {
+			if (typeof phone !== "string" || phone.length > 40) {
+				return response.status(400).json({
+					success: false,
+					message: "Enter a valid phone number",
+				});
+			}
+			updates.phone = phone.trim();
+		}
+
+		if (address !== undefined) {
+			if (!address || typeof address !== "object" || Array.isArray(address)) {
+				return response.status(400).json({
+					success: false,
+					message: "Enter a valid address",
+				});
+			}
+			const current = await doctorModel.findById(request.doctorId).select("address");
+			const nextAddress = { ...(current?.address?.toObject?.() || current?.address || {}) };
+			for (const key of ["line1", "line2"]) {
+				if (address[key] !== undefined) {
+					if (typeof address[key] !== "string" || address[key].length > 160) {
+						return response.status(400).json({
+							success: false,
+							message: "Address lines must be short text values",
+						});
+					}
+					nextAddress[key] = address[key].trim();
+				}
+			}
+			updates.address = nextAddress;
+		}
+
+		if (!Object.keys(updates).length) {
+			return response.status(400).json({
+				success: false,
+				message: "No supported fields were provided",
+			});
+		}
+
+		const doctor = await doctorModel
+			.findByIdAndUpdate(request.doctorId, { $set: updates }, { new: true, runValidators: true })
+			.select("-password");
+		if (!doctor) {
+			return response.status(404).json({
+				success: false,
+				message: "Doctor not found",
+			});
+		}
+
+		response.json({
+			success: true,
+			message: "Your details were updated",
+			doctor: {
+				id: doctor._id.toString(),
+				name: doctor.name,
+				email: doctor.email,
+				phone: doctor.phone || "",
+				address: doctor.address,
+				specialty: doctor.specialty,
+				available: doctor.available,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+		response.json({ success: false, message: error.message });
+	}
+};
+
 export {
 	changeAvailability,
 	doctorList,
@@ -148,4 +258,5 @@ export {
 	getDoctorProfile,
 	getDoctorAppointments,
 	setDoctorAvailability,
+	updateDoctorProfile,
 };

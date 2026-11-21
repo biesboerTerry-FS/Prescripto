@@ -159,6 +159,12 @@ The staff app is a separate Expo app for admin (and future doctor) mobile access
 4. Sign in with admin credentials (`ADMIN_EMAIL` / `ADMIN_PASSWORD`). Dashboard/doctors/appointments/patients screens use existing `/api/admin/*` APIs.
 5. Doctor-specific login/workflows are not available yet because backend doctor auth/routes are not implemented. Admin features work now and can be extended when doctor endpoints exist.
 
+### Staff self-service portal (web admin)
+
+The admin app also has a scoped staff portal at `/staff` (alias `/employee`) for signed-in doctors, who are the staff in this app. On the admin login screen use **Try demo staff** (or switch to Doctor and use **Try demo doctor**) with `richard.james@prescripto.com` / `Demo123456`.
+
+The portal shows only the signed-in doctor's name, role/specialization, contact details, address, availability and their own upcoming appointments. Staff can edit only their own name, email, phone and address through `PATCH /api/doctor/me` (`GET /api/doctor/me` already exists); role, fees, other staff and all admin data are never exposed there. If the API is unreachable, the demo session falls back to a local editable copy in `localStorage`.
+
 ## 9. Verify
 
 - [ ] `https://prescripto-api.onrender.com/health` returns `"db":"connected"`

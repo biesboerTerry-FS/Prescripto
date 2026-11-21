@@ -88,7 +88,7 @@ const seedDoctors = async () => {
 	const hashed = await bcrypt.hash(DEMO_PASSWORD, await bcrypt.genSalt(10));
 	let created = 0;
 	let updated = 0;
-	for (const doc of doctors) {
+	for (const [index, doc] of doctors.entries()) {
 		const fields = {
 			name: doc.name,
 			specialty: doc.specialty,
@@ -96,6 +96,8 @@ const seedDoctors = async () => {
 			experience: doc.experience,
 			about: doc.about,
 			fees: doc.fees,
+			// Seed data has no phone; give each demo doctor a predictable contact number.
+			phone: doc.phone || `+1 555 01${String(index + 1).padStart(2, "0")}`,
 			address: doc.address,
 			image: photoURL(doc.image),
 			available: true,

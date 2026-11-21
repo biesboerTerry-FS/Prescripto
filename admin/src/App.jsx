@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AdminContext } from "./context/AdminContext";
 import { DoctorContext } from "./context/DoctorContext";
-import DoctorPortal from "./pages/Doctor/DoctorPortal";
+import StaffPortal from "./pages/Doctor/StaffPortal";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
 import Announcements from "./components/Announcements";
@@ -25,11 +25,18 @@ const App = () => {
 	const { adminToken } = useContext(AdminContext);
 	const { doctorToken } = useContext(DoctorContext);
 
-	// A doctor session takes over the shared login screen with a scoped portal.
+	// A doctor/staff session gets its own scoped routes. There is no path into
+	// the admin layout, sidebar, patients, revenue or settings from here.
 	if (doctorToken) {
 		return (
 			<>
-				<DoctorPortal />
+				<ErrorBoundary>
+					<Routes>
+						<Route path="/staff" element={<StaffPortal />} />
+						<Route path="/employee" element={<StaffPortal />} />
+						<Route path="*" element={<Navigate to="/staff" replace />} />
+					</Routes>
+				</ErrorBoundary>
 				<ToastContainer position="top-right" autoClose={3500} newestOnTop closeOnClick pauseOnHover />
 				<Analytics />
 				<SpeedInsights />

@@ -16,6 +16,11 @@ const doctorSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		// Basic contact detail editable by the doctor from the staff self-service portal.
+		phone: {
+			type: String,
+			default: "",
+		},
 		image: {
 			type: String,
 			required: true,

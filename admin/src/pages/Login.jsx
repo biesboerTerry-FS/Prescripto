@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AdminContext } from "../context/AdminContext";
 import { DoctorContext } from "../context/DoctorContext";
 import { toast } from "react-toastify";
@@ -9,8 +10,9 @@ const DEMO_DOCTOR = {
 	password: "Demo123456",
 };
 
-// Renders the Login view for both admins and doctors.
+// Renders the Login view for both admins and doctors/staff.
 const Login = () => {
+	const navigate = useNavigate();
 	const [state, setState] = useState("Admin");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -18,6 +20,19 @@ const Login = () => {
 
 	const { setAdminToken } = useContext(AdminContext);
 	const { loginDoctor } = useContext(DoctorContext);
+
+	// Shared demo sign-in for the scoped staff self-service portal.
+	const signInAsDemoStaff = async () => {
+		setSubmitting(true);
+		const result = await loginDoctor(DEMO_DOCTOR.email, DEMO_DOCTOR.password);
+		setSubmitting(false);
+		if (result.success) {
+			toast.success(result.local ? "Demo staff session (offline) started!" : "Demo staff login successful!");
+			navigate("/staff");
+		} else {
+			toast.error(result.message);
+		}
+	};
 
 	// Demo admin login for portfolio visitors (dev/demo account).
 	const handleDemoAdminLogin = async () => {
@@ -37,18 +52,6 @@ const Login = () => {
 			}
 		} catch (error) {
 			toast.error(getApiErrorMessage(error, "Demo admin login failed."));
-		}
-	};
-
-	// Signs into a seeded demo doctor account so the doctor portal is easy to try.
-	const handleDemoDoctorLogin = async () => {
-		setSubmitting(true);
-		const result = await loginDoctor(DEMO_DOCTOR.email, DEMO_DOCTOR.password);
-		setSubmitting(false);
-		if (result.success) {
-			toast.success("Demo doctor login successful!");
-		} else {
-			toast.error(result.message);
 		}
 	};
 
@@ -76,6 +79,7 @@ const Login = () => {
 				const result = await loginDoctor(email, password);
 				if (result.success) {
 					toast.success("Doctor login successful!");
+					navigate("/staff");
 				} else {
 					toast.error(result.message);
 				}
@@ -133,21 +137,31 @@ const Login = () => {
 					{submitting ? "Signing in…" : "Login"}
 				</button>
 				{state === "Admin" ? (
-					<button
-						type="button"
-						onClick={handleDemoAdminLogin}
-						className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5"
-					>
-						Sign in as demo admin
-					</button>
+					<>
+						<button
+							type="button"
+							onClick={signInAsDemoStaff}
+							disabled={submitting}
+							className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5 disabled:opacity-60"
+						>
+							Try demo staff
+						</button>
+						<button
+							type="button"
+							onClick={handleDemoAdminLogin}
+							className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5"
+						>
+							Sign in as demo admin
+						</button>
+					</>
 				) : (
 					<button
 						type="button"
-						onClick={handleDemoDoctorLogin}
+						onClick={signInAsDemoStaff}
 						disabled={submitting}
 						className="w-full py-2 text-base font-medium transition-colors border rounded-md text-primary border-primary hover:bg-primary/5 disabled:opacity-60"
 					>
-						Sign in as demo doctor
+						Try demo doctor
 					</button>
 				)}
 				{state === "Admin" ? (
