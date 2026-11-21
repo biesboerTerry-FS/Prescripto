@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useClerk, useUser, UserButton } from "@clerk/react";
 import { AppContext } from "../context/AppContext";
 import ThemeToggle from "./ThemeToggle";
 
@@ -9,6 +10,10 @@ const NavBar = () => {
 	const navigate = useNavigate();
 	const [showMenu, setShowMenu] = useState(false);
 	const { token, setToken, userData } = useContext(AppContext);
+	// Clerk handles the public/patient sign-in; admin and doctor portals are
+	// separate apps with their own custom auth.
+	const { openSignIn } = useClerk();
+	const { user: clerkUser } = useUser();
 	// Helper that logout.
 	const logout = () => {
 		setToken("false");
@@ -67,12 +72,17 @@ const NavBar = () => {
 								</div>
 							</div>
 						</div>
+					) : clerkUser ? (
+						<div aria-label="Clerk patient account">
+							<UserButton />
+						</div>
 					) : (
 						<button
-							onClick={() => navigate("/login")}
+							onClick={() => openSignIn()}
+							aria-label="Sign in with Clerk"
 							className="hidden px-8 py-3 font-light text-white rounded-full bg-primary md:block"
 						>
-							Create Account
+							Log in
 						</button>
 					)}
 					<ThemeToggle />
@@ -109,6 +119,21 @@ const NavBar = () => {
 					<li><NavLink onClick={() => setShowMenu(false)} to="/doctors"><p className="inline-block px-4 py-2 rounded">DOCTORS</p></NavLink></li>
 					<li><NavLink onClick={() => setShowMenu(false)} to="/about"><p className="inline-block px-4 py-2 rounded">ABOUT</p></NavLink></li>
 					<li><NavLink onClick={() => setShowMenu(false)} to="/contact"><p className="inline-block px-4 py-2 rounded">CONTACT</p></NavLink></li>
+					{!clerkUser && !token && (
+						<li>
+							<button
+								type="button"
+								onClick={() => {
+									setShowMenu(false);
+									openSignIn();
+								}}
+								aria-label="Sign in with Clerk"
+								className="px-8 py-3 mt-2 font-light text-white rounded-full bg-primary"
+							>
+								Log in
+							</button>
+						</li>
+					)}
 				</ul>
 			</div>
 		</>

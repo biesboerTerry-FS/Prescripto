@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
+import { useAuth } from "@clerk/react";
 import { toast } from "react-toastify";
 import api, { getApiErrorMessage } from "../lib/api";
 
@@ -15,6 +16,13 @@ const AppContextProvider = (props) => {
 		localStorage.getItem("token") ? localStorage.getItem("token") : false
 	);
 	const [userData, setUserData] = useState(false);
+
+	// A Clerk session is the patient's primary sign-in. Exchange it for the
+	// existing backend patient JWT so booking/profile APIs keep working.
+	const { isLoaded: clerkLoaded, isSignedIn, getToken } = useAuth();
+	const getClerkTokenRef = useRef(getToken);
+	getClerkTokenRef.current = getToken;
+	const [clerkSynced, setClerkSynced] = useState(false);
 
 	// Helper that get doctors data.
 	const getDoctorsData = async () => {
@@ -63,6 +71,54 @@ const AppContextProvider = (props) => {
 	useEffect(() => {
 		getDoctorsData();
 	}, []);
+
+	// Sign a Clerk-authenticated patient into the existing patient API.
+	useEffect(() => {
+		if (!clerkLoaded || !isSignedIn) return undefined;
+		let cancelled = false;
+
+		const syncClerkSession = async () => {
+			try {
+				const clerkToken = await getClerkTokenRef.current();
+				if (!clerkToken || cancelled) return;
+				const { data } = await api.post(
+					"/user/clerk-sync",
+					{},
+					{
+						headers: { Authorization: `Bearer ${clerkToken}` },
+						skipAuthRedirect: true,
+					}
+				);
+				if (cancelled) return;
+				if (data?.success && data.token) {
+					localStorage.setItem("token", data.token);
+					setToken(data.token);
+					setClerkSynced(true);
+				} else if (data?.message) {
+					console.warn("Clerk patient sign-in could not be synced:", data.message);
+				}
+			} catch (error) {
+				if (!cancelled) {
+					console.warn("Clerk patient sign-in could not be synced:", error);
+				}
+			}
+		};
+
+		syncClerkSession();
+		return () => {
+			cancelled = true;
+		};
+	}, [clerkLoaded, isSignedIn]);
+
+	// Signing out of Clerk also ends the patient API session it created.
+	useEffect(() => {
+		if (clerkLoaded && !isSignedIn && clerkSynced) {
+			localStorage.removeItem("token");
+			setToken(false);
+			setUserData(false);
+			setClerkSynced(false);
+		}
+	}, [clerkLoaded, isSignedIn, clerkSynced]);
 
 	useEffect(() => {
 		if (token) {
