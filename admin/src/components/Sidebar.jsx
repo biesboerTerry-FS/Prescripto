@@ -86,6 +86,26 @@ const Sidebar = () => {
 						<p>Doctor List</p>
 						</NavLink>
 					</li>
+					<li className="mt-4 pt-3 border-t border-slate-100">
+						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+							Communication
+						</p>
+					</li>
+					<li>
+						<NavLink
+						className={({ isActive }) =>
+							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
+								isActive
+									? "bg-teal-50 border-r-4 border-primary"
+									: ""
+							}`
+						}
+						to={"/announcements"}
+					>
+						<img src={assets.announcement_icon} alt="" />
+						<p>Announcements</p>
+						</NavLink>
+					</li>
 				</ul>
 			)}
 		</div>

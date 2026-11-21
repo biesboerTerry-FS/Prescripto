@@ -9,6 +9,7 @@ import { DoctorContext } from "./context/DoctorContext";
 import DoctorPortal from "./pages/Doctor/DoctorPortal";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
+import Announcements from "./components/Announcements";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Admin/Dashboard";
@@ -54,6 +55,7 @@ const App = () => {
 						<Route path="/doctor-list" element={<DoctorsList />} />
 						<Route path="/patients" element={<Patients />} />
 						<Route path="/patients/:patientId" element={<PatientDetails />} />
+						<Route path="/announcements" element={<Announcements />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</ErrorBoundary>
