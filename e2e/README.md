@@ -37,3 +37,15 @@ start ours elsewhere and point the tests at it:
 cd frontend && npm run dev -- --port 5177 --strictPort
 FRONTEND_URL=http://localhost:5177 npm run e2e
 ```
+
+## HR suite (Playwright)
+
+```bash
+node e2e/hr-suite-playwright.cjs
+```
+
+Verifies the admin-only HR group against the deployed apps: JWT protection,
+directory search/filters/detail, add/edit/deactivate, departments & roles,
+payroll run, time-off approval, performance notes, and that the demo admin,
+doctor/staff and patient logins still work with no console errors. Override
+`ADMIN_URL`, `FRONTEND_URL` and `API_URL` to test another environment.

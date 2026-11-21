@@ -97,6 +97,15 @@ This creates:
 
 The seed is safe to re-run: it updates existing records rather than duplicating them. If you ever change the API URL, re-run the seed with the new `PUBLIC_API_URL`.
 
+### Admin HR suite
+
+The admin panel has an **HR** nav group (Staff directory, Staff management, Roles & departments, Payroll, Time-off approvals, Performance notes). Doctors are the staff in this app — the directory reads the existing doctor records, enriched with optional HR fields (`department`, `hrRole`, `hrStatus`).
+
+- All HR endpoints live under `/api/admin/hr/*` and require an admin JWT (`admintoken`). Public `/api/doctor/list` and doctor login are unchanged; deactivating a staff member never deletes their doctor record or disables patient booking.
+- HR demo data (7 departments, 8 role labels, 8 enriched staff, pay runs, notes and time-off requests) is seeded automatically on the first admin HR request (idempotent upserts). To seed ahead of time: `cd backend && npm run seed:hr` with the usual `MONGO_URI` in your environment.
+- Time-off approvals share the existing Schedule request collection, so an approval in HR is reflected in the Schedule page and staff portal.
+- The browser keeps a localStorage copy of HR data so the portfolio demo still works offline; API writes are attempted first.
+
 ## 5. Google sign-in (optional)
 
 ### Patient site (web)
