@@ -124,7 +124,8 @@ const HRContextProvider = (props) => {
 			return { success: true, message: data.message };
 		} catch (error) {
 			if (isOffline(error)) {
-				HR.saveLocalStaff({ id, hrStatus: status, status });
+				const row = staff.find((item) => String(item.id || item._id) === String(id));
+				HR.saveLocalStaff({ ...(row || { id }), id, hrStatus: status, status });
 				return { success: true, local: true, message: `Staff member ${status}` };
 			}
 			return { success: false, message: errorMessage(error, "Could not update status") };

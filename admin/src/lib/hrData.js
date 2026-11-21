@@ -195,16 +195,35 @@ export const saveLocalRoles = (list) => writeList(HR_ROLES_KEY, list);
 
 export const getLocalStaff = () => readList(HR_STAFF_KEY, seedStaff);
 
-/** Local rows overlay API rows by id so offline edits survive a reload. */
+/**
+ * Only rows actually created/edited in this browser overlay API records.
+ * The read-only demo seed rows are ignored when the API is reachable, so the
+ * directory shows each of the sixty real staff exactly once.
+ */
+const isUserRow = (row) => row.localOverride || row.source === "local";
+
 export const mergeStaff = (apiStaff = [], localStaff = getLocalStaff()) => {
-	const byId = new Map(localStaff.map((row) => [String(row.id || row._id), row]));
+	const userRows = localStaff.filter(isUserRow);
+	const byId = new Map(userRows.map((row) => [String(row.id || row._id), row]));
+	const byEmail = new Map(
+		userRows.map((row) => [String(row.email || "").toLowerCase(), row])
+	);
 	const merged = apiStaff.map((row) => {
-		const id = String(row.id || row._id);
-		const local = byId.get(id);
-		return local ? { ...row, ...local, source: "api" } : { ...row, source: "api" };
+		const local =
+			byId.get(String(row.id || row._id)) ||
+			byEmail.get(String(row.email || "").toLowerCase());
+		return { ...row, ...(local || {}), source: "api" };
 	});
-	const seen = new Set(merged.map((row) => String(row.id || row._id)));
-	return [...merged, ...localStaff.filter((row) => !seen.has(String(row.id || row._id)))];
+	const seenIds = new Set(merged.map((row) => String(row.id || row._id)));
+	const seenEmails = new Set(merged.map((row) => String(row.email || "").toLowerCase()));
+	return [
+		...merged,
+		...userRows.filter(
+			(row) =>
+				!seenIds.has(String(row.id || row._id)) &&
+				!seenEmails.has(String(row.email || "").toLowerCase())
+		),
+	];
 };
 
 export const saveLocalStaff = (staff) => {
@@ -212,8 +231,12 @@ export const saveLocalStaff = (staff) => {
 	const id = String(staff.id || staff._id);
 	const exists = all.some((row) => String(row.id || row._id) === id);
 	const next = exists
-		? all.map((row) => (String(row.id || row._id) === id ? { ...row, ...staff } : row))
-		: [{ ...staff, id, _id: id, source: "local" }, ...all];
+		? all.map((row) =>
+				String(row.id || row._id) === id
+					? { ...row, ...staff, localOverride: true }
+					: row
+			)
+		: [{ ...staff, id, _id: id, source: "local", localOverride: true }, ...all];
 	writeList(HR_STAFF_KEY, next);
 	return staff;
 };

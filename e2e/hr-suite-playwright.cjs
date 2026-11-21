@@ -89,10 +89,10 @@ const QA_ROLE = `QA Role ${stamp}`;
     await admin.getByTestId("hr-staff-rate").fill("65");
     await admin.getByTestId("hr-add-staff").click();
     await admin.getByText("Dr. Priya Raman", { exact: true }).first().waitFor({ timeout: 30000 });
-    check("admin can add staff", await admin.getByText(QA_EMAIL, { exact: true }).count() > 0 || await admin.getByText("Dr. Priya Raman", { exact: true }).count() > 0);
+    check("admin can add staff", (await admin.getByText("Dr. Priya Raman", { exact: true }).count()) > 0);
 
     // Find the new row and its id from the edit button test id.
-    const newRow = admin.getByTestId("hr-manage-row").filter({ hasText: QA_EMAIL });
+    const newRow = admin.getByTestId("hr-manage-row").filter({ hasText: "Dr. Priya Raman" }).first();
     const newIdAttr = await newRow.locator('[data-testid^="hr-edit-staff-"]').getAttribute("data-testid");
     const newId = newIdAttr.replace("hr-edit-staff-", "");
     check("new staff has a detail/edit id", Boolean(newId), newId || "none");
@@ -104,7 +104,7 @@ const QA_ROLE = `QA Role ${stamp}`;
     await admin.waitForTimeout(1200);
     check("admin can edit staff", (await admin.getByTestId("hr-staff-form").getByTestId("hr-staff-name").inputValue()) === "");
 
-    check("edited staff record is retained", (await admin.getByTestId("hr-manage-row").filter({ hasText: QA_EMAIL }).count()) > 0);
+    check("edited staff record is retained", (await admin.getByTestId("hr-manage-row").filter({ hasText: "Dr. Priya Raman" }).count()) > 0);
 
     await admin.getByTestId(`hr-deactivate-staff-${newId}`).click();
     await admin.waitForTimeout(1200);
