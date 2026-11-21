@@ -7,9 +7,34 @@
 body {
 	font-family: "Inter", ui-sans-system, system-ui, sans-serif;
 	background-color: #f8fafc;
+	/* A very soft teal wash keeps the palette warm without hurting contrast. */
+	background-image: radial-gradient(1100px 520px at 50% -10%, #f0fdfa 0%, transparent 65%);
 	color: #1e293b;
 	-webkit-font-smoothing: antialiased;
 	overflow-x: hidden;
+}
+
+::selection {
+	background: #ccfbf1;
+	color: #115e59;
+}
+
+/* Consistent, gentle feedback on interactive elements across the app. */
+button,
+a,
+input,
+select {
+	transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease,
+		box-shadow 180ms ease, transform 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	button,
+	a,
+	input,
+	select {
+		transition: none;
+	}
 }
 
 .active hr {
@@ -71,6 +96,11 @@ html.dark {
 }
 html.dark body {
 	background-color: #0b1220;
+	background-image: radial-gradient(1100px 520px at 50% -10%, #0f2b2a 0%, transparent 65%);
+	color: #e2e8f0;
+}
+html.dark ::selection {
+	background: #115e59;
 	color: #e2e8f0;
 }
 html.dark * {

@@ -29,6 +29,7 @@ const Appointment = () => {
 	const getAvailableSlots = async () => {
 		// ^ Reset doctorSlots
 		setDoctorSlots([]);
+		if (!doctorInfo) return;
 
 		//^ Start from the current date
 		let today = new Date();
@@ -63,8 +64,7 @@ const Appointment = () => {
 					const slotTime = formattedTime;
 
 					const isSlotAvailable =
-						doctorInfo.slots_booked[slotDate] &&
-						doctorInfo.slots_booked[slotDate].includes(slotTime)
+						doctorInfo.slots_booked?.[slotDate]?.includes(slotTime)
 							? false
 							: true;
 
@@ -134,7 +134,7 @@ const Appointment = () => {
 
 	return (
 		doctorInfo && (
-			<div>
+			<div className="pt-8 pb-4 sm:pt-12">
 				{/* ---------------- Doctor Details ---------------- */}
 				<div className="flex flex-col gap-4 sm:flex-row">
 					<div>
@@ -144,9 +144,9 @@ const Appointment = () => {
 							alt=""
 						/>
 					</div>
-					<div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
+					<div className="flex-1 rounded-2xl border border-slate-200 bg-white p-6 py-8 shadow-[0_10px_40px_-20px_rgba(15,23,42,0.35)] dark:border-slate-700 dark:bg-slate-800/80 mx-2 sm:mx-0 mt-[-80px] sm:mt-0 sm:p-9">
 						{/* ---------------- Doctor info  ---------------- */}
-						<p className="flex items-center gap-2 text-2xl font-medium text-gray-900">
+						<p className="flex items-center gap-2 text-2xl font-medium text-gray-900 dark:text-slate-100">
 							{doctorInfo.name}
 							<img
 								className="w-5"
@@ -154,26 +154,26 @@ const Appointment = () => {
 								alt=""
 							/>
 						</p>
-						<div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+						<div className="flex items-center gap-2 mt-1 text-sm text-gray-600 dark:text-slate-300">
 							<p>
 								{doctorInfo.degree} - {doctorInfo.specialty}
 							</p>
-							<button className="py-0.5 px-2 border text-xs rounded-full">
+							<button className="rounded-full border border-slate-300 px-2.5 py-0.5 text-xs dark:border-slate-600">
 								{doctorInfo.experience}
 							</button>
 						</div>
 						{/* ---------------- About doctor ---------------- */}
 						<div>
-							<p className="flex items-center gap-1 mt-3 text-sm font-medium text-gray-900">
+							<p className="flex items-center gap-1 mt-3 text-sm font-medium text-gray-900 dark:text-slate-100">
 								About <img src={assets.info_icon} alt="" />
 							</p>
-							<p className="text-sm text-gray-500 max-w-[700px] mt-3">
+							<p className="text-sm text-gray-500 max-w-[700px] mt-3 dark:text-slate-400">
 								{doctorInfo.about}
 							</p>
 						</div>
-						<p className="mt-4 font-medium text-gray-500">
+						<p className="mt-4 font-medium text-gray-500 dark:text-slate-400">
 							Appointment fee:{" "}
-							<span className="text-gray-600">
+							<span className="text-gray-600 dark:text-slate-200">
 								{currencySymbol}
 								{doctorInfo.fees}
 							</span>
@@ -181,55 +181,73 @@ const Appointment = () => {
 					</div>
 				</div>
 				{/* ---------------- Booking slots ---------------- */}
-				<div className="mt-4 font-medium text-gray-700 sm:ml-72 sm:pl-4">
-					<p>Available slots</p>
-					<div className="flex items-center w-full gap-3 mt-4 overflow-x-scroll">
-						{doctorSlots.length &&
+				<section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 sm:ml-72 sm:p-6">
+					<div className="flex flex-wrap items-start justify-between gap-2">
+						<div>
+							<h2 className="text-base font-semibold text-gray-900 dark:text-slate-100">
+								Available slots
+							</h2>
+							<p className="mt-0.5 text-xs text-gray-500 dark:text-slate-400">
+								Pick a day, then a time that works for you.
+							</p>
+						</div>
+						<div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
+							<span className="h-2.5 w-2.5 rounded-full bg-teal-600" /> Selected
+						</div>
+					</div>
+
+					{/* Day picker */}
+					<div className="mt-5 flex gap-3 overflow-x-auto pb-2">
+						{doctorSlots.length > 0 &&
 							doctorSlots.map((item, index) => (
-								<div
-									onClick={() => setSlotIndex(index)}
-									className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
-										slotIndex === index
-											? "bg-primary text-white"
-											: "border border-gray-500"
-									}`}
+								<button
+									type="button"
 									key={index}
+									onClick={() => setSlotIndex(index)}
+									aria-pressed={slotIndex === index}
+									className={`flex min-w-[4.5rem] shrink-0 flex-col items-center gap-0.5 rounded-2xl border px-3 py-3.5 text-center transition-all duration-200 ${
+										slotIndex === index
+											? "border-teal-600 bg-primary text-white shadow-lg shadow-teal-900/20"
+											: "border-slate-200 bg-slate-50/70 text-gray-600 hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:bg-slate-900/40 dark:text-slate-300"
+									}`}
 								>
-									<p>
-										{item[0] &&
-											daysOfWeek[
-												item[0].datetime.getDay()
-											]}
-									</p>
-									<p>
+									<span className="text-[11px] font-semibold tracking-wide">
+										{item[0] && daysOfWeek[item[0].datetime.getDay()]}
+									</span>
+									<span className="text-xl font-semibold leading-none">
 										{item[0] && item[0].datetime.getDate()}
-									</p>
-								</div>
+									</span>
+								</button>
 							))}
 					</div>
-					<div className="flex items-center w-full gap-3 mt-4 overflow-x-scroll">
-						{doctorSlots.length &&
+
+					{/* Time picker */}
+					<div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-8">
+						{doctorSlots.length > 0 &&
 							doctorSlots[slotIndex].map((item, index) => (
-								<p
-									onClick={() => setSlotTime(item.time)}
-									className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
-										item.time === slotTime
-											? "bg-primary text-white"
-											: "text-gray-400 border border-gray-300"
-									}`}
+								<button
+									type="button"
 									key={index}
+									onClick={() => setSlotTime(item.time)}
+									aria-pressed={item.time === slotTime}
+									className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+										item.time === slotTime
+											? "border-teal-600 bg-primary text-white shadow-md shadow-teal-900/20"
+											: "border-slate-200 bg-white text-gray-600 hover:border-teal-400 hover:text-teal-700 dark:border-slate-600 dark:bg-slate-900/40 dark:text-slate-300"
+									}`}
 								>
 									{item.time.toLowerCase()}
-								</p>
+								</button>
 							))}
 					</div>
+
 					<button
 						onClick={bookAppointment}
-						className="py-3 my-6 text-sm font-light text-white rounded-full bg-primary px-14"
+						className="mt-7 rounded-full bg-primary px-10 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:bg-primary-dark"
 					>
 						Schedule Appointment
 					</button>
-				</div>
+				</section>
 				{/* ---------------- Related Doctors ---------------- */}
 				<RelatedDoctors
 					doctorId={doctorId}
