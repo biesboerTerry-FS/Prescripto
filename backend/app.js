@@ -91,6 +91,9 @@ const authLimiter = rateLimit({
 	limit: 30,
 	standardHeaders: "draft-7",
 	legacyHeaders: false,
+	// Key by IP + endpoint: heavy traffic on one login route must never lock
+	// the demo admin/doctor logins out of the other routes.
+	keyGenerator: (req) => `${req.ip}:${req.path}`,
 	message: { success: false, message: "Too many attempts. Try again in 15 minutes." },
 });
 app.use(
