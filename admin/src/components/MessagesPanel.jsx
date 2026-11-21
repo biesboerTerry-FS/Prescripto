@@ -60,12 +60,12 @@ const MessagesPanel = ({ role, senderName }) => {
 			setMessages((current) =>
 				current.map((m) => (String(m.id) === String(message.id) ? { ...m, read: true } : m))
 			);
-			if (String(message.id).startsWith("demo-")) {
-				try {
-					api.patch(`/portal/messages/${message.id}/read`, {});
-				} catch {
-					// ignore — local read state is enough for demo rows
-				}
+			// Only server-backed messages can be marked read on the API. Demo
+			// rows live purely in localStorage; a fire-and-forget request with a
+			// non-ObjectId would otherwise log a console error.
+			const id = String(message.id);
+			if (!id.startsWith("demo-") && !id.startsWith("local-")) {
+				api.patch(`/portal/messages/${id}/read`, {}).catch(() => {});
 			}
 		}
 	};

@@ -127,10 +127,13 @@ const SchedulePanel = ({ role, appointments = [], availability, onToggleAvailabi
 
 	const review = async (request, status) => {
 		updateLocalRequestStatus(request.id, status);
-		try {
-			await api.patch(`/portal/schedule-requests/${request.id}`, { status });
-		} catch {
-			// Local change is enough for offline demo rows.
+		const id = String(request.id);
+		if (!id.startsWith("demo-") && !id.startsWith("local-")) {
+			try {
+				await api.patch(`/portal/schedule-requests/${id}`, { status });
+			} catch {
+				// Local change is enough for offline demo rows.
+			}
 		}
 		toast.success(`Request ${status}.`);
 	};
