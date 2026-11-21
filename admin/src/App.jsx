@@ -18,6 +18,9 @@ import AddDoctor from "./pages/Admin/AddDoctor";
 import DoctorsList from "./pages/Admin/DoctorsList";
 import Patients from "./pages/Admin/Patients";
 import PatientDetails from "./pages/Admin/PatientDetails";
+import Orders from "./pages/Admin/Orders";
+import Messages from "./pages/Admin/Messages";
+import Schedule from "./pages/Admin/Schedule";
 import NotFound from "./pages/NotFound";
 
 // Renders the App UI.
@@ -62,6 +65,9 @@ const App = () => {
 						<Route path="/doctor-list" element={<DoctorsList />} />
 						<Route path="/patients" element={<Patients />} />
 						<Route path="/patients/:patientId" element={<PatientDetails />} />
+						<Route path="/orders" element={<Orders />} />
+						<Route path="/messages" element={<Messages />} />
+						<Route path="/schedule" element={<Schedule />} />
 						<Route path="/announcements" element={<Announcements />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>

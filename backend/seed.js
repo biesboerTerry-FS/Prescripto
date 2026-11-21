@@ -21,6 +21,7 @@ import adminModel from "./models/adminModel.js";
 import doctorModel from "./models/doctorModel.js";
 import userModel from "./models/userModel.js";
 import appointmentModel from "./models/appointmentModel.js";
+import { messageModel, scheduleRequestModel } from "./models/portalModel.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEMO_PASSWORD = "Demo123456";
@@ -192,6 +193,110 @@ const seedAppointments = async (users, doctors) => {
 	console.log(`appointments: ${created} created for ${demo.email}`);
 };
 
+// Seeds a small demo inbox and a couple of schedule requests for the shared
+// admin/staff portal. Matched by role+subject/type+date so re-runs are safe.
+const seedPortalDemo = async () => {
+	const day = 24 * 60 * 60 * 1000;
+	const ago = (days) => new Date(Date.now() - days * day);
+	const ahead = (days) => new Date(Date.now() + days * day).toISOString().slice(0, 10);
+
+	const inbox = [
+		{
+			role: "admin",
+			subject: "Weekly operations summary",
+			body: "Bookings are up this week. Three doctors have updated their availability — review the doctor list before the weekend.",
+			sender: "Clinic System",
+			senderRole: "system",
+			daysAgo: 1,
+		},
+		{
+			role: "admin",
+			subject: "Patient feedback: smooth booking",
+			body: "A patient left a note saying the new online booking flow was quick and easy. Sharing with the team for visibility.",
+			sender: "Demo Patient",
+			senderRole: "patient",
+			daysAgo: 3,
+		},
+		{
+			role: "admin",
+			subject: "Time-off request pending",
+			body: "Dr. Richard James requested time off next week. Open the Schedule page to review the request.",
+			sender: "Dr. Richard James",
+			senderRole: "staff",
+			daysAgo: 5,
+		},
+		{
+			role: "staff",
+			subject: "Your shift schedule is published",
+			body: "Next week's clinic roster is available. Let the admin team know if any slot conflicts with your plans.",
+			sender: "Clinic Coordinator",
+			senderRole: "system",
+			daysAgo: 1,
+		},
+		{
+			role: "staff",
+			subject: "Reminder: update your availability",
+			body: "Please keep your availability current so patients only see bookable slots.",
+			sender: "Clinic System",
+			senderRole: "system",
+			daysAgo: 4,
+		},
+	];
+	for (const item of inbox) {
+		await messageModel.updateOne(
+			{ role: item.role, subject: item.subject },
+			{
+				$set: {
+					body: item.body,
+					sender: item.sender,
+					senderRole: item.senderRole,
+					createdAt: ago(item.daysAgo),
+				},
+				$setOnInsert: { role: item.role, subject: item.subject, read: false },
+			},
+			{ upsert: true }
+		);
+	}
+
+	const staff = await doctorModel.findOne({ email: "richard.james@prescripto.com" });
+	const requests = [
+		{
+			type: "time-off",
+			requester: "Dr. Richard James",
+			date: ahead(6),
+			reason: "Annual leave — covering doctor arranged.",
+		},
+		{
+			type: "schedule-change",
+			requester: "Dr. Richard James",
+			date: ahead(9),
+			reason: "Prefer afternoon clinics on this day.",
+		},
+	];
+	for (const item of requests) {
+		await scheduleRequestModel.updateOne(
+			{
+				type: item.type,
+				date: item.date,
+				doctorId: staff ? staff._id.toString() : "demo-staff",
+			},
+			{
+				$set: { requester: item.requester, reason: item.reason },
+				$setOnInsert: {
+					type: item.type,
+					date: item.date,
+					role: "staff",
+					doctorId: staff ? staff._id.toString() : "demo-staff",
+					status: "pending",
+					createdAt: ago(2),
+				},
+			},
+			{ upsert: true }
+		);
+	}
+	console.log("portal demo messages and schedule requests ready");
+};
+
 // Orchestrates the full seed: connect, seed entities, print summary, then disconnect.
 const seed = async () => {
 	const ok = await connectDB();
@@ -204,6 +309,7 @@ const seed = async () => {
 	const doctors = await seedDoctors();
 	const users = await seedPatients();
 	await seedAppointments(users, doctors);
+	await seedPortalDemo();
 
 	console.log("\nSeed complete.");
 	console.log(`  admin:   ${process.env.ADMIN_EMAIL}  (password from ADMIN_PASSWORD)`);

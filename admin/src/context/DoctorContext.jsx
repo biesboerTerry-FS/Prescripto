@@ -116,6 +116,8 @@ const DoctorContextProvider = (props) => {
 			if (data.success && data.token) {
 				localStorage.removeItem(LOCAL_STAFF_KEY);
 				localStorage.removeItem(LOCAL_STAFF_MODE);
+				// Never keep an admin session around during a staff session.
+				localStorage.removeItem("adminToken");
 				setDoctorToken(data.token);
 				setDoctor(data.doctor || null);
 				return { success: true };
@@ -129,6 +131,7 @@ const DoctorContextProvider = (props) => {
 				const local = readLocalStaff();
 				writeLocalStaff(local.profile, local.appointments);
 				localStorage.setItem(LOCAL_STAFF_MODE, "true");
+				localStorage.removeItem("adminToken");
 				setDoctorToken(LOCAL_STAFF_TOKEN);
 				setDoctor(local.profile);
 				setAppointments(local.appointments || []);

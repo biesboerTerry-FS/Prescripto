@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DoctorContext } from "../../context/DoctorContext";
 import { assets } from "../../assets/assets";
+import PendingOrders from "../../components/PendingOrders";
+import OrdersPanel from "../../components/OrdersPanel";
+import MessagesPanel from "../../components/MessagesPanel";
+import SchedulePanel from "../../components/SchedulePanel";
+
+const STAFF_TABS = [
+	["home", "My profile"],
+	["orders", "Orders"],
+	["messages", "Messages"],
+	["schedule", "Schedule"],
+];
 
 const formatAddress = (address) => {
 	if (!address) return "Not provided";
@@ -14,6 +25,10 @@ const formatAddress = (address) => {
 // own basic details, availability and upcoming appointments. No admin data.
 const StaffPortal = () => {
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const tab = STAFF_TABS.some(([key]) => key === searchParams.get("tab"))
+		? searchParams.get("tab")
+		: "home";
 	const {
 		doctor,
 		appointments,
@@ -110,6 +125,26 @@ const StaffPortal = () => {
 					</p>
 				</header>
 
+				<nav className="flex flex-wrap gap-2 mb-6" aria-label="Staff portal sections">
+					{STAFF_TABS.map(([key, label]) => (
+						<button
+							key={key}
+							type="button"
+							onClick={() => setSearchParams({ tab: key })}
+							aria-current={tab === key ? "page" : undefined}
+							className={`px-4 py-2 text-sm font-medium rounded-full ${
+								tab === key
+									? "bg-primary text-white"
+									: "border border-slate-300 text-slate-600 hover:bg-slate-50"
+							}`}
+						>
+							{label}
+						</button>
+					))}
+				</nav>
+
+				{tab === "home" && (
+				<>
 				<section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
 					<div className="flex flex-col gap-5 sm:flex-row sm:items-start">
 						{doctor?.image ? (
@@ -250,6 +285,30 @@ const StaffPortal = () => {
 						)}
 					</ul>
 				</section>
+
+				<PendingOrders
+					appointments={appointments}
+					to="/staff?tab=orders"
+					title="Pending orders"
+				/>
+				</>
+				)}
+
+				{tab === "orders" && (
+					<OrdersPanel role="staff" appointments={appointments} />
+				)}
+				{tab === "messages" && (
+					<MessagesPanel role="staff" senderName={doctor?.name || "Staff member"} />
+				)}
+				{tab === "schedule" && (
+					<SchedulePanel
+						role="staff"
+						appointments={appointments}
+						availability={Boolean(doctor?.available)}
+						onToggleAvailability={toggleAvailability}
+						requesterName={doctor?.name || "Staff member"}
+					/>
+				)}
 			</main>
 		</div>
 	);

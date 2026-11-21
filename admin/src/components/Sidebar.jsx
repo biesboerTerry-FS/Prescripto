@@ -88,6 +88,30 @@ const Sidebar = () => {
 					</li>
 					<li className="mt-4 pt-3 border-t border-slate-100">
 						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+							Workspace
+						</p>
+					</li>
+					{[
+						["/orders", "Orders", assets.list_icon],
+						["/messages", "Messages", assets.announcement_icon],
+						["/schedule", "Schedule", assets.appointment_icon],
+					].map(([to, label, icon]) => (
+						<li key={to}>
+							<NavLink
+								className={({ isActive }) =>
+									`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
+										isActive ? "bg-teal-50 border-r-4 border-primary" : ""
+									}`
+								}
+								to={to}
+							>
+								<img src={icon} alt="" />
+								<p>{label}</p>
+							</NavLink>
+						</li>
+					))}
+					<li className="mt-4 pt-3 border-t border-slate-100">
+						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
 							Communication
 						</p>
 					</li>

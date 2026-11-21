@@ -10,7 +10,11 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
 	const adminToken = localStorage.getItem("adminToken");
 	const doctorToken = localStorage.getItem("doctorToken");
-	if (doctorToken && config.url?.startsWith("/doctor/")) {
+	const staffRoute =
+		config.url?.startsWith("/doctor/") ||
+		config.url?.startsWith("/appointment/") ||
+		config.url?.startsWith("/portal/");
+	if (doctorToken && staffRoute) {
 		config.headers.doctortoken = doctorToken;
 	} else if (adminToken) {
 		config.headers.adminToken = adminToken;

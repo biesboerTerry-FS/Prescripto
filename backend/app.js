@@ -10,6 +10,8 @@ import connectCloudinary from "./configs/cloudinary.js";
 import adminRouter from "./routes/adminRoute.js";
 import doctorRouter from "./routes/doctorRoute.js";
 import userRouter from "./routes/userRoute.js";
+import appointmentRouter from "./routes/appointmentRoute.js";
+import portalRouter from "./routes/portalRoute.js";
 
 // fail fast in production instead of starting half-configured
 const required = ["MONGO_URI", "JWT_SECRET"];
@@ -107,6 +109,8 @@ app.use(
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/user", userRouter);
+app.use("/api/appointment", appointmentRouter);
+app.use("/api/portal", portalRouter);
 
 // Simple root endpoint so uptime checks or humans can confirm the API process is alive.
 app.get("/", (req, res) => {

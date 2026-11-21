@@ -3,6 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import { assets } from "../../assets/assets";
 import BarList from "../../components/BarList";
 import { LatestBulletin } from "../../components/Announcements";
+import PendingOrders from "../../components/PendingOrders";
 
 // Helper that formats a currency amount for display.
 const formatMoney = (value) =>
@@ -49,11 +50,13 @@ const StatusBadge = ({ item }) => {
 
 // Renders the Dashboard view.
 const Dashboard = () => {
-	const { dashboard, getDashboard, adminToken } = useContext(AdminContext);
+	const { dashboard, getDashboard, adminToken, appointments, getAllAppointments } =
+		useContext(AdminContext);
 
 	useEffect(() => {
 		if (adminToken) {
 			getDashboard();
+			getAllAppointments();
 		}
 	}, [adminToken]);
 
@@ -95,6 +98,8 @@ const Dashboard = () => {
 			</div>
 
 			<LatestBulletin />
+
+			<PendingOrders appointments={appointments} to="/orders" />
 
 			<div className="grid grid-cols-1 gap-6 mt-8 xl:grid-cols-3">
 				<div className="xl:col-span-1">
