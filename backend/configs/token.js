@@ -5,9 +5,13 @@ import jwt from "jsonwebtoken";
 // after JWT_EXPIRES_IN (default 7 days) instead of never expiring.
 const getExpiry = () => process.env.JWT_EXPIRES_IN || "7d";
 
-/** Creates a signed JWT for a patient/user id with the configured expiry. */
+/**
+ * Creates a signed JWT for a patient/user id with the configured expiry.
+ * The `role` claim keeps patient tokens distinct from doctor/admin tokens, so
+ * authUser can reject a privileged token presented on a patient route.
+ */
 export const createToken = (userId) =>
-	jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+	jwt.sign({ id: userId, role: "user" }, process.env.JWT_SECRET, {
 		expiresIn: getExpiry(),
 	});
 

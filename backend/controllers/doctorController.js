@@ -54,15 +54,22 @@ const doctorList = async (request, response) => {
  */
 const loginDoctor = async (request, response) => {
 	try {
-		const { email, password } = request.body;
-		if (!email || !password) {
-			return response.json({
+		const { email, password } = request.body || {};
+		if (
+			typeof email !== "string" ||
+			typeof password !== "string" ||
+			!email.trim() ||
+			!password ||
+			email.length > 254 ||
+			password.length > 128
+		) {
+			return response.status(400).json({
 				success: false,
-				message: "Email and password are required",
+				message: "A valid email and password are required",
 			});
 		}
 
-		const doctor = await doctorModel.findOne({ email });
+		const doctor = await doctorModel.findOne({ email: email.trim().toLowerCase() });
 		const passwordMatch = doctor && (await bcrypt.compare(password, doctor.password));
 		if (!passwordMatch) {
 			return response.json({

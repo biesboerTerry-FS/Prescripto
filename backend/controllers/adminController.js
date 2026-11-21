@@ -99,12 +99,29 @@ const addDoctor = async (request, response) => {
  */
 const loginAdmin = async (request, response) => {
 	try {
-		const { email, password } = request.body;
+		const { email, password } = request.body || {};
+		const invalid = () =>
+			response.status(400).json({
+				success: false,
+				message: "A valid email and password are required",
+			});
+		if (
+			typeof email !== "string" ||
+			typeof password !== "string" ||
+			!email.trim() ||
+			!password ||
+			email.length > 254 ||
+			password.length > 128 ||
+			!validator.isEmail(email)
+		) {
+			return invalid();
+		}
 
-		const admin = await adminModel.findOne({ email });
+		const normalizedEmail = email.trim().toLowerCase();
+		const admin = await adminModel.findOne({ email: normalizedEmail });
 		const dbMatch = admin && (await bcrypt.compare(password, admin.password));
 		const envMatch =
-			email === process.env.ADMIN_EMAIL &&
+			normalizedEmail === (process.env.ADMIN_EMAIL || "").trim().toLowerCase() &&
 			password === process.env.ADMIN_PASSWORD;
 
 		if (dbMatch || envMatch) {

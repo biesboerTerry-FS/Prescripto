@@ -18,6 +18,16 @@ if (process.env.NODE_ENV === "production" && missing.length) {
 	console.error(`Missing required environment variables: ${missing.join(", ")}`);
 	process.exit(1);
 }
+// A short or placeholder JWT secret can be brute-forced offline from a single
+// captured token. Never start production with one; log only the problem, not
+// the secret value itself.
+if (process.env.NODE_ENV === "production") {
+	const secret = process.env.JWT_SECRET || "";
+	if (secret.length < 32 || /^(change-?me|secret|password|test)$/i.test(secret)) {
+		console.error("JWT_SECRET is too weak: use at least 32 random characters (e.g. `openssl rand -hex 32`).");
+		process.exit(1);
+	}
+}
 if (!process.env.CORS_ORIGIN) {
 	console.warn("CORS_ORIGIN is not set, so any origin can call the API. Set it in production.");
 }

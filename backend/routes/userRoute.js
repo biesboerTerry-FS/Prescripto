@@ -32,10 +32,13 @@ userRouter.post("/oauth-google-demo", demoOAuthLogin);
 userRouter.post("/clerk-sync", clerkSync);
 userRouter.post("/refresh", authUser, refreshToken);
 userRouter.get("/get-profile", authUser, getProfile);
+// Authenticate BEFORE multer so unauthenticated callers cannot make the server
+// parse/accept an upload. authUser stores the id on request.userId as well,
+// because multer replaces request.body with the parsed multipart fields.
 userRouter.put(
 	"/update-profile",
-	upload.single("image"),
 	authUser,
+	upload.single("image"),
 	updateProfile
 );
 userRouter.post("/book-appointment", authUser, bookAppointment);

@@ -27,7 +27,7 @@ const registerUser = async (request, response) => {
 				message: "Missing details",
 			});
 		}
-		if (password.length < 8) {
+		if (password.length < 8 || name.length > 120 || password.length > 128) {
 			return response.json({
 				success: false,
 				message: "Please enter a stronger password",
@@ -68,8 +68,24 @@ const registerUser = async (request, response) => {
  */
 const loginUser = async (request, response) => {
 	try {
-		const { email, password } = request.body;
-		const user = await userModel.findOne({ email: email });
+		const { email, password } = request.body || {};
+		const invalid = () =>
+			response.status(400).json({
+				success: false,
+				message: "A valid email and password are required",
+			});
+		if (
+			typeof email !== "string" ||
+			typeof password !== "string" ||
+			!email.trim() ||
+			!password ||
+			email.length > 254 ||
+			password.length > 128 ||
+			!validator.isEmail(email)
+		) {
+			return invalid();
+		}
+		const user = await userModel.findOne({ email: email.trim().toLowerCase() });
 
 		// ^ if no user than this statement is executed
 		if (!user) {
@@ -127,22 +143,63 @@ const getProfile = async (request, response) => {
  */
 const updateProfile = async (request, response) => {
 	try {
-		const { userId, name, phone, address, dob, gender } = request.body;
+		// authUser runs before multer, which replaces request.body with the
+		// multipart fields, so the trusted id lives on request.userId.
+		const userId = request.userId || request.body?.userId;
+		const { name, phone, address, dob, gender } = request.body || {};
 		const imageFile = request.file;
 
-		if (!name || !phone || !dob || !gender) {
-			return response.json({
-				success: false,
-				message: "Data missing",
-			});
+		const invalid = (message) => response.status(400).json({ success: false, message });
+		if (
+			typeof name !== "string" ||
+			!name.trim() ||
+			name.length > 120 ||
+			typeof phone !== "string" ||
+			!phone.trim() ||
+			phone.length > 40 ||
+			typeof dob !== "string" ||
+			!dob.trim() ||
+			dob.length > 20 ||
+			typeof gender !== "string" ||
+			!gender.trim() ||
+			gender.length > 20
+		) {
+			return invalid("Data missing or invalid");
+		}
+
+		// The web form sends `address` as a JSON string; mobile clients may
+		// send an object. Accept both, but only keep known text fields so that
+		// arbitrary keys (e.g. __proto__) cannot reach the database.
+		let suppliedAddress = address;
+		if (typeof suppliedAddress === "string") {
+			try {
+				suppliedAddress = JSON.parse(suppliedAddress);
+			} catch {
+				return invalid("Enter a valid address");
+			}
+		}
+		if (!suppliedAddress || typeof suppliedAddress !== "object" || Array.isArray(suppliedAddress)) {
+			return invalid("Enter a valid address");
+		}
+		const cleanAddress = {};
+		for (const key of ["line1", "line2"]) {
+			const value = suppliedAddress[key];
+			if (value === undefined) {
+				cleanAddress[key] = "";
+				continue;
+			}
+			if (typeof value !== "string" || value.length > 160) {
+				return invalid("Address lines must be short text values");
+			}
+			cleanAddress[key] = value.trim();
 		}
 
 		await userModel.findByIdAndUpdate(userId, {
-			name,
-			phone,
-			address: JSON.parse(address),
-			dob,
-			gender,
+			name: name.trim(),
+			phone: phone.trim(),
+			address: cleanAddress,
+			dob: dob.trim(),
+			gender: gender.trim(),
 		});
 
 		if (imageFile) {
@@ -524,8 +581,9 @@ const clerkSync = async (request, response) => {
 		const token = createToken(user._id);
 		response.json({ success: true, token });
 	} catch (error) {
-		console.log(error);
-		response.json({ success: false, message: error.message || "Clerk sign-in failed." });
+		// Clerk verification errors can reference the presented token — keep the
+		// response generic so nothing about the session token leaks back.
+		response.status(401).json({ success: false, message: "Clerk sign-in failed." });
 	}
 };
 
