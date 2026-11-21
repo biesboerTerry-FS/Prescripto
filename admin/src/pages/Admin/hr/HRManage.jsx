@@ -231,6 +231,7 @@ const HRManage = () => {
 					<thead className="text-xs font-semibold uppercase tracking-wide text-slate-500 bg-slate-50">
 						<tr>
 							<th className="px-4 py-3">Name</th>
+							<th className="px-4 py-3">Email</th>
 							<th className="px-4 py-3">Role</th>
 							<th className="px-4 py-3">Department</th>
 							<th className="px-4 py-3">Rate</th>
@@ -243,8 +244,9 @@ const HRManage = () => {
 							const id = String(row.id || row._id);
 							const rowStatus = row.hrStatus || row.status || "active";
 							return (
-								<tr key={id} data-testid="hr-manage-row">
+								<tr key={id} data-testid="hr-manage-row" data-email={row.email}>
 									<td className="px-4 py-3 font-medium text-slate-800">{row.name}</td>
+									<td className="px-4 py-3 text-slate-600">{row.email}</td>
 									<td className="px-4 py-3 text-slate-600">{row.hrRole || row.specialty}</td>
 									<td className="px-4 py-3 text-slate-600">{row.department || "—"}</td>
 									<td className="px-4 py-3 text-slate-600">{formatMoney(row.fees ?? row.rate)}</td>
@@ -284,7 +286,7 @@ const HRManage = () => {
 						})}
 						{staff.length === 0 && (
 							<tr>
-								<td colSpan={6} className="px-4 py-10 text-center text-slate-500">
+								<td colSpan={7} className="px-4 py-10 text-center text-slate-500">
 									{loading ? "Loading staff…" : "No staff yet."}
 								</td>
 							</tr>

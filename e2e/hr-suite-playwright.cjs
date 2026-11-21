@@ -34,7 +34,7 @@ const QA_ROLE = `QA Role ${stamp}`;
     const response = await unauth.request.get(`${API_URL}/api/admin/hr/staff`);
     check("HR API rejects requests without an admin token", response.status() === 401, `status ${response.status()}`);
     const doctorList = await (await unauth.request.get(`${API_URL}/api/doctor/list`)).json();
-    check("public doctor browse still works", doctorList.success && doctorList.doctors.length === 60, `${doctorList.doctors?.length} doctors`);
+    check("public doctor browse still works", doctorList.success && doctorList.doctors.length >= 60, `${doctorList.doctors?.length} doctors`);
     await unauth.close();
 
     // --- Admin login and HR nav -----------------------------------------
@@ -88,11 +88,12 @@ const QA_ROLE = `QA Role ${stamp}`;
     await admin.getByTestId("hr-staff-address1").fill("9 Harbour Street");
     await admin.getByTestId("hr-staff-rate").fill("65");
     await admin.getByTestId("hr-add-staff").click();
-    await admin.getByText("Dr. Priya Raman", { exact: true }).first().waitFor({ timeout: 30000 });
-    check("admin can add staff", (await admin.getByText("Dr. Priya Raman", { exact: true }).count()) > 0);
+    // The unique email identifies this run's row even if earlier QA runs exist.
+    const newRow = admin.locator(`[data-testid="hr-manage-row"][data-email="${QA_EMAIL}"]`);
+    await newRow.waitFor({ timeout: 30000 });
+    check("admin can add staff", (await newRow.count()) === 1);
 
-    // Find the new row and its id from the edit button test id.
-    const newRow = admin.getByTestId("hr-manage-row").filter({ hasText: "Dr. Priya Raman" }).first();
+    // Find the row's id from the edit button test id.
     const newIdAttr = await newRow.locator('[data-testid^="hr-edit-staff-"]').getAttribute("data-testid");
     const newId = newIdAttr.replace("hr-edit-staff-", "");
     check("new staff has a detail/edit id", Boolean(newId), newId || "none");
@@ -104,11 +105,11 @@ const QA_ROLE = `QA Role ${stamp}`;
     await admin.waitForTimeout(1200);
     check("admin can edit staff", (await admin.getByTestId("hr-staff-form").getByTestId("hr-staff-name").inputValue()) === "");
 
-    check("edited staff record is retained", (await admin.getByTestId("hr-manage-row").filter({ hasText: "Dr. Priya Raman" }).count()) > 0);
+    check("edited staff record is retained", (await newRow.count()) === 1);
 
     await admin.getByTestId(`hr-deactivate-staff-${newId}`).click();
-    await admin.waitForTimeout(1200);
-    check("admin can deactivate staff (no delete)", (await admin.getByTestId(`hr-activate-staff-${newId}`).count()) === 1 && (await admin.getByTestId("hr-manage-row")).count() >= 1);
+    await admin.getByTestId(`hr-activate-staff-${newId}`).waitFor({ timeout: 20000 });
+    check("admin can deactivate staff (no delete)", (await newRow.count()) === 1 && (await admin.getByTestId(`hr-activate-staff-${newId}`).count()) === 1);
 
     // --- Roles & departments --------------------------------------------
     await admin.getByRole("link", { name: "Roles & departments", exact: true }).click();
