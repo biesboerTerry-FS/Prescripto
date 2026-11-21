@@ -44,32 +44,58 @@ const MyProfile = () => {
 		userData && (
 			<div className="flex flex-col max-w-lg gap-2 text-sm">
 				{isEdit ? (
-					<label htmlFor="image">
-						<div className="relative inline-block cursor-pointer">
-							<img
-								className="rounded opacity-75 w-36"
-								src={
-									image
-										? URL.createObjectURL(image)
-										: userData.image
-								}
-								alt=""
-							/>
-							<img
-								className="absolute w-10 bottom-12 right-12"
-								src={image ? "" : assets.upload_icon}
-								alt=""
-							/>
-						</div>
+					<div className="flex items-start gap-3">
+						<label
+							htmlFor="image"
+							className="cursor-pointer"
+							aria-label="Change profile photo"
+						>
+							<div className="relative inline-block cursor-pointer">
+								<img
+									className="rounded opacity-75 w-36"
+									src={userData.image}
+									alt=""
+								/>
+								<img
+									className="absolute w-10 bottom-12 right-12"
+									src={assets.upload_icon}
+									alt=""
+								/>
+							</div>
+						</label>
+						{image && (
+							<ul className="flex flex-wrap gap-3 m-0 p-0 list-none">
+								<li className="flex flex-col items-center gap-1">
+									<img
+										className="w-20 h-20 object-cover rounded-full border border-slate-200"
+										src={URL.createObjectURL(image)}
+										alt={image.name}
+									/>
+									<button
+										type="button"
+										className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-teal-50 text-primary hover:bg-teal-100"
+										onClick={() => setImage(false)}
+										aria-label={`Remove ${image.name}`}
+									>
+										Remove
+									</button>
+								</li>
+							</ul>
+						)}
 						<input
-							onChange={(e) => setImage(e.target.files[0])}
+							onChange={(e) => {
+								const file = e.target.files?.[0];
+								if (file) setImage(file);
+								// Reset so the same file can be picked again.
+								e.target.value = "";
+							}}
 							type="file"
 							id="image"
 							accept="image/*"
 							aria-label="Profile photo"
 							hidden
 						/>
-					</label>
+					</div>
 				) : (
 					<img
 						className="rounded-full w-36"

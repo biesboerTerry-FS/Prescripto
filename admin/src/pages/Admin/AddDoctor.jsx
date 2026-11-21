@@ -73,25 +73,52 @@ const AddDoctor = () => {
 			<p className="mb-3 text-lg font-medium">Add Doctor</p>
 			<div className="flex flex-col flex-1 min-h-0 w-full max-w-4xl bg-white border rounded">
 				<div className="flex-1 min-h-0 overflow-y-auto px-8 py-8" tabIndex={0}>
-				<div className="flex items-center gap-4 mb-8 text-gray-500">
-					<label htmlFor="doctorImage">
-						<img
-							className="w-16 bg-gray-100 rounded-full cursor-pointer"
-							src={
-								doctorImage
-									? URL.createObjectURL(doctorImage)
-									: assets.upload_area
-							}
-							alt=""
-						/>
-					</label>
+				<div className="flex items-start gap-4 mb-8 text-gray-500">
+					<div className="flex flex-col items-center gap-1">
+						<label
+							htmlFor="doctorImage"
+							className="cursor-pointer"
+							aria-label="Upload photo"
+						>
+							<img
+								className="w-16 bg-gray-100 rounded-full cursor-pointer"
+								src={assets.upload_area}
+								alt=""
+							/>
+						</label>
+						<p className="text-xs">Upload photo</p>
+					</div>
+					{doctorImage && (
+						<ul className="flex flex-wrap gap-3 m-0 p-0 list-none">
+							<li className="flex flex-col items-center gap-1">
+								<img
+									className="w-16 h-16 object-cover rounded-full border border-slate-200"
+									src={URL.createObjectURL(doctorImage)}
+									alt={doctorImage.name}
+								/>
+								<button
+									type="button"
+									className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-teal-50 text-primary hover:bg-teal-100"
+									onClick={() => setDoctorImage(false)}
+									aria-label={`Remove ${doctorImage.name}`}
+								>
+									Remove
+								</button>
+							</li>
+						</ul>
+					)}
 					<input
-						onChange={(e) => setDoctorImage(e.target.files[0])}
+						onChange={(e) => {
+							const file = e.target.files?.[0];
+							if (file) setDoctorImage(file);
+							// Reset so the same file can be picked again.
+							e.target.value = "";
+						}}
 						type="file"
 						id="doctorImage"
+						accept="image/*"
 						hidden
 					/>
-					<p>Upload photo</p>
 				</div>
 
 				<div className="flex flex-col items-start gap-10 text-gray-600 lg:flex-row">
