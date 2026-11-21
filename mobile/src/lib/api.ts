@@ -87,6 +87,25 @@ export async function getProfile(token: string) {
 	return data.userData;
 }
 
+// Helper that save the patient's basic profile details. The server route is
+// PUT /api/user/update-profile and it accepts JSON for clients without a file.
+export async function updateProfile(
+	token: string,
+	fields: {
+		name: string;
+		phone: string;
+		address: { line1: string; line2: string };
+		dob: string;
+		gender: string;
+	}
+) {
+	await request<{ message: string }>("/api/user/update-profile", {
+		method: "PUT",
+		token,
+		body: fields,
+	});
+}
+
 // Helper that get appointments.
 export async function getAppointments(token: string) {
 	const data = await request<{ appointments: Appointment[] }>("/api/user/appointments", {

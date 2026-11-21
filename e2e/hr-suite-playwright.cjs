@@ -45,6 +45,9 @@ const QA_ROLE = `QA Role ${stamp}`;
     await admin.getByTestId("hr-nav-group").waitFor({ timeout: 30000 });
     check("demo admin login reaches admin layout", admin.url().includes("admin-dashboard"), admin.url());
     check("HR nav group is present", (await admin.getByTestId("hr-nav-group").innerText()).trim() === "HR");
+    // Sidebar categories are collapsed by default; expand HR before using its links.
+    check("HR links hidden while collapsed", (await admin.getByRole("link", { name: "Payroll", exact: true }).count()) === 0);
+    await admin.getByTestId("sidebar-category-hr-nav-group").click();
     for (const label of ["Staff directory", "Staff management", "Roles & departments", "Payroll", "Time-off approvals", "Performance notes"]) {
       check(`HR nav link: ${label}`, await admin.getByRole("link", { name: label, exact: true }).isVisible());
     }

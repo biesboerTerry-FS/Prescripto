@@ -5,11 +5,14 @@ import { Button, Card, EmptyState } from "@/components/ui";
 import { ApiError, bookAppointment, getDoctors } from "@/lib/api";
 import { buildAvailableDays, DAY_LABELS, type DaySlots, type TimeSlot } from "@/lib/slots";
 import { useSession } from "@/lib/session";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import type { ThemeColors } from "@/lib/theme";
 import type { Doctor } from "@/lib/types";
 
 // Screen component for doctor detail in the mobile app.
 export default function DoctorDetailScreen() {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const { token } = useSession();
 	const [doctor, setDoctor] = useState<Doctor | null>(null);
@@ -46,14 +49,14 @@ export default function DoctorDetailScreen() {
 	};
 
 	if (loading) {
-		return <ActivityIndicator style={styles.loader} color={colors.primary} />;
+		return <ActivityIndicator style={styles.loader} color={theme.primary} />;
 	}
 	if (!doctor) {
 		return <EmptyState title="Doctor not found" body="This doctor may have been removed." />;
 	}
 
 	return (
-		<ScrollView contentContainerStyle={styles.content}>
+		<ScrollView style={styles.screen} contentContainerStyle={styles.content}>
 			<Card style={styles.profile}>
 				<Image source={{ uri: doctor.image }} style={styles.photo} />
 				<Text style={styles.name}>{doctor.name}</Text>
@@ -126,49 +129,51 @@ export default function DoctorDetailScreen() {
 	);
 }
 
-const styles = StyleSheet.create({
-	content: { padding: 16, gap: 12, paddingBottom: 40 },
-	loader: { marginTop: 48 },
-	profile: { alignItems: "center", gap: 6, padding: 20 },
-	photo: { width: 120, height: 120, borderRadius: 60, backgroundColor: colors.primarySoft },
-	name: { fontSize: 20, fontWeight: "700", color: colors.text, marginTop: 8 },
-	meta: { fontSize: 14, color: colors.textMuted },
-	pills: { flexDirection: "row", gap: 8, marginTop: 4 },
-	pill: {
-		fontSize: 12,
-		color: colors.primary,
-		backgroundColor: colors.primarySoft,
-		paddingHorizontal: 10,
-		paddingVertical: 4,
-		borderRadius: 999,
-		overflow: "hidden",
-	},
-	about: { fontSize: 14, lineHeight: 21, color: colors.textMuted, textAlign: "center", marginTop: 8 },
-	section: { fontSize: 16, fontWeight: "700", color: colors.text, marginTop: 8 },
-	dayRow: { gap: 8, paddingVertical: 4 },
-	dayChip: {
-		width: 60,
-		paddingVertical: 10,
-		borderRadius: 14,
-		borderWidth: 1,
-		borderColor: colors.border,
-		alignItems: "center",
-		backgroundColor: colors.surface,
-	},
-	dayChipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-	dayName: { fontSize: 11, color: colors.textMuted, fontWeight: "600" },
-	dayNumber: { fontSize: 18, color: colors.text, fontWeight: "700", marginTop: 2 },
-	onActive: { color: "#fff" },
-	slotGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-	slot: {
-		paddingHorizontal: 14,
-		paddingVertical: 10,
-		borderRadius: 999,
-		borderWidth: 1,
-		borderColor: colors.border,
-		backgroundColor: colors.surface,
-	},
-	slotActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-	slotLabel: { fontSize: 13, color: colors.textMuted, fontWeight: "500" },
-	confirm: { marginTop: 16 },
-});
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+		screen: { flex: 1, backgroundColor: theme.background },
+		content: { padding: 16, gap: 12, paddingBottom: 40, backgroundColor: theme.background },
+		loader: { marginTop: 48 },
+		profile: { alignItems: "center", gap: 6, padding: 20 },
+		photo: { width: 120, height: 120, borderRadius: 60, backgroundColor: theme.primarySoft },
+		name: { fontSize: 20, fontWeight: "700", color: theme.text, marginTop: 8 },
+		meta: { fontSize: 14, color: theme.textMuted },
+		pills: { flexDirection: "row", gap: 8, marginTop: 4 },
+		pill: {
+			fontSize: 12,
+			color: theme.primary,
+			backgroundColor: theme.primarySoft,
+			paddingHorizontal: 10,
+			paddingVertical: 4,
+			borderRadius: 999,
+			overflow: "hidden",
+		},
+		about: { fontSize: 14, lineHeight: 21, color: theme.textMuted, textAlign: "center", marginTop: 8 },
+		section: { fontSize: 16, fontWeight: "700", color: theme.text, marginTop: 8 },
+		dayRow: { gap: 8, paddingVertical: 4 },
+		dayChip: {
+			width: 60,
+			paddingVertical: 10,
+			borderRadius: 14,
+			borderWidth: 1,
+			borderColor: theme.border,
+			alignItems: "center",
+			backgroundColor: theme.surface,
+		},
+		dayChipActive: { backgroundColor: theme.primary, borderColor: theme.primary },
+		dayName: { fontSize: 11, color: theme.textMuted, fontWeight: "600" },
+		dayNumber: { fontSize: 18, color: theme.text, fontWeight: "700", marginTop: 2 },
+		onActive: { color: theme.onPrimary },
+		slotGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+		slot: {
+			paddingHorizontal: 14,
+			paddingVertical: 10,
+			borderRadius: 999,
+			borderWidth: 1,
+			borderColor: theme.border,
+			backgroundColor: theme.surface,
+		},
+		slotActive: { backgroundColor: theme.primary, borderColor: theme.primary },
+		slotLabel: { fontSize: 13, color: theme.textMuted, fontWeight: "500" },
+		confirm: { marginTop: 16 },
+	});

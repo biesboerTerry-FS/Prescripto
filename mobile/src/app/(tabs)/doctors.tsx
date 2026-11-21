@@ -1,15 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
-import { DoctorCard } from "@/components/DoctorCard";
 import { SpecialtyChips } from "@/components/SpecialtyChips";
 import { EmptyState } from "@/components/ui";
 import { getDoctors } from "@/lib/api";
-import { colors, SPECIALTIES } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import { SPECIALTIES, type ThemeColors } from "@/lib/theme";
 import type { Doctor } from "@/lib/types";
 
 // Screen component for doctors in the mobile app.
 export default function DoctorsScreen() {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const params = useLocalSearchParams<{ specialty?: string }>();
 	const [selected, setSelected] = useState<string | null>(null);
 	const [query, setQuery] = useState("");
@@ -49,9 +51,8 @@ export default function DoctorsScreen() {
 		<FlatList
 			data={visible}
 			keyExtractor={(item) => item._id}
-			numColumns={2}
+			style={styles.list}
 			contentContainerStyle={styles.content}
-			columnWrapperStyle={styles.column}
 			ListHeaderComponent={
 				<View style={styles.header}>
 					<Text style={styles.heading}>Browse by specialty</Text>
@@ -71,7 +72,7 @@ export default function DoctorsScreen() {
 			}
 			ListEmptyComponent={
 				loading ? (
-					<ActivityIndicator style={styles.loader} color={colors.primary} />
+					<ActivityIndicator style={styles.loader} color={theme.primary} />
 				) : (
 					<EmptyState
 						title={error ? "Can't load doctors" : "No doctors in this specialty"}
@@ -80,27 +81,63 @@ export default function DoctorsScreen() {
 				)
 			}
 			renderItem={({ item }) => (
-				<DoctorCard doctor={item} onPress={() => router.push(`/doctor/${item._id}`)} />
+				<Pressable
+					accessibilityRole="button"
+					accessibilityLabel={`${item.name}, ${item.specialty}`}
+					onPress={() => router.push(`/doctor/${item._id}`)}
+					style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+				>
+					<Image source={{ uri: item.image }} style={styles.image} />
+					<View style={styles.info}>
+						<Text style={styles.name} numberOfLines={1}>
+							{item.name}
+						</Text>
+						<Text style={styles.specialty} numberOfLines={1}>
+							{item.specialty}
+						</Text>
+						<Text style={styles.meta} numberOfLines={1}>
+							${item.fees} consultation{item.experience ? ` · ${item.experience} experience` : ""}
+						</Text>
+					</View>
+				</Pressable>
 			)}
 		/>
 	);
 }
 
-const styles = StyleSheet.create({
-	content: { padding: 10, paddingBottom: 32, flexGrow: 1 },
-	column: { paddingHorizontal: 6 },
-	header: { gap: 10, marginBottom: 8, paddingHorizontal: 6 },
-	heading: { fontSize: 20, fontWeight: "700", color: colors.text },
-	search: {
-		borderWidth: 1,
-		borderColor: colors.border,
-		borderRadius: 999,
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		fontSize: 15,
-		backgroundColor: colors.surface,
-		color: colors.text,
-	},
-	chipsWrap: { marginHorizontal: -16 },
-	loader: { marginTop: 48 },
-});
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+		list: { flex: 1, backgroundColor: theme.background },
+		content: { padding: 10, paddingBottom: 32, flexGrow: 1, backgroundColor: theme.background },
+		header: { gap: 10, marginBottom: 12, paddingHorizontal: 6 },
+		heading: { fontSize: 20, fontWeight: "700", color: theme.text },
+		search: {
+			borderWidth: 1,
+			borderColor: theme.border,
+			borderRadius: 999,
+			paddingHorizontal: 16,
+			paddingVertical: 12,
+			fontSize: 15,
+			backgroundColor: theme.surface,
+			color: theme.text,
+		},
+		chipsWrap: { marginHorizontal: -16 },
+		row: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 14,
+			padding: 10,
+			marginVertical: 4,
+			borderRadius: 14,
+			borderWidth: 1,
+			borderColor: theme.border,
+			backgroundColor: theme.surface,
+		},
+		rowPressed: { opacity: 0.75 },
+		image: { width: 64, height: 64, borderRadius: 12, backgroundColor: theme.primarySoft },
+		info: { flex: 1, gap: 2 },
+		name: { fontSize: 16, fontWeight: "600", color: theme.text },
+		specialty: { fontSize: 13, color: theme.textMuted },
+		meta: { fontSize: 12, color: theme.primary, marginTop: 2 },
+		loader: { marginTop: 48 },
+	});

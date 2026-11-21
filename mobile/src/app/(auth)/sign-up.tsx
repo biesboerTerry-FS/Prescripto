@@ -4,10 +4,13 @@ import { Link } from "expo-router";
 import { Button, Card } from "@/components/ui";
 import { ApiError, register } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import type { ThemeColors } from "@/lib/theme";
 
 // Renders the Sign Up UI.
 export default function SignUp() {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const { signIn } = useSession();
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -81,23 +84,25 @@ export default function SignUp() {
 	);
 }
 
-const styles = StyleSheet.create({
-	flex: { flex: 1, backgroundColor: colors.background },
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+	flex: { flex: 1, backgroundColor: theme.background },
 	container: { flexGrow: 1, justifyContent: "center", padding: 20, gap: 20 },
 	card: { gap: 8, padding: 20 },
-	title: { fontSize: 20, fontWeight: "700", color: colors.text },
-	subtitle: { fontSize: 14, color: colors.textMuted, marginBottom: 6 },
-	label: { fontSize: 13, color: colors.textMuted, marginTop: 6 },
+	title: { fontSize: 20, fontWeight: "700", color: theme.text },
+	subtitle: { fontSize: 14, color: theme.textMuted, marginBottom: 6 },
+	label: { fontSize: 13, color: theme.textMuted, marginTop: 6 },
 	input: {
 		borderWidth: 1,
-		borderColor: colors.border,
+		borderColor: theme.border,
 		borderRadius: 12,
 		paddingHorizontal: 14,
 		paddingVertical: 12,
 		fontSize: 15,
-		backgroundColor: colors.surface,
+		backgroundColor: theme.surface,
+		color: theme.text,
 	},
 	submit: { marginTop: 12 },
-	footer: { textAlign: "center", color: colors.textMuted, fontSize: 14 },
-	link: { color: colors.primary, fontWeight: "600" },
+	footer: { textAlign: "center", color: theme.textMuted, fontSize: 14 },
+	link: { color: theme.primary, fontWeight: "600" },
 });

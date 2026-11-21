@@ -1,164 +1,95 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
 import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 
+// Shared link styling: a soft active highlight plus an accent bar, no dividers.
+const linkClass = ({ isActive }) =>
+	`flex items-center gap-3 border-l-4 py-3.5 pl-3 pr-3 md:pl-9 ${
+		isActive ? "sidebar-link-active border-primary bg-teal-50" : "border-transparent"
+	} cursor-pointer`;
+
 // Renders the Sidebar UI.
 const Sidebar = () => {
 	const { adminToken } = useContext(AdminContext);
+	// All categories start collapsed; the user opts in to each group.
+	const [expanded, setExpanded] = useState({
+		workspace: false,
+		communication: false,
+		hr: false,
+	});
+
+	const toggle = (key) => {
+		setExpanded((current) => ({ ...current, [key]: !current[key] }));
+	};
+
+	// Category headers are buttons, not links, and default to expanded.
+	const category = (key, label, testId) => (
+		<li>
+			<button
+				type="button"
+				onClick={() => toggle(key)}
+				aria-expanded={expanded[key]}
+				data-testid={testId ? `sidebar-category-${testId}` : undefined}
+				className="flex w-full items-center gap-2 px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 hover:text-primary"
+			>
+				<span className="sidebar-category-label" data-testid={testId}>
+					{label}
+				</span>
+				<span
+					aria-hidden="true"
+					className={`ml-auto text-[10px] transition-transform ${expanded[key] ? "" : "-rotate-90"}`}
+				>
+					▾
+				</span>
+			</button>
+		</li>
+	);
+
+	const item = (to, label, icon, testId) => (
+		<li key={to}>
+			<NavLink className={linkClass} to={to} data-testid={testId}>
+				<img src={icon} alt="" className="sidebar-icon h-5 w-5 shrink-0 object-contain" />
+				<p>{label}</p>
+			</NavLink>
+		</li>
+	);
 
 	return (
-		<div className="min-h-screen bg-white border-r">
+		<div
+			className="sticky top-0 h-full shrink-0 self-start overflow-y-auto bg-white"
+			data-testid="admin-sidebar"
+		>
 			{adminToken && (
-				<ul className="text-primary mt-5">
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/admin-dashboard"}
-					>
-						<img src={assets.home_icon} alt="" />
-						<p>Dashboard</p>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/all-appointments"}
-					>
-						<img src={assets.appointment_icon} alt="" />
-						<p>Appointments</p>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/patients"}
-					>
-						<img src={assets.patient_icon} alt="" />
-						<p>Patients</p>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/add-doctor"}
-					>
-						<img src={assets.add_icon} alt="" />
-						<p>Add Doctor</p>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/doctor-list"}
-					>
-						<img src={assets.people_icon} alt="" />
-						<p>Doctor List</p>
-						</NavLink>
-					</li>
-					<li className="mt-4 pt-3 border-t border-slate-100">
-						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-							Workspace
-						</p>
-					</li>
-					{[
-						["/orders", "Orders", assets.list_icon],
-						["/messages", "Messages", assets.announcement_icon],
-						["/schedule", "Schedule", assets.appointment_icon],
-					].map(([to, label, icon]) => (
-						<li key={to}>
-							<NavLink
-								className={({ isActive }) =>
-									`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-										isActive ? "bg-teal-50 border-r-4 border-primary" : ""
-									}`
-								}
-								to={to}
-							>
-								<img src={icon} alt="" />
-								<p>{label}</p>
-							</NavLink>
-						</li>
-					))}
-					<li className="mt-4 pt-3 border-t border-slate-100">
-						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-							Communication
-						</p>
-					</li>
-					<li>
-						<NavLink
-						className={({ isActive }) =>
-							`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-								isActive
-									? "bg-teal-50 border-r-4 border-primary"
-									: ""
-							}`
-						}
-						to={"/announcements"}
-					>
-						<img src={assets.announcement_icon} alt="" />
-						<p>Announcements</p>
-						</NavLink>
-					</li>
-					<li className="mt-4 pt-3 border-t border-slate-100" data-testid="hr-nav-group">
-						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-							HR
-						</p>
-					</li>
-					{[
-						["/hr/directory", "Staff directory", assets.people_icon],
-						["/hr/manage", "Staff management", assets.add_icon],
-						["/hr/departments", "Roles & departments", assets.list_icon],
-						["/hr/payroll", "Payroll", assets.earning_icon],
-						["/hr/time-off", "Time-off approvals", assets.appointment_icon],
-						["/hr/performance", "Performance notes", assets.tick_icon],
-					].map(([to, label, icon]) => (
-						<li key={to}>
-							<NavLink
-								className={({ isActive }) =>
-									`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-										isActive ? "bg-teal-50 border-r-4 border-primary" : ""
-									}`
-								}
-								to={to}
-								data-testid={`hr-nav-${to.split("/").pop()}`}
-							>
-								<img src={icon} alt="" />
-								<p>{label}</p>
-							</NavLink>
-						</li>
-					))}
-				</ul>
+				<nav>
+					<ul className="mt-5 pb-10 text-primary">
+						{item("/admin-dashboard", "Dashboard", assets.home_icon)}
+						{item("/all-appointments", "Appointments", assets.appointment_icon)}
+						{item("/patients", "Patients", assets.patient_icon)}
+						{item("/add-doctor", "Add Doctor", assets.add_icon)}
+						{item("/doctor-list", "Doctor List", assets.people_icon)}
+
+						{category("workspace", "Workspace", "workspace")}
+						{expanded.workspace && [
+							item("/orders", "Orders", assets.list_icon),
+							item("/messages", "Messages", assets.announcement_icon),
+							item("/schedule", "Schedule", assets.appointment_icon),
+						]}
+
+						{category("communication", "Communication", "communication")}
+						{expanded.communication && item("/announcements", "Announcements", assets.announcement_icon)}
+
+						{category("hr", "HR", "hr-nav-group")}
+						{expanded.hr && [
+							item("/hr/directory", "Staff directory", assets.people_icon, "hr-nav-directory"),
+							item("/hr/manage", "Staff management", assets.add_icon, "hr-nav-manage"),
+							item("/hr/departments", "Roles & departments", assets.list_icon, "hr-nav-departments"),
+							item("/hr/payroll", "Payroll", assets.money_icon, "hr-nav-payroll"),
+							item("/hr/time-off", "Time-off approvals", assets.appointment_icon, "hr-nav-time-off"),
+							item("/hr/performance", "Performance notes", assets.note_icon, "hr-nav-performance"),
+						]}
+					</ul>
+				</nav>
 			)}
 		</div>
 	);

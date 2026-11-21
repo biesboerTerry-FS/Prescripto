@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 
-// Renders the Doctors List view.
+// Renders the Doctors List view as single-column rows.
 const DoctorsList = () => {
 	const { doctors, adminToken, getAllDoctors, changeAvailability } =
 		useContext(AdminContext);
@@ -15,36 +15,38 @@ const DoctorsList = () => {
 	return (
 		<div className="m-5 max-h-[90vh] overflow-y-scroll" tabIndex={0}>
 			<h1 className="text-lg font-medium">All Doctors</h1>
-			<div className="flex flex-wrap w-full gap-4 pt-5 gap-y-6">
+			<div className="flex w-full flex-col gap-3 pt-5">
 				{doctors.map((item, index) => (
 					<div
-						className="overflow-hidden border border-teal-100 cursor-pointer rounded-xl max-w-56 group"
-						key={index}
+						className="flex items-center gap-4 rounded-xl border border-teal-100 bg-white p-3 shadow-sm"
+						data-testid="doctor-row"
+						key={item._id ?? index}
 					>
 						<img
-							className="transition-all duration-500 bg-teal-50 group-hover:bg-primary"
+							className="h-16 w-16 shrink-0 rounded-lg bg-teal-50 object-cover"
 							src={item.image}
 							alt=""
 						/>
-						<div className="p-4">
-							<p className="text-lg font-medium text-neutral-800">
+						<div className="min-w-0 flex-1">
+							<p className="truncate text-base font-medium text-neutral-800">
 								{item.name}
 							</p>
-							<p className="text-sm text-zinc-600">
+							<p className="truncate text-sm text-zinc-600">
 								{item.specialty}
 							</p>
-							<div className="flex items-center gap-1 mt-2 text-sm">
-								<input
-									onChange={() =>
-										changeAvailability(item._id)
-									}
-									type="checkbox"
-									checked={item.available}
-									aria-label={`${item.name} available for booking`}
-								/>
-								<p>Available</p>
-							</div>
 						</div>
+						<label className="flex shrink-0 cursor-pointer items-center gap-1.5 text-sm text-zinc-600">
+							<input
+								onChange={() =>
+									changeAvailability(item._id)
+								}
+								type="checkbox"
+								checked={item.available}
+								className="h-4 w-4 accent-primary"
+								aria-label={`${item.name} available for booking`}
+							/>
+							Available
+						</label>
 					</div>
 				))}
 			</div>

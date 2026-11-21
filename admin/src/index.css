@@ -203,3 +203,17 @@ html.dark .bg-teal-700 {
 html.dark .hover\:bg-teal-800:hover {
 	background-color: #1e3a8a;
 }
+
+/* ---- Admin sidebar: legible icons and accents in both themes ----
+   The line icons are teal SVGs on a light surface. On dark surfaces, remap
+   every icon to a uniform light neutral so they stay visible and consistent,
+   and brighten the active accent/group labels to match the dark palette. */
+html.dark img.sidebar-icon {
+	filter: brightness(0) invert(0.86);
+}
+html.dark .sidebar-link-active {
+	border-left-color: #5eead4;
+}
+html.dark .sidebar-category-label {
+	color: #a3b1c6;
+}

@@ -54,11 +54,12 @@ const App = () => {
 	}
 
 	return adminToken ? (
-		<div className="bg-[#f8f9fd]">
+		<div className="flex h-screen flex-col overflow-hidden bg-[#f8f9fd]">
 			<ToastContainer position="top-right" autoClose={3500} newestOnTop closeOnClick pauseOnHover />
 			<NavBar />
-			<div className="flex items-start">
+			<div className="flex min-h-0 flex-1 overflow-hidden">
 				<Sidebar />
+				<main className="min-w-0 flex-1 overflow-y-auto" data-testid="admin-main">
 				<ErrorBoundary>
 					<Routes>
 						<Route path="/" element={<Navigate to="/admin-dashboard" replace />} />
@@ -85,6 +86,7 @@ const App = () => {
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</ErrorBoundary>
+				</main>
 			</div>
 			<Analytics />
 			<SpeedInsights />

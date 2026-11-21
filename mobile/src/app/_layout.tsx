@@ -2,7 +2,7 @@ import { Stack, SplashScreen } from "expo-router";
 import { getStoredValue, setStoredValue, deleteStoredValue } from "@/lib/tokenStorage";
 import { ClerkLoaded, ClerkProvider } from "@clerk/expo";
 import { SessionProvider, useSession } from "@/lib/session";
-import { colors } from "@/lib/theme";
+import { ThemeProvider, useTheme } from "@/lib/ThemeContext";
 import ClerkSessionBridge from "@/lib/ClerkSessionBridge";
 
 SplashScreen.preventAutoHideAsync();
@@ -26,10 +26,12 @@ const tokenCache = {
 // Renders the Root Layout UI.
 export default function RootLayout() {
 	const content = (
-		<SessionProvider>
-			<SplashGate />
-			<RootStack />
-		</SessionProvider>
+		<ThemeProvider>
+			<SessionProvider>
+				<SplashGate />
+				<RootStack />
+			</SessionProvider>
+		</ThemeProvider>
 	);
 
 	if (!publishableKey) return content;
@@ -37,11 +39,13 @@ export default function RootLayout() {
 	return (
 		<ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
 			<ClerkLoaded>
-				<SessionProvider>
-					<ClerkSessionBridge />
-					<SplashGate />
-					<RootStack />
-				</SessionProvider>
+				<ThemeProvider>
+					<SessionProvider>
+						<ClerkSessionBridge />
+						<SplashGate />
+						<RootStack />
+					</SessionProvider>
+				</ThemeProvider>
 			</ClerkLoaded>
 		</ClerkProvider>
 	);
@@ -59,12 +63,14 @@ function SplashGate() {
 // Stack.Protected: signed-out users only see (auth); signed-in users never see it.
 function RootStack() {
 	const { token, isLoading } = useSession();
+	const { theme } = useTheme();
 	return (
 		<Stack
 			screenOptions={{
-				headerTintColor: colors.primary,
-				headerStyle: { backgroundColor: colors.surface },
-				headerTitleStyle: { color: colors.text },
+				headerTintColor: theme.primary,
+				headerStyle: { backgroundColor: theme.surface },
+				headerTitleStyle: { color: theme.text },
+				contentStyle: { backgroundColor: theme.background },
 			}}
 		>
 			<Stack.Protected guard={!isLoading && !!token}>

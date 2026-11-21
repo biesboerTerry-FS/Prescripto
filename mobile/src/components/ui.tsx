@@ -8,7 +8,8 @@ import {
 	type PressableProps,
 	type ViewStyle,
 } from "react-native";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import type { ThemeColors } from "@/lib/theme";
 
 type ButtonProps = Omit<PressableProps, "style"> & {
 	label: string;
@@ -17,8 +18,40 @@ type ButtonProps = Omit<PressableProps, "style"> & {
 	style?: ViewStyle;
 };
 
+// Theme-aware styles for the shared UI primitives.
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+		button: {
+			minHeight: 48,
+			borderRadius: 999,
+			alignItems: "center",
+			justifyContent: "center",
+			paddingHorizontal: 24,
+		},
+		buttonPrimary: { backgroundColor: theme.primary },
+		buttonOutline: { borderWidth: 1, borderColor: theme.primary, backgroundColor: theme.surface },
+		buttonDanger: { borderWidth: 1, borderColor: theme.dangerSoft, backgroundColor: theme.surface },
+		buttonLabel: { fontSize: 15, fontWeight: "600", color: theme.onPrimary },
+		buttonOutlineLabel: { color: theme.primary },
+		buttonDangerLabel: { color: theme.danger },
+		card: {
+			backgroundColor: theme.surface,
+			borderRadius: 16,
+			borderWidth: 1,
+			borderColor: theme.border,
+			padding: 16,
+		},
+		badge: { alignSelf: "flex-start", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 },
+		badgeLabel: { fontSize: 12, fontWeight: "600" },
+		empty: { alignItems: "center", paddingVertical: 48, paddingHorizontal: 24, gap: 6 },
+		emptyTitle: { fontSize: 16, fontWeight: "600", color: theme.text },
+		emptyBody: { fontSize: 14, color: theme.textMuted, textAlign: "center" },
+	});
+
 // Renders the Button UI.
 export function Button({ label, variant = "primary", loading = false, disabled, style, ...rest }: ButtonProps) {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const isDisabled = disabled || loading;
 	return (
 		<Pressable
@@ -36,13 +69,13 @@ export function Button({ label, variant = "primary", loading = false, disabled, 
 			{...rest}
 		>
 			{loading ? (
-				<ActivityIndicator color={variant === "outline" ? colors.primary : "#fff"} />
+				<ActivityIndicator color={variant === "outline" ? theme.primary : theme.onPrimary} />
 			) : (
 				<Text
 					style={[
 						styles.buttonLabel,
-						variant === "outline" && { color: colors.primary },
-						variant === "danger" && { color: colors.danger },
+						variant === "outline" && styles.buttonOutlineLabel,
+						variant === "danger" && styles.buttonDangerLabel,
 					]}
 				>
 					{label}
@@ -54,16 +87,19 @@ export function Button({ label, variant = "primary", loading = false, disabled, 
 
 // Renders the Card UI.
 export function Card({ children, style }: { children: ReactNode; style?: ViewStyle }) {
-	return <View style={[styles.card, style]}>{children}</View>;
+	const { theme } = useTheme();
+	return <View style={[makeStyles(theme).card, style]}>{children}</View>;
 }
 
 // Renders the Badge UI.
 export function Badge({ label, tone }: { label: string; tone: "teal" | "amber" | "red" | "slate" }) {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const palette = {
-		teal: { bg: colors.primarySoft, fg: colors.primary },
-		amber: { bg: colors.amberSoft, fg: colors.amber },
-		red: { bg: colors.dangerSoft, fg: colors.danger },
-		slate: { bg: "#f1f5f9", fg: colors.textMuted },
+		teal: { bg: theme.primarySoft, fg: theme.primary },
+		amber: { bg: theme.amberSoft, fg: theme.amber },
+		red: { bg: theme.dangerSoft, fg: theme.danger },
+		slate: { bg: theme.background, fg: theme.textMuted },
 	}[tone];
 	return (
 		<View style={[styles.badge, { backgroundColor: palette.bg }]}>
@@ -74,6 +110,8 @@ export function Badge({ label, tone }: { label: string; tone: "teal" | "amber" |
 
 // Renders the Empty State UI.
 export function EmptyState({ title, body }: { title: string; body: string }) {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	return (
 		<View style={styles.empty}>
 			<Text style={styles.emptyTitle}>{title}</Text>
@@ -81,29 +119,3 @@ export function EmptyState({ title, body }: { title: string; body: string }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	button: {
-		minHeight: 48,
-		borderRadius: 999,
-		alignItems: "center",
-		justifyContent: "center",
-		paddingHorizontal: 24,
-	},
-	buttonPrimary: { backgroundColor: colors.primary },
-	buttonOutline: { borderWidth: 1, borderColor: colors.primary, backgroundColor: colors.surface },
-	buttonDanger: { borderWidth: 1, borderColor: "#fecaca", backgroundColor: colors.surface },
-	buttonLabel: { color: "#fff", fontSize: 15, fontWeight: "600" },
-	card: {
-		backgroundColor: colors.surface,
-		borderRadius: 16,
-		borderWidth: 1,
-		borderColor: colors.border,
-		padding: 16,
-	},
-	badge: { alignSelf: "flex-start", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 },
-	badgeLabel: { fontSize: 12, fontWeight: "600" },
-	empty: { alignItems: "center", paddingVertical: 48, paddingHorizontal: 24, gap: 6 },
-	emptyTitle: { fontSize: 16, fontWeight: "600", color: colors.text },
-	emptyBody: { fontSize: 14, color: colors.textMuted, textAlign: "center" },
-});

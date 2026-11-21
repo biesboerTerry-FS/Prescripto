@@ -1,6 +1,7 @@
+import { Pressable } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
 
 // Tab bar icons get a ColorValue; Ionicons wants a plain string.
 const tabIcon = (name: keyof typeof Ionicons.glyphMap) =>
@@ -10,14 +11,16 @@ const tabIcon = (name: keyof typeof Ionicons.glyphMap) =>
 
 // Renders the Tabs Layout UI.
 export default function TabsLayout() {
+	const { dark, theme, toggleTheme } = useTheme();
 	return (
 		<Tabs
 			screenOptions={{
-				tabBarActiveTintColor: colors.primary,
-				tabBarInactiveTintColor: colors.textMuted,
-				headerTintColor: colors.primary,
-				headerTitleStyle: { color: colors.text, fontWeight: "700" },
-				headerStyle: { backgroundColor: colors.surface },
+				tabBarActiveTintColor: theme.primary,
+				tabBarInactiveTintColor: theme.textMuted,
+				tabBarStyle: { backgroundColor: theme.surface, borderTopColor: theme.border },
+				headerTintColor: theme.primary,
+				headerTitleStyle: { color: theme.text, fontWeight: "700" },
+				headerStyle: { backgroundColor: theme.surface },
 			}}
 		>
 			<Tabs.Screen
@@ -26,6 +29,21 @@ export default function TabsLayout() {
 					title: "Home",
 					headerTitle: "Prescripto",
 					tabBarIcon: tabIcon("home-outline"),
+					headerRight: () => (
+						<Pressable
+							accessibilityRole="button"
+							accessibilityLabel={dark ? "Switch to light mode" : "Switch to dark mode"}
+							onPress={toggleTheme}
+							hitSlop={8}
+							style={{ paddingHorizontal: 12, paddingVertical: 6 }}
+						>
+							<Ionicons
+								name={dark ? "sunny-outline" : "moon-outline"}
+								size={22}
+								color={theme.primary}
+							/>
+						</Pressable>
+					),
 				}}
 			/>
 			<Tabs.Screen

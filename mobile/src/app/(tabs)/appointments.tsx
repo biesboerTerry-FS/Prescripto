@@ -4,7 +4,8 @@ import { useFocusEffect } from "expo-router";
 import { Badge, Button, Card, EmptyState } from "@/components/ui";
 import { ApiError, cancelAppointment, getAppointments } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import type { ThemeColors } from "@/lib/theme";
 import type { Appointment } from "@/lib/types";
 
 // Helper that renders a status badge for an appointment.
@@ -16,6 +17,8 @@ function statusBadge(item: Appointment) {
 
 // Screen component for appointments in the mobile app.
 export default function AppointmentsScreen() {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const { token } = useSession();
 	const [items, setItems] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -65,6 +68,7 @@ export default function AppointmentsScreen() {
 		<FlatList
 			data={items}
 			keyExtractor={(item) => item._id}
+			style={styles.list}
 			contentContainerStyle={styles.content}
 			refreshControl={
 				<RefreshControl
@@ -73,12 +77,12 @@ export default function AppointmentsScreen() {
 						setRefreshing(true);
 						load();
 					}}
-					tintColor={colors.primary}
+					tintColor={theme.primary}
 				/>
 			}
 			ListEmptyComponent={
 				loading ? (
-					<ActivityIndicator style={styles.loader} color={colors.primary} />
+					<ActivityIndicator style={styles.loader} color={theme.primary} />
 				) : (
 					<EmptyState title="No appointments yet" body="Book a doctor from the Doctors tab to see it here." />
 				)
@@ -110,17 +114,19 @@ export default function AppointmentsScreen() {
 
 }
 
-const styles = StyleSheet.create({
-	content: { padding: 16, paddingBottom: 32, flexGrow: 1 },
-	loader: { marginTop: 48 },
-	card: { gap: 12 },
-	row: { flexDirection: "row", gap: 12 },
-	avatar: { width: 64, height: 64, borderRadius: 12, backgroundColor: colors.primarySoft },
-	info: { flex: 1, gap: 2 },
-	name: { fontSize: 16, fontWeight: "600", color: colors.text },
-	specialty: { fontSize: 13, color: colors.textMuted },
-	when: { fontSize: 13, color: colors.text, marginTop: 4 },
-	fee: { fontSize: 13, color: colors.primary, fontWeight: "600" },
-	footer: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-	cancel: { minHeight: 36, paddingHorizontal: 16 },
-});
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+		list: { flex: 1, backgroundColor: theme.background },
+		content: { padding: 16, paddingBottom: 32, flexGrow: 1, backgroundColor: theme.background },
+		loader: { marginTop: 48 },
+		card: { gap: 12 },
+		row: { flexDirection: "row", gap: 12 },
+		avatar: { width: 64, height: 64, borderRadius: 12, backgroundColor: theme.primarySoft },
+		info: { flex: 1, gap: 2 },
+		name: { fontSize: 16, fontWeight: "600", color: theme.text },
+		specialty: { fontSize: 13, color: theme.textMuted },
+		when: { fontSize: 13, color: theme.text, marginTop: 4 },
+		fee: { fontSize: 13, color: theme.primary, fontWeight: "600" },
+		footer: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+		cancel: { minHeight: 36, paddingHorizontal: 16 },
+	});

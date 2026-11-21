@@ -5,13 +5,16 @@ import { useSignIn } from "@clerk/expo";
 import { Button, Card } from "@/components/ui";
 import { ApiError, login, signInWithGoogle, signInWithGoogleDemo } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { colors } from "@/lib/theme";
+import { useTheme } from "@/lib/ThemeContext";
+import type { ThemeColors } from "@/lib/theme";
 import { useGoogleSignIn } from "@/lib/useGoogleSignIn";
 
 const clerkEnabled = Boolean(process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 // Renders the Sign In UI.
 export default function SignIn() {
+	const { theme } = useTheme();
+	const styles = makeStyles(theme);
 	const { signIn } = useSession();
 	const clerkSignIn = clerkEnabled ? useSignIn() : null;
 	const [email, setEmail] = useState("");
@@ -175,29 +178,31 @@ export default function SignIn() {
 	);
 }
 
-const styles = StyleSheet.create({
-	flex: { flex: 1, backgroundColor: colors.background },
+const makeStyles = (theme: ThemeColors) =>
+	StyleSheet.create({
+	flex: { flex: 1, backgroundColor: theme.background },
 	container: { flexGrow: 1, justifyContent: "center", padding: 20, gap: 20 },
 	brand: { alignItems: "center", gap: 6 },
-	logo: { fontSize: 30, fontWeight: "700", color: colors.primary },
-	tagline: { fontSize: 14, color: colors.textMuted },
+	logo: { fontSize: 30, fontWeight: "700", color: theme.primary },
+	tagline: { fontSize: 14, color: theme.textMuted },
 	card: { gap: 8, padding: 20 },
-	title: { fontSize: 20, fontWeight: "700", color: colors.text, marginBottom: 4 },
-	label: { fontSize: 13, color: colors.textMuted, marginTop: 6 },
+	title: { fontSize: 20, fontWeight: "700", color: theme.text, marginBottom: 4 },
+	label: { fontSize: 13, color: theme.textMuted, marginTop: 6 },
 	input: {
 		borderWidth: 1,
-		borderColor: colors.border,
+		borderColor: theme.border,
 		borderRadius: 12,
 		paddingHorizontal: 14,
 		paddingVertical: 12,
 		fontSize: 15,
-		backgroundColor: colors.surface,
+		backgroundColor: theme.surface,
+		color: theme.text,
 	},
 	submit: { marginTop: 12 },
 	divider: { flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 10 },
-	rule: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: colors.border },
-	dividerText: { fontSize: 12, color: colors.textMuted },
-	footer: { textAlign: "center", color: colors.textMuted, fontSize: 14 },
-	link: { color: colors.primary, fontWeight: "600" },
-	demoNote: { textAlign: "center", color: colors.textMuted, fontSize: 12, marginTop: 8 },
+	rule: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: theme.border },
+	dividerText: { fontSize: 12, color: theme.textMuted },
+	footer: { textAlign: "center", color: theme.textMuted, fontSize: 14 },
+	link: { color: theme.primary, fontWeight: "600" },
+	demoNote: { textAlign: "center", color: theme.textMuted, fontSize: 12, marginTop: 8 },
 });
