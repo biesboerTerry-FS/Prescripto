@@ -6,6 +6,8 @@ const defaultConsent = () => ({
 	timestamp: null,
 	essential: true,
 	preferences: false,
+	analytics: false,
+	marketing: false,
 	decision: null, // "accepted" | "declined" | "custom" | null
 });
 
@@ -22,6 +24,8 @@ export const getConsent = () => {
 				timestamp: new Date().toISOString(),
 				essential: true,
 				preferences: true,
+				analytics: true,
+				marketing: true,
 				decision: "accepted",
 			};
 		}
@@ -31,11 +35,17 @@ export const getConsent = () => {
 				timestamp: new Date().toISOString(),
 				essential: true,
 				preferences: false,
+				analytics: false,
+				marketing: false,
 				decision: "declined",
 			};
 		}
 		if (typeof parsed === "object" && parsed && parsed.version === CONSENT_VERSION) {
-			return { ...defaultConsent(), ...parsed, essential: true };
+			const merged = { ...defaultConsent(), ...parsed, essential: true };
+			// Older v2 records only tracked a single preferences flag.
+			merged.analytics = Boolean(parsed.analytics ?? merged.preferences);
+			merged.marketing = Boolean(parsed.marketing ?? merged.preferences);
+			return merged;
 		}
 		return null;
 	} catch {
@@ -62,6 +72,13 @@ export const setConsent = (partial) => {
 		timestamp: new Date().toISOString(),
 		essential: true,
 	};
+	// Keep the legacy `preferences` flag in sync with the granular toggles.
+	if (partial.preferences !== undefined && partial.analytics === undefined && partial.marketing === undefined) {
+		next.analytics = Boolean(partial.preferences);
+		next.marketing = Boolean(partial.preferences);
+	} else if (partial.analytics !== undefined || partial.marketing !== undefined) {
+		next.preferences = Boolean(next.analytics || next.marketing);
+	}
 	try {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
 	} catch {

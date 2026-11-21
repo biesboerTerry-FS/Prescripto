@@ -11,6 +11,8 @@ const syncConsentToServer = async (consent) => {
 			"/user/cookie-consent",
 			{
 				preferences: Boolean(consent.preferences),
+				analytics: Boolean(consent.analytics),
+				marketing: Boolean(consent.marketing),
 				decision: consent.decision,
 				timestamp: consent.timestamp,
 				version: consent.version,
@@ -22,31 +24,36 @@ const syncConsentToServer = async (consent) => {
 	}
 };
 
-// Renders a GDPR-style cookie consent banner with preference controls.
+// Renders a GDPR-style cookie consent banner with granular preference controls.
 const CookieConsent = () => {
 	const [visible, setVisible] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
-	const [preferences, setPreferences] = useState(false);
+	const [analytics, setAnalytics] = useState(false);
+	const [marketing, setMarketing] = useState(false);
 
 	useEffect(() => {
 		const existing = getConsent();
 		if (!hasConsentDecision()) {
 			setVisible(true);
-			setPreferences(existing?.preferences ?? false);
+			setAnalytics(Boolean(existing?.analytics));
+			setMarketing(Boolean(existing?.marketing));
 		} else {
-			setPreferences(Boolean(existing?.preferences));
+			setAnalytics(Boolean(existing?.analytics));
+			setMarketing(Boolean(existing?.marketing));
 		}
 		return onConsentOpen(() => {
 			const current = getConsent();
-			setPreferences(Boolean(current?.preferences));
+			setAnalytics(Boolean(current?.analytics));
+			setMarketing(Boolean(current?.marketing));
 			setShowDetails(true);
 			setVisible(true);
 		});
 	}, []);
 
-	const save = async (nextPreferences, decision) => {
+	const save = async (nextAnalytics, nextMarketing, decision) => {
 		const consent = setConsent({
-			preferences: nextPreferences,
+			analytics: nextAnalytics,
+			marketing: nextMarketing,
 			decision,
 		});
 		await syncConsentToServer(consent);
@@ -55,6 +62,8 @@ const CookieConsent = () => {
 	};
 
 	if (!visible) return null;
+
+	const checkbox = "mt-1 h-4 w-4";
 
 	return (
 		<div
@@ -71,8 +80,8 @@ const CookieConsent = () => {
 						</p>
 						<p className="mt-1">
 							We use essential storage to keep you signed in and secure your
-							session. With your permission, we also save preferences like your
-							theme choice. No advertising trackers are used.{" "}
+							session. You can also choose optional analytics and marketing
+							storage. Change this any time from the footer.{" "}
 							<Link
 								to="/privacy"
 								className="underline hover:text-primary"
@@ -86,7 +95,7 @@ const CookieConsent = () => {
 					<div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
 						<button
 							type="button"
-							onClick={() => save(false, "declined")}
+							onClick={() => save(false, false, "declined")}
 							className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
 						>
 							Reject non-essential
@@ -101,7 +110,7 @@ const CookieConsent = () => {
 						</button>
 						<button
 							type="button"
-							onClick={() => save(true, "accepted")}
+							onClick={() => save(true, true, "accepted")}
 							className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
 						>
 							Accept all
@@ -122,30 +131,48 @@ const CookieConsent = () => {
 										Always active.
 									</p>
 								</div>
-								<input type="checkbox" checked disabled className="mt-1 h-4 w-4" aria-label="Essential cookies enabled" />
+								<input type="checkbox" checked disabled className={checkbox} aria-label="Essential cookies enabled" />
 							</label>
 							<label className="flex items-start justify-between gap-4">
 								<div>
 									<p className="text-sm font-medium text-slate-800 dark:text-slate-100">
-										Preferences
+										Analytics
 									</p>
 									<p className="text-xs text-slate-600 dark:text-slate-300">
-										Remember settings like dark mode on this device.
+										Help us understand which pages and specialties are useful.
 									</p>
 								</div>
 								<input
 									type="checkbox"
-									checked={preferences}
-									onChange={(e) => setPreferences(e.target.checked)}
-									className="mt-1 h-4 w-4"
-									aria-label="Allow preference cookies"
+									checked={analytics}
+									onChange={(e) => setAnalytics(e.target.checked)}
+									className={checkbox}
+									aria-label="Allow analytics cookies"
+								/>
+							</label>
+							<label className="flex items-start justify-between gap-4">
+								<div>
+									<p className="text-sm font-medium text-slate-800 dark:text-slate-100">
+										Marketing
+									</p>
+									<p className="text-xs text-slate-600 dark:text-slate-300">
+										Remember preferences for health tips and offers. No
+										third-party ad trackers are used.
+									</p>
+								</div>
+								<input
+									type="checkbox"
+									checked={marketing}
+									onChange={(e) => setMarketing(e.target.checked)}
+									className={checkbox}
+									aria-label="Allow marketing cookies"
 								/>
 							</label>
 						</div>
 						<div className="mt-4 flex justify-end">
 							<button
 								type="button"
-								onClick={() => save(preferences, "custom")}
+								onClick={() => save(analytics, marketing, "custom")}
 								className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
 							>
 								Save preferences
