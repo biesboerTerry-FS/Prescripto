@@ -12,6 +12,7 @@ import doctorRouter from "./routes/doctorRoute.js";
 import userRouter from "./routes/userRoute.js";
 import appointmentRouter from "./routes/appointmentRoute.js";
 import portalRouter from "./routes/portalRoute.js";
+import hrRouter from "./routes/hrRoute.js";
 
 // fail fast in production instead of starting half-configured
 const required = ["MONGO_URI", "JWT_SECRET"];
@@ -114,6 +115,8 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/user", userRouter);
 app.use("/api/appointment", appointmentRouter);
 app.use("/api/portal", portalRouter);
+// HR suite (admin-only; each route is protected by authAdmin inside the router).
+app.use("/api/admin/hr", hrRouter);
 
 // Simple root endpoint so uptime checks or humans can confirm the API process is alive.
 app.get("/", (req, res) => {

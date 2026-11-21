@@ -130,6 +130,34 @@ const Sidebar = () => {
 						<p>Announcements</p>
 						</NavLink>
 					</li>
+					<li className="mt-4 pt-3 border-t border-slate-100" data-testid="hr-nav-group">
+						<p className="px-3 md:px-9 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+							HR
+						</p>
+					</li>
+					{[
+						["/hr/directory", "Staff directory", assets.people_icon],
+						["/hr/manage", "Staff management", assets.add_icon],
+						["/hr/departments", "Roles & departments", assets.list_icon],
+						["/hr/payroll", "Payroll", assets.earning_icon],
+						["/hr/time-off", "Time-off approvals", assets.appointment_icon],
+						["/hr/performance", "Performance notes", assets.tick_icon],
+					].map(([to, label, icon]) => (
+						<li key={to}>
+							<NavLink
+								className={({ isActive }) =>
+									`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
+										isActive ? "bg-teal-50 border-r-4 border-primary" : ""
+									}`
+								}
+								to={to}
+								data-testid={`hr-nav-${to.split("/").pop()}`}
+							>
+								<img src={icon} alt="" />
+								<p>{label}</p>
+							</NavLink>
+						</li>
+					))}
 				</ul>
 			)}
 		</div>

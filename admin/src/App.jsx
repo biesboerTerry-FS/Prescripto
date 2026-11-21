@@ -21,6 +21,12 @@ import PatientDetails from "./pages/Admin/PatientDetails";
 import Orders from "./pages/Admin/Orders";
 import Messages from "./pages/Admin/Messages";
 import Schedule from "./pages/Admin/Schedule";
+import HRDirectory from "./pages/Admin/hr/HRDirectory";
+import HRManage from "./pages/Admin/hr/HRManage";
+import HRDepartments from "./pages/Admin/hr/HRDepartments";
+import HRPayroll from "./pages/Admin/hr/HRPayroll";
+import HRTimeOff from "./pages/Admin/hr/HRTimeOff";
+import HRPerformance from "./pages/Admin/hr/HRPerformance";
 import NotFound from "./pages/NotFound";
 
 // Renders the App UI.
@@ -69,6 +75,13 @@ const App = () => {
 						<Route path="/messages" element={<Messages />} />
 						<Route path="/schedule" element={<Schedule />} />
 						<Route path="/announcements" element={<Announcements />} />
+						<Route path="/hr" element={<Navigate to="/hr/directory" replace />} />
+						<Route path="/hr/directory" element={<HRDirectory />} />
+						<Route path="/hr/manage" element={<HRManage />} />
+						<Route path="/hr/departments" element={<HRDepartments />} />
+						<Route path="/hr/payroll" element={<HRPayroll />} />
+						<Route path="/hr/time-off" element={<HRTimeOff />} />
+						<Route path="/hr/performance" element={<HRPerformance />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</ErrorBoundary>

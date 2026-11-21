@@ -21,6 +21,22 @@ const doctorSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
+		// Optional HR metadata. Doctors are the staff in this app, so HR keeps
+		// its own fields on the same record. These never affect patient login,
+		// public browsing or booking availability.
+		department: {
+			type: String,
+			default: "",
+		},
+		hrStatus: {
+			type: String,
+			enum: ["active", "inactive"],
+			default: "active",
+		},
+		hrRole: {
+			type: String,
+			default: "",
+		},
 		image: {
 			type: String,
 			required: true,
